@@ -1,0 +1,10 @@
+{
+  "extends": "@tlz/config/tsconfig/base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["node"]
+  },
+  "include": ["src/**/*", "scripts/**/*"],
+  "exclude": ["node_modules"]
+}

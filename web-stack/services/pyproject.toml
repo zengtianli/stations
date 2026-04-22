@@ -1,0 +1,9 @@
+[project]
+name = "tlz-hydro-services"
+version = "0.0.0"
+description = "Workspace root for 10 hydro-* FastAPI backends"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv.workspace]
+members = ["hydro-*", "cc-options"]

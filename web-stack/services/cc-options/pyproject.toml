@@ -1,0 +1,10 @@
+[project]
+name = "cc-options"
+version = "0.1.0"
+description = "QQQ Covered Call Dashboard API (data-read wrapper, no credentials)"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+    "scipy>=1.14",
+]

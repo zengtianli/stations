@@ -1,0 +1,54 @@
+{
+  "name": "曾田力 — 数据驱动水利创新",
+  "short_name": "曾田力",
+  "description": "水利工程师 / AI 工程师 / 独立开发者 — 个人作品集与服务总览。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f5f7",
+  "theme_color": "#0ea5e9",
+  "categories": ["productivity", "utilities"],
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "服务总览",
+      "short_name": "Services",
+      "url": "/services",
+      "description": "28 在线服务 + 23 本地工具目录"
+    },
+    {
+      "name": "Stack",
+      "short_name": "Stack",
+      "url": "https://stack.tianlizeng.cloud",
+      "description": "项目架构地图"
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Console",
+      "url": "https://dashboard.tianlizeng.cloud",
+      "description": "VPS 控制台"
+    }
+  ]
+}
+

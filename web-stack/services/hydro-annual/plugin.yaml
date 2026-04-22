@@ -1,0 +1,6 @@
+name: annual
+title: 水资源年报
+icon: "📊"
+order: 40
+description: 浙江省水资源年报数据查询与导出
+version: 1.0.0

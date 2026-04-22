@@ -1,0 +1,87 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# ============================================
+# 隐私数据保护 Privacy Protection
+# ============================================
+
+# 荣誉证书原文件（隐私保护）
+荣誉/
+content/resume-materials/untitled folder/
+
+# 个人隐私文件（证书、成绩单等）
+博士研究生成绩单.md
+本科成绩单.md
+*.pdf
+!public/**/*.pdf  # 但保留 public 中的公开 PDF
+
+# 证书扫描件
+*.jpg
+*.JPG
+*.jpeg
+*.png
+!public/**/*.jpg  # 但保留 public 中的公开图片
+!public/**/*.JPG
+!public/**/*.jpeg
+!public/**/*.png
+!components/**/*.tsx  # 保留组件文件
+!app/**/*.tsx        # 保留应用文件
+
+# 私人文档
+ry.pdf
+待补充信息清单.md
+简历素材采集表md.md
+
+# 临时文件
+lighthouse-desktop.json
+Lighthouse性能测试报告分析.md
+性能优化完成总结.md
+高优先级功能完成总结.md
+RESEND_配置指南.md
+Vercel环境变量配置检查清单.md
+联系表单测试指南.md.next
+
+# SQLite search database
+data/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Baseline (auto-added by /groom)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.egg-info/
+dist/

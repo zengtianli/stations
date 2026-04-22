@@ -1,0 +1,20 @@
+[Unit]
+Description=TLZ Next.js: %i-web
+After=network.target
+
+[Service]
+Type=simple
+User=root
+# Turborepo standalone puts server.js at apps/<name>-web/server.js
+WorkingDirectory=/var/www/%i-web/apps/%i-web
+# Per-site port (create /etc/tlz/ports/%i-web.env with `PORT=31XX`)
+EnvironmentFile=/etc/tlz/ports/%i-web.env
+Environment=NODE_ENV=production
+Environment=HOSTNAME=127.0.0.1
+# PORT env must be picked up by Next.js (standalone server reads process.env.PORT)
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

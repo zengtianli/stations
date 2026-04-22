@@ -1,0 +1,40 @@
+{
+  "name": "hydro-annual-web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "predev": "pnpm --filter @tlz/menu-ssot sync",
+    "dev": "next dev -p 3114",
+    "prebuild": "pnpm --filter @tlz/menu-ssot sync",
+    "build": "next build",
+    "start": "next start -p 3114",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tlz/api-clients": "workspace:*",
+    "@tlz/menu-ssot": "workspace:*",
+    "@tlz/tokens": "workspace:*",
+    "@tlz/ui": "workspace:*",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.454.0",
+    "next": "15.2.8",
+    "react": "^19",
+    "react-dom": "^19",
+    "tailwind-merge": "^2.5.5"
+  },
+  "devDependencies": {
+    "@tlz/config": "workspace:*",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.8",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.17",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.6.3"
+  }
+}

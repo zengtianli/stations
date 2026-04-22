@@ -1,0 +1,6 @@
+name: capacity
+title: 纳污能力计算
+icon: "🌊"
+order: 10
+description: 河道/水库纳污能力计算，支持支流分段和多方案
+version: 1.0.0

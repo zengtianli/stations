@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+.env
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+*.so
+.DS_Store
+
+
+# Virtual env
+venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Baseline (auto-added by /groom)
+*$py.class
+Thumbs.db
+*.swp

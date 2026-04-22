@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Deploy cc-options (Streamlit) to VPS.
+# 关键安全约束：永不 rsync .env / .venv / data/，避免 HSBC/IBKR 账户外泄到 VPS。
+set -euo pipefail
+
+source ~/Dev/devtools/lib/vps_config.sh
+REMOTE_DIR="/var/www/cc-options"
+DOMAIN="cc-options.tianlizeng.cloud"
+SERVICE="cc-options"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+echo "→ 同步代码到 VPS（排除 .env / .venv / data / __pycache__）"
+ssh "$VPS" "mkdir -p $REMOTE_DIR"
+rsync -avz --delete \
+    --exclude '.env' --exclude '.env.*' \
+    --exclude '.venv' --exclude '__pycache__' --exclude '*.pyc' \
+    --exclude 'data/' --exclude '.streamlit/secrets.toml' \
+    --exclude '.git' \
+    ./ "$VPS:$REMOTE_DIR/"
+
+echo "→ 重启 systemd"
+ssh "$VPS" "systemctl restart $SERVICE 2>/dev/null || echo '⚠ $SERVICE.service not configured — manual setup needed'"
+
+echo "→ 验证"
+sleep 2
+HTTP_CODE=$(curl --noproxy '*' -s -o /dev/null -w "%{http_code}" "https://$DOMAIN" || echo "000")
+case "$HTTP_CODE" in
+  200|302) echo "✓ Deployed: https://$DOMAIN (HTTP $HTTP_CODE)" ;;
+  *)       echo "⚠ HTTP $HTTP_CODE — check: ssh $VPS journalctl -u $SERVICE -n 30" ;;
+esac

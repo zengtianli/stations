@@ -1,0 +1,426 @@
+{
+  "version": "1.0",
+  "exported_at": "2026-04-19T09:50:56Z",
+  "commands": [
+    {
+      "file": "cclog_digest.sh",
+      "title": "cclog-digest",
+      "description": "显示今日 Claude Code 会话摘要",
+      "icon": "📊",
+      "package": "CCLog",
+      "mode": "compact",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "cclog_site.sh",
+      "title": "cclog-site",
+      "description": "生成 Claude Code 会话静态站并在浏览器打开",
+      "icon": "📊",
+      "package": "CCLog",
+      "mode": "compact",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "cclog_stats.sh",
+      "title": "cclog-stats",
+      "description": "显示 Claude Code 使用统计",
+      "icon": "📊",
+      "package": "CCLog",
+      "mode": "inline",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "csv_from_txt.sh",
+      "title": "csv-from-txt",
+      "description": "Convert text file to CSV format",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "csv_merge_txt.sh",
+      "title": "csv-merge-txt",
+      "description": "Merge multiple text files into a single CSV",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "csv_to_txt.sh",
+      "title": "csv-to-txt",
+      "description": "Convert CSV file to text format",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "dingtalk_gov.sh",
+      "title": "dingtalk_gov",
+      "description": "启动政务钉钉（DingTalkGov）",
+      "icon": "💼",
+      "package": "Apps",
+      "mode": "fullOutput",
+      "project": "mactools",
+      "source": "raycast"
+    },
+    {
+      "file": "doc_scan_sensitive.sh",
+      "title": "doc-scan-sensitive",
+      "description": "Scan bid documents for sensitive words using Claude AI",
+      "icon": "🔍",
+      "package": "Document Processing",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "doc_view_md.sh",
+      "title": "View MD as HTML",
+      "description": "把 MD 文件或目录渲染成网页在浏览器中打开",
+      "icon": "📄",
+      "package": "Document",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "docx_apply_image_caption.sh",
+      "title": "docx-image-caption",
+      "description": "Apply ZDWP image caption style to Word document",
+      "icon": "📄",
+      "package": "Document Processing",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "docx_apply_template.sh",
+      "title": "docx-apply-template",
+      "description": "Apply template styles to a Word document",
+      "icon": "📄",
+      "package": "DOCX",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "docx_text_formatter.sh",
+      "title": "docx-text-format",
+      "description": "Fix text formatting in Word document (quotes, punctuation, units)",
+      "icon": "📄",
+      "package": "Document Processing",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "docx_to_md.sh",
+      "title": "docx-to-md",
+      "description": "DOCX转Markdown（使用markitdown）- 支持多选",
+      "icon": "📄",
+      "package": "DOCX",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "file_cleanup-downloads.sh",
+      "title": "Cleanup Downloads",
+      "description": "Auto cleanup: organize by type → AI rename → project sort",
+      "icon": "🧹",
+      "package": "File Utils",
+      "mode": "fullOutput",
+      "project": "mactools",
+      "source": "raycast"
+    },
+    {
+      "file": "git_smart-push.sh",
+      "title": "Smart Push All Repos",
+      "description": "AI commit message + push all GitHub repos",
+      "icon": "🚀",
+      "package": "Git",
+      "mode": "fullOutput",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "hy_capacity.sh",
+      "title": "纳污能力计算",
+      "description": "启动纳污能力计算 Streamlit 应用",
+      "icon": "🌊",
+      "package": "Hydraulic",
+      "mode": "fullOutput",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "hy_geocode.sh",
+      "title": "地理编码工具",
+      "description": "启动地理编码 Streamlit 应用",
+      "icon": "📍",
+      "package": "Hydraulic",
+      "mode": "fullOutput",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "hy_reservoir.sh",
+      "title": "水库发电调度",
+      "description": "启动水库发电调度 Streamlit 应用",
+      "icon": "🏗️",
+      "package": "Hydraulic",
+      "mode": "fullOutput",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "hy_toolkit.sh",
+      "title": "水利工具集",
+      "description": "启动水利工具集 Portal",
+      "icon": "🧰",
+      "package": "Hydraulic",
+      "mode": "fullOutput",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "hy_water_efficiency.sh",
+      "title": "水效评估分析系统",
+      "description": "启动水效评估分析 Streamlit 应用",
+      "icon": "💧",
+      "package": "Hydraulic",
+      "mode": "fullOutput",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "md2word_pipeline.sh",
+      "title": "md2word-pipeline",
+      "description": "MD/DOCX 一键转 Word（套模板 → 文本修复 → 图名居中）",
+      "icon": "📝",
+      "package": "Document Processing",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "md_docx_template.sh",
+      "title": "md-to-docx-template",
+      "description": "Convert Markdown to Word document with template",
+      "icon": "📄",
+      "package": "DOCX",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "md_formatter.sh",
+      "title": "md-format",
+      "description": "Format and standardize Markdown files",
+      "icon": "📝",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "md_merge.sh",
+      "title": "md-merge",
+      "description": "Merge multiple Markdown files into one",
+      "icon": "📝",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "md_split_by_heading.sh",
+      "title": "md-split",
+      "description": "Split Markdown file by headings",
+      "icon": "✂️",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "md_strip_blockquote.sh",
+      "title": "md-strip-blockquote",
+      "description": "删除 Markdown 中所有 blockquote 行（Finder 选中文件或输入路径）",
+      "icon": "📝",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "pptx_apply_all.sh",
+      "title": "pptx-all",
+      "description": "Apply all formatting to PowerPoint presentation",
+      "icon": "📽️",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "pptx_font_yahei.sh",
+      "title": "pptx-font",
+      "description": "Change PowerPoint fonts to Microsoft YaHei",
+      "icon": "📽️",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "pptx_table_style.sh",
+      "title": "pptx-table",
+      "description": "Apply table styling to PowerPoint presentation",
+      "icon": "📽️",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "pptx_text_formatter.sh",
+      "title": "pptx-text",
+      "description": "Format text in PowerPoint presentation",
+      "icon": "📽️",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "pptx_to_md.sh",
+      "title": "pptx-to-md",
+      "description": "Convert PowerPoint presentation to Markdown",
+      "icon": "📽️",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "sec_export_sessions.sh",
+      "title": "CC Sessions Export",
+      "description": "导出 Claude Code 对话历史为 Markdown 格式（最近 7 天）",
+      "icon": "📝",
+      "package": "Secretary",
+      "mode": "fullOutput",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "sys_oa.sh",
+      "title": "打开 OA",
+      "description": "启动并打开 OA 统一管理平台（Streamlit）",
+      "icon": "🏢",
+      "package": "OA 系统",
+      "mode": "fullOutput",
+      "project": "mactools",
+      "source": "raycast"
+    },
+    {
+      "file": "tts_volcano.sh",
+      "title": "tts-volcano",
+      "description": "火山引擎语音合成（文本转语音）",
+      "icon": "🔊",
+      "package": "TTS",
+      "mode": "fullOutput",
+      "project": "devtools",
+      "source": "raycast"
+    },
+    {
+      "file": "xlsx_from_csv.sh",
+      "title": "xlsx-from-csv",
+      "description": "Convert CSV file to Excel spreadsheet",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "xlsx_from_txt.sh",
+      "title": "xlsx-from-txt",
+      "description": "Convert text file to Excel spreadsheet",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "xlsx_from_xls.sh",
+      "title": "xlsx-from-xls",
+      "description": "Convert .xls files to .xlsx format",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "xlsx_lowercase.sh",
+      "title": "xlsx-lowercase",
+      "description": "Convert all text in Excel to lowercase",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "xlsx_merge_tables.sh",
+      "title": "xlsx-merge",
+      "description": "Merge multiple Excel tables into one",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "xlsx_splitsheets.sh",
+      "title": "xlsx-split",
+      "description": "Split Excel workbook into separate sheets",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "xlsx_to_csv.sh",
+      "title": "xlsx-to-csv",
+      "description": "Convert Excel spreadsheet to CSV format",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    },
+    {
+      "file": "xlsx_to_txt.sh",
+      "title": "xlsx-to-txt",
+      "description": "Convert Excel spreadsheet to text format",
+      "icon": "📊",
+      "package": "Scripts",
+      "mode": "fullOutput",
+      "project": "doctools",
+      "source": "raycast"
+    }
+  ]
+}

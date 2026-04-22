@@ -1,0 +1,24 @@
+{
+  "name": "@tlz/menu-ssot",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Bridge ~/Dev/tools/configs/menus/ yaml SSOT → TypeScript consumers. Wraps python3 menus.py build-website-navbar.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./generated": "./src/generated.ts"
+  },
+  "scripts": {
+    "sync": "tsx scripts/sync-menu.ts",
+    "sync-menu": "tsx scripts/sync-menu.ts",
+    "build": "pnpm sync",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tlz/config": "workspace:*",
+    "@types/node": "^22",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

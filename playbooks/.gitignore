@@ -1,0 +1,7 @@
+site/
+docs/bids/
+docs/eco-flow/
+docs/reclaim/
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,36 @@
+__pycache__/
+*.pyc
+.DS_Store
+.streamlit/secrets.toml
+venv/
+.venv/
+data/output/
+data/archived/
+data/input/
+*.tmp
+*_temp.csv
+
+
+# Python
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# Cache
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Baseline (auto-added by /groom)
+*$py.class
+Thumbs.db
+*.swp

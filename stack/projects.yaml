@@ -1,0 +1,475 @@
+# Stack — 项目架构说明书数据源
+# 每次修改后运行 generate.py 重新生成 site/index.html
+# 字段说明：
+#   name   显示名（若与 services.ts 的 `name` 匹配，卡片自动派生 domain/port）
+#   path   本地路径（~ 展开）
+#   purpose 一句话功能
+#   type   web-app | desktop-app | cli | library | static-site | docs | config
+#   stack  技术栈 tags
+#   status active | likely-stale | archive-candidate | archived
+#   notes  人工标注（比如 HANDOFF 里的自评）
+# 注：domain / port 字段已废。SSOT = ~/Dev/stations/website/lib/services.ts，
+#    卡片渲染时按 `name` 反查 services.ts 派生 domain + port。
+
+meta:
+  domain: tianlizeng.cloud
+  updated: 2026-04-20
+
+# 注：CC 命令 & 技能组由 generate.py 扫描 ~/Dev/tools/cc-configs/ 自动注入，不在此编辑
+
+groups:
+
+  - name: 水利工具
+    icon: droplets
+    color: "#2563eb"
+    projects:
+      - name: Hydro Toolkit
+        path: ~/Dev/stations/web-stack/services/hydro-toolkit
+        purpose: 水利计算工具集主平台，插件式集成多个计算模块
+        type: web-app
+        stack: [Streamlit, Python]
+        domain: hydro.tianlizeng.cloud
+        port: 8510
+        status: active
+
+      - name: 水资源年报
+        path: ~/Dev/stations/web-stack/services/hydro-annual
+        purpose: 浙江省水资源年报查询（2019-2024）
+        type: web-app
+        stack: [Streamlit, Python]
+        domain: hydro-annual.tianlizeng.cloud
+        port: 8514
+        status: active
+
+      - name: 纳污能力
+        path: ~/Dev/stations/web-stack/services/hydro-capacity
+        purpose: 河流/水库纳污能力计算，支持分段与多方案对比
+        type: web-app
+        stack: [Streamlit, NumPy]
+        domain: hydro-capacity.tianlizeng.cloud
+        port: 8511
+        status: active
+
+      - name: 河区调度
+        path: ~/Dev/stations/web-stack/services/hydro-district
+        purpose: 浙东 19 河区日调度模型，水平衡与分水枢纽计算
+        type: web-app
+        stack: [Streamlit, Python]
+        domain: hydro-district.tianlizeng.cloud
+        port: 8516
+        status: active
+
+      - name: 水效评估
+        path: ~/Dev/stations/web-stack/services/hydro-efficiency
+        purpose: 工业集聚区水效评估（AHP+CRITIC+TOPSIS）
+        type: web-app
+        stack: [Streamlit, Python]
+        domain: hydro-efficiency.tianlizeng.cloud
+        port: 8513
+        status: active
+
+      - name: 地理编码
+        path: ~/Dev/stations/web-stack/services/hydro-geocode
+        purpose: 经纬度/地址互转与企业 POI 搜索（高德 API）
+        type: web-app
+        stack: [Streamlit, 高德]
+        domain: hydro-geocode.tianlizeng.cloud
+        port: 8517
+        status: active
+
+      - name: 灌溉需水
+        path: ~/Dev/stations/web-stack/services/hydro-irrigation
+        purpose: 灌溉需水量计算，上传数据计算并导出
+        type: web-app
+        stack: [Streamlit, Python]
+        domain: hydro-irrigation.tianlizeng.cloud
+        port: 8515
+        status: active
+
+      - name: 降雨径流
+        path: ~/Dev/stations/web-stack/services/hydro-rainfall
+        purpose: 228 湖降雨径流 ETL 管线
+        type: web-app
+        stack: [Streamlit, Python]
+        domain: hydro-rainfall.tianlizeng.cloud
+        port: 8518
+        status: active
+
+      - name: 水库群调度
+        path: ~/Dev/stations/web-stack/services/hydro-reservoir
+        purpose: 梯级水库群发电调度，参数配置与结果可视化
+        type: web-app
+        stack: [Streamlit, NumPy]
+        domain: hydro-reservoir.tianlizeng.cloud
+        port: 8512
+        status: active
+
+      - name: 风险图数据
+        path: ~/Dev/stations/web-stack/services/hydro-risk
+        purpose: 洪水风险图数据三阶段 ETL（GeoJSON 填表）
+        type: web-app
+        stack: [Streamlit, Python]
+        domain: hydro-risk.tianlizeng.cloud
+        port: 8519
+        status: active
+
+      - name: Hydro Apps
+        path: ~/Dev/labs/hydro-apps
+        purpose: 水利计算 React/Tauri 库（hydro-capacity / hydro-irrigation path dep）
+        type: library
+        stack: [Rust, React, Tauri]
+        status: active
+        notes: 被 cockpit 引用
+
+      - name: Hydro QGIS
+        path: ~/Dev/labs/hydro-qgis
+        purpose: QGIS 插件，水利 GIS 扩展
+        type: library
+        stack: [Python, QGIS]
+        status: active
+
+  - name: 开发工具
+    icon: wrench
+    color: "#7c3aed"
+    projects:
+      - name: devtools
+        path: ~/Dev/devtools
+        purpose: Git/LLM/TTS/仓库管理工具集（CC hooks + Raycast + CF 脚本）
+        type: cli
+        stack: [Python, Shell, Raycast]
+        status: active
+
+      - name: doctools
+        path: ~/Dev/tools/doctools
+        purpose: 文档处理与数据转换工具集（13 doc scripts + 27 Raycast）
+        type: cli
+        stack: [Python, Raycast]
+        status: active
+
+      - name: dockit
+        path: ~/Dev/stations/dockit
+        purpose: Word/PPT/Excel/Chart 处理库
+        type: web-app
+        stack: [Python, python-docx]
+        domain: dockit.tianlizeng.cloud
+        port: 8503
+        status: active
+
+      - name: dockit-raycast
+        path: ~/Dev/raycast/dockit-ext
+        purpose: dockit 的 Raycast 扩展
+        type: cli
+        stack: [TypeScript, Raycast]
+        status: active
+
+      - name: mactools
+        path: ~/Dev/tools/mactools
+        purpose: macOS 文件/系统/窗口操作（13 Raycast commands）
+        type: cli
+        stack: [Python, Shell, Raycast]
+        status: active
+
+      - name: clashx
+        path: ~/Dev/tools/clashx
+        purpose: ClashX 代理管理工具（6 Raycast commands）
+        type: cli
+        stack: [Shell, Raycast]
+        status: active
+
+      - name: downloads-organizer
+        path: ~/Dev/labs/downloads-organizer
+        purpose: Downloads 文件夹自动整理（customtkinter GUI）
+        type: desktop-app
+        stack: [Python, customtkinter]
+        status: active
+
+      - name: raycast
+        path: ~/Dev/tools/raycast
+        purpose: Raycast commands 索引 hub（symlink 各项目脚本）
+        type: config
+        stack: [TypeScript]
+        status: active
+
+  - name: CC 生态
+    icon: sparkles
+    color: "#db2777"
+    projects:
+      - name: cc-configs
+        path: ~/Dev/tools/cc-configs
+        purpose: Claude Code 配置中心（commands/skills/agents/rules）
+        type: config
+        stack: [Python, Markdown]
+        status: active
+        notes: symlink → ~/.claude
+
+      - name: cclog
+        path: ~/Dev/stations/cclog
+        purpose: CC 会话浏览&分析工具 + MCP + 知识搜索
+        type: cli
+        stack: [Python, SQLite, FastAPI]
+        domain: cclog.tianlizeng.cloud
+        status: active
+        notes: 2026-04-17 修复了 uv tool 失效问题
+
+      - name: cc-evolution
+        path: ~/Dev/_archive/cc-evolution-20260419
+        purpose: CC 自我进化系统变更日志（静态站点）
+        type: static-site
+        stack: [Python, HTML]
+        domain: changelog.tianlizeng.cloud
+        status: archived
+        notes: 2026-04-19 归档；11 个进化条目，记录 hermes 借鉴
+
+      - name: cockpit
+        path: ~/Dev/labs/cockpit
+        purpose: 个人效率驾驶舱（Tauri 2 桌面 app, Dashboard+Knowledge+Calculators）
+        type: desktop-app
+        stack: [Rust, React, Tauri]
+        status: archive-candidate
+        notes: HANDOFF 自评"质量太差了"，AI 功能太弱
+
+  - name: Web 服务
+    icon: globe
+    color: "#0891b2"
+    projects:
+      - name: website
+        path: ~/Dev/stations/website
+        purpose: 个人作品集网站（主站）
+        type: web-app
+        stack: [Next.js 15, React 19, TypeScript]
+        domain: tianlizeng.cloud
+        status: active
+        notes: standalone 部署，bash deploy.sh
+
+      - name: repo-dashboard
+        path: ~/Dev/_archive/repo-dashboard-20260419
+        purpose: 项目控制台（已被 ops-console 取代，2026-04-19 归档）
+        type: web-app
+        stack: [Streamlit, Python]
+        status: archived
+        notes: ops-console 接管 dashboard.tianlizeng.cloud 子域
+
+      - name: audiobook
+        path: ~/Dev/stations/audiobook
+        purpose: Markdown 转有声书（edge-tts）
+        type: web-app
+        stack: [FastAPI, edge-tts]
+        domain: audiobook.tianlizeng.cloud
+        port: 9200
+        status: active
+
+      - name: mindmap
+        path: ~/Dev/labs/mindmap
+        purpose: 思维导图 Web 工具
+        type: web-app
+        stack: [Next.js 16, Mind Elixir]
+        status: likely-stale
+        notes: Phase 2 未部署
+
+      - name: oauth-proxy
+        path: ~/Dev/stations/oauth-proxy
+        purpose: Anthropic API 管理 & CF Access 认证代理
+        type: web-app
+        stack: [aiohttp, React, Vite]
+        domain: proxy.tianlizeng.cloud
+        port: 9100
+        status: active
+
+      - name: auggie-dashboard
+        path: ~/Dev/labs/auggie-dashboard
+        purpose: Auggie 代码库扫描 + scan.json 数据源（被 ops-console /auggie 页消费）
+        type: cli
+        stack: [Python]
+        status: active
+        notes: 不是 subdomain 服务；scan.json → ops-console。Angie 入口归宿待定（见 plan）
+
+  - name: 桌面与配置
+    icon: settings
+    color: "#059669"
+    projects:
+      - name: configs
+        path: ~/Dev/tools/configs
+        purpose: macOS 配置仓库（nvim/zsh/yabai/karabiner/ghostty/starship）
+        type: config
+        stack: [Lua, Shell, JSON]
+        status: active
+        notes: symlink → ~/.config
+
+      - name: hammerspoon
+        path: ~/Dev/tools/hammerspoon
+        purpose: Hammerspoon 自动化（按键重映射 + Finder 增强）
+        type: config
+        stack: [Lua]
+        status: archived
+        notes: 2026-04-17 归档；symlink → ~/.hammerspoon
+
+      - name: dotfiles
+        path: ~/Dev/tools/configs/_dotfiles
+        purpose: Shell/Ghostty/Yazi/Starship 配置
+        type: config
+        stack: [Shell, TOML]
+        status: active
+
+      - name: hs-dashboard
+        path: ~/Dev/_archive/hs-dashboard-20260418
+        purpose: Hammerspoon 状态可视化 Web
+        type: web-app
+        stack: [Streamlit]
+        domain: hammerspoon.tianlizeng.cloud
+        status: archived
+        notes: 2026-04-18 归档
+
+  - name: 知识与内容
+    icon: book-open
+    color: "#d97706"
+    projects:
+      - name: docs
+        path: ~/Dev/stations/docs
+        purpose: 个人知识库（架构/指南/技术笔记），含 Meilisearch 搜索
+        type: docs
+        stack: [Markdown, Meilisearch]
+        domain: docs.tianlizeng.cloud
+        status: active
+        notes: CF Access 保护
+
+      - name: essays
+        path: ~/Dev/content/essays
+        purpose: 学术论文写作（艺术 + 水利）
+        type: docs
+        stack: [Markdown, Word]
+        status: active
+
+      - name: resume
+        path: ~/Dev/content/resume
+        purpose: 求职管理系统（简历 + 岗位追踪）
+        type: docs
+        stack: [Markdown]
+        status: active
+
+      - name: learn
+        path: ~/Dev/content/learn
+        purpose: AI 工程学习笔记（6 层架构理论 + 实战）
+        type: docs
+        stack: [Markdown]
+        status: active
+
+  - name: 投资与 AI
+    icon: trending-up
+    color: "#16a34a"
+    projects:
+      - name: international-assets
+        path: ~/Dev/content/investment
+        purpose: 国际资产配置体系（QQQ CC 策略 + IBKR + Robinhood）
+        type: web-app
+        stack: [Streamlit, Python]
+        domain: cc-options.tianlizeng.cloud
+        port: 8521
+        status: active
+        notes: CF Access 保护
+
+      - name: llm-finetune
+        path: ~/Dev/labs/llm-finetune
+        purpose: QLoRA fine-tuning pipeline（Qwen2.5）
+        type: library
+        stack: [Python, transformers, peft]
+        status: active
+
+  - name: 基础设施
+    icon: server
+    color: "#6b7280"
+    projects:
+      - name: vps
+        path: ~/Dev/tools/vps
+        purpose: VPS 文档与配置
+        type: docs
+        stack: [Markdown, Shell]
+        status: active
+        notes: VPS host SSOT 在 ~/Dev/devtools/lib/vps_config.sh
+
+      - name: stack
+        path: ~/Dev/stations/stack
+        purpose: 本站 — 项目架构说明书（CF Access）
+        type: static-site
+        stack: [Python, HTML]
+        domain: stack.tianlizeng.cloud
+        status: active
+
+      - name: cmds
+        path: ~/Dev/stations/cmds
+        purpose: CC 命令 & 技能说明书 — 每条命令独立详情页，marked.js 客户端渲染原 md
+        type: static-site
+        stack: [Python, HTML, marked.js]
+        domain: cmds.tianlizeng.cloud
+        status: active
+        notes: 数据源直接扫 ~/Dev/tools/cc-configs，不维护 yaml
+
+      - name: uptime-kuma
+        path: ""
+        purpose: 服务可用性监控
+        type: web-app
+        stack: [Node.js]
+        domain: status.tianlizeng.cloud
+        port: 3001
+        status: active
+        notes: CF Access
+
+      - name: n8n
+        path: ""
+        purpose: 工作流自动化引擎
+        type: web-app
+        stack: [Node.js]
+        domain: n8n.tianlizeng.cloud
+        port: 5678
+        status: active
+        notes: CF Access
+
+      - name: Marzban
+        path: ""
+        purpose: 代理面板管理
+        type: web-app
+        stack: [Python, FastAPI]
+        domain: panel.tianlizeng.cloud
+        port: 8000
+        status: active
+
+      - name: Marzban 订阅
+        path: ""
+        purpose: 代理客户端订阅端点
+        type: web-app
+        stack: [Python]
+        domain: sub.tianlizeng.cloud
+        port: 8000
+        status: active
+
+      - name: Webhook
+        path: ""
+        purpose: GitHub Webhook 接收器
+        type: web-app
+        stack: [Python]
+        domain: webhook.tianlizeng.cloud
+        port: 9000
+        status: active
+
+  - name: 归档候选
+    icon: archive
+    color: "#9ca3af"
+    projects:
+      - name: analysis-hermes-vs-mine
+        path: ~/Dev/content/analysis-hermes-vs-mine
+        purpose: Hermes vs 自建对比分析（无 README）
+        type: docs
+        status: archive-candidate
+        notes: 无活动，可归档
+
+      - name: scripts-archive
+        path: ~/Dev/_archive/scripts-archive
+        purpose: 旧脚本归档
+        type: docs
+        status: archived
+        notes: 2026-04-16 GitHub 已 archive
+
+      - name: scripts
+        path: ~/Dev/tools/scripts
+        purpose: 单目录，无活动
+        type: config
+        status: archive-candidate

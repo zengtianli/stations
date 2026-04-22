@@ -1,0 +1,17 @@
+[Unit]
+Description=TLZ FastAPI: %i
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/web-stack/services/%i
+# Per-site port & secrets (create /etc/tlz/ports/%i.env with `PORT=86XX`)
+EnvironmentFile=/etc/tlz/ports/%i.env
+EnvironmentFile=-/etc/tlz/secrets.env
+ExecStart=/usr/bin/python3 -m uvicorn api:app --host 127.0.0.1 --port ${PORT}
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,66 @@
+site_name: 工作方法论 · Playbooks
+site_description: 水利业务三大工作流程（标书 · 生态流量 · 再生水）的命令映射与复盘记录
+site_url: https://playbooks.tianlizeng.cloud
+site_author: 曾田力
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: 切到深色
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: 切到浅色
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.instant
+    - navigation.tracking
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: "#"
+
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+
+nav:
+  - 首页: index.md
+  - 标书 Bids:
+    - 速查手册: bids/_commands-cheatsheet.md
+    - Playbook · panan 雷同破除: bids/panan-雷同破除-2026-04-17.md
+  - 生态流量 Eco-flow:
+    - 速查手册: eco-flow/_commands-cheatsheet.md
+  - 再生水 Reclaim:
+    - 速查手册: reclaim/_commands-cheatsheet.md

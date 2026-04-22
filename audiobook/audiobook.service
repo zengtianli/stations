@@ -1,0 +1,16 @@
+[Unit]
+Description=Audiobook Web Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/audiobook
+ExecStart=/usr/bin/python3 -m uvicorn app.main:app --host 127.0.0.1 --port 9200
+Restart=always
+RestartSec=3
+Environment=AUDIOBOOK_DATA=/var/www/audiobook/data
+Environment=AUDIOBOOK_ADMIN_PW=audiobook_admin_2026
+
+[Install]
+WantedBy=multi-user.target

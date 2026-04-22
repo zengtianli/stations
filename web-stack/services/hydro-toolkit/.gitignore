@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Plugins (installed via git clone)
+plugins/
+!plugins/.gitkeep
+plugins.json
+
+# Temp
+*.tmp
+*.bak
+
+
+# Environment
+.env
+
+# Cache
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Baseline (auto-added by /groom)
+*$py.class

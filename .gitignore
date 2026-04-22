@@ -1,0 +1,54 @@
+# ── Secrets (绝不 track，硬保护) ──
+.env
+.env.local
+.env.*.local
+*/.env
+*/.env.local
+*/.env.*.local
+
+# cc-options 金融数据（.gitignore 已有一份，兜底）
+cc-options/.env
+cc-options/data/
+cc-options/portfolio.json
+cc-options/activities.json
+cc-options/daily_nlv.csv
+
+# ── Node / Next.js ──
+node_modules/
+.next/
+out/
+.turbo/
+*.tsbuildinfo
+.pnpm-store/
+.pnpm-debug.log*
+
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.uv-cache/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# ── Build outputs / generated data ──
+dist/
+build/
+tmp/
+.cache/
+
+# ── Logs ──
+*.log
+logs/*.log
+
+# ── OS / Editor ──
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# ── Local state ──
+.claude/settings.local.json

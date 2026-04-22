@@ -1,0 +1,21 @@
+# 凭证 — 永远不要 track
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.uv-cache/
+
+# 数据
+*.csv
+*.xlsx
+data/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# macOS
+.DS_Store

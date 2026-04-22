@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>整理 international-assets 目录结构 · Journal</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'PingFang SC', Helvetica, sans-serif;
+       color: #1f2328; }
+h1, h2, h3 { color: #1f2328; letter-spacing: -0.01em; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.subtitle { color: #6b7280; font-size: 13px; margin-bottom: 24px; }
+
+/* logs 时间线：每个 row 用 .tlz-card.tlz-card--row（玻璃风格）+ 自身 grid 布局 */
+.tlz-card.tlz-card--row {
+  display: grid;
+  grid-template-columns: 100px 140px 1fr 60px;
+  gap: 16px;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.tlz-card.tlz-card--row .date { color: #86868b; font-variant-numeric: tabular-nums; font-size: 12px; font-family: ui-monospace, monospace; }
+.tlz-card.tlz-card--row .proj { font-weight: 600; color: #1f2328; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlz-card.tlz-card--row .title { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlz-card.tlz-card--row .kind { font-size: 10px; text-transform: uppercase; color: #9ca3af; text-align: right; letter-spacing: 0.05em; }
+.timeline { display: flex; flex-direction: column; }
+@media (max-width: 640px) {
+  .tlz-card.tlz-card--row { grid-template-columns: 80px 1fr; }
+  .tlz-card.tlz-card--row .proj { display: none; }
+  .tlz-card.tlz-card--row .kind { display: none; }
+}
+
+.detail .md-out { font-size: 14px; line-height: 1.7; max-width: 900px; }
+.detail .md-out h1 { font-size: 22px; margin: 24px 0 12px; }
+.detail .md-out h2 { font-size: 18px; margin: 20px 0 10px; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 4px; }
+.detail .md-out h3 { font-size: 16px; margin: 16px 0 8px; }
+.detail .md-out p { margin: 8px 0; }
+.detail .md-out code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font: 13px ui-monospace, Menlo, monospace; }
+.detail .md-out pre { background: #0d1117; color: #e6edf3; padding: 12px 16px; border-radius: 8px; overflow-x: auto; font: 12px/1.6 ui-monospace, Menlo, monospace; }
+.detail .md-out pre code { background: transparent; padding: 0; color: inherit; }
+.detail .md-out ul, .detail .md-out ol { margin: 8px 0; padding-left: 22px; }
+.detail .md-out li { margin: 3px 0; }
+.detail .md-out a { color: #0071E3; text-decoration: none; }
+.detail .md-out a:hover { text-decoration: underline; }
+.detail .md-out blockquote { border-left: 3px solid #0071E3; padding-left: 12px; color: #6b7280; margin: 8px 0; }
+.detail .md-out table { border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.detail .md-out th, .detail .md-out td { border: 1px solid rgba(0,0,0,0.1); padding: 6px 10px; text-align: left; }
+.detail .md-out th { background: #f3f4f6; font-weight: 600; }
+
+.meta-bar { color: #6b7280; font-size: 12px; margin-bottom: 20px; padding: 10px 14px; background: #fff; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); }
+.meta-bar .path { font-family: ui-monospace, Menlo, monospace; }
+.back { display: inline-block; margin-bottom: 12px; color: #0071E3; text-decoration: none; font-size: 13px; }
+.back:hover { text-decoration: underline; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="detail">
+<style>
+  /* ============================================================
+     Mega Menu · HSBC-style unified light (R7.2)
+     - Brand bar 64px · 单色浅灰 panel 全 4 列等宽
+     - hover 触发 · 150ms 延迟关闭 · display:none 默认严格隐藏
+     - html/body overflow-x:hidden 防横滚兜底
+  ============================================================ */
+
+  :root {
+    --tlz-bg-panel:       #F5F5F5;
+    --tlz-text-primary:   #111111;
+    --tlz-text-secondary: #333333;
+    --tlz-border-subtle:  #E5E5E5;
+    --tlz-border-divider: #E0E0E0;
+    --tlz-badge-border:   #BFBFBF;
+    --tlz-badge-text:     #6B7177;
+    --tlz-accent:         #D40000;
+  }
+
+  html, body { overflow-x: hidden; }
+  body { padding-top: 64px !important; }
+
+  .tlz-nav-stack {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    font: 400 15px/1 -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  }
+
+  /* ===== Brand bar ===== */
+  .tlz-nav {
+    height: 64px;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--tlz-border-subtle);
+    display: flex; align-items: center;
+  }
+  .tlz-nav-inner {
+    max-width: 1280px; width: 100%; margin: 0 auto;
+    padding: 0 24px; display: flex; align-items: center;
+    min-width: 0;
+  }
+  .tlz-nav-brand {
+    font-weight: 500; font-size: 18px; color: #000;
+    text-decoration: none; transition: color 0.12s;
+    flex-shrink: 0;
+  }
+  .tlz-nav-brand:hover { color: var(--tlz-accent); }
+  .tlz-nav-sep { width: 1px; height: 32px; background: var(--tlz-border-subtle); margin: 0 24px; flex-shrink: 0; }
+
+  .tlz-nav-triggers { display: flex; align-items: center; gap: 32px; flex: 1; min-width: 0; }
+  .tlz-nav .mega-trigger {
+    background: transparent; border: 0;
+    font: inherit; font-size: 15px; font-weight: 400;
+    color: var(--tlz-text-secondary);
+    padding: 8px 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 4px;
+    transition: color 0.12s; white-space: nowrap;
+  }
+  .tlz-nav .mega-trigger::after {
+    content: "\25be"; font-size: 12px; opacity: 0.6;
+    transition: transform 0.18s ease-out;
+  }
+  .tlz-nav .mega-trigger:hover { color: #000; }
+  .tlz-nav .mega-trigger[aria-expanded="true"] { color: #000; font-weight: 500; }
+  .tlz-nav .mega-trigger[aria-expanded="true"]::after { transform: rotate(180deg); }
+  .tlz-nav .mega-trigger.current { color: #000; font-weight: 500; }
+
+  /* ===== Mega Panel · 默认完全隐藏 ===== */
+  .tlz-mega-panel {
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: var(--tlz-bg-panel);
+    display: none;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    box-shadow: 0 8px 16px -8px rgba(0,0,0,0.08);
+  }
+  .tlz-mega-panel[data-open="true"] { display: block; }
+
+  /* 内部 max-width 1280px 居中 · 4 列等宽 */
+  .tlz-mega-inner {
+    max-width: 1280px; width: 100%;
+    margin: 0 auto;
+    padding: 40px 48px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    min-height: 320px;
+  }
+
+  .tlz-mega-col {
+    padding: 0 24px;
+    border-right: 1px solid var(--tlz-border-divider);
+    min-width: 0;
+  }
+  .tlz-mega-col:first-child { padding-left: 0; }
+  .tlz-mega-col:last-child { border-right: 0; padding-right: 0; }
+
+  /* Group */
+  .tlz-mega-group { margin-bottom: 24px; }
+  .tlz-mega-group:last-child { margin-bottom: 0; }
+  .tlz-mega-group h3 {
+    font-size: 15px; font-weight: 600; color: var(--tlz-text-primary);
+    margin: 0 0 12px;
+  }
+  .tlz-mega-group ul { list-style: none; padding: 0; margin: 0; }
+  .tlz-mega-group a {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tlz-text-secondary); text-decoration: none;
+    font-size: 14px; font-weight: 400; line-height: 28px;
+    transition: color 0.12s;
+  }
+  .tlz-mega-group a:hover { color: var(--tlz-accent); }
+
+  /* CF badge（统一浅灰规格） */
+  .tlz-mega-group .cf-badge {
+    height: 18px; padding: 0 6px;
+    display: inline-flex; align-items: center;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.05em;
+    color: var(--tlz-badge-text);
+    background: transparent;
+    border: 1px solid var(--tlz-badge-border);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* Hamburger */
+  .tlz-nav-hamburger {
+    display: none; background: transparent; border: 0;
+    color: var(--tlz-text-secondary); padding: 8px; margin-left: auto;
+    cursor: pointer; font-size: 20px;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 1023px) {
+    .tlz-mega-inner {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 32px 24px;
+    }
+    .tlz-mega-col:nth-child(2n) { border-right: 0; padding-right: 0; }
+    .tlz-mega-col:nth-child(n+3) {
+      padding-top: 24px; margin-top: 24px;
+      border-top: 1px solid var(--tlz-border-divider);
+    }
+    .tlz-mega-col:nth-child(3) { padding-left: 0; }
+  }
+
+  @media (max-width: 768px) {
+    body { padding-top: 56px !important; }
+    .tlz-nav { height: 56px; }
+    .tlz-nav-inner { padding: 0 16px; }
+    .tlz-nav-sep { display: none; }
+    .tlz-nav-triggers { display: none; }
+    .tlz-nav-hamburger { display: inline-flex; }
+
+    .tlz-nav-stack[data-mobile-open="true"] .tlz-nav-triggers {
+      display: flex; flex-direction: column; align-items: stretch;
+      position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+      background: #FFFFFF;
+      padding: 0; gap: 0; overflow-y: auto; z-index: 10000;
+    }
+    .tlz-nav-stack[data-mobile-open="true"] .mega-trigger {
+      width: 100%; justify-content: space-between;
+      padding: 16px 20px; border-radius: 0;
+      border-bottom: 1px solid var(--tlz-border-subtle);
+      font-size: 16px;
+    }
+
+    .tlz-mega-panel {
+      top: 56px; max-height: calc(100vh - 56px);
+      position: static; box-shadow: none;
+    }
+    .tlz-mega-inner {
+      grid-template-columns: 1fr;
+      padding: 16px 20px;
+    }
+    .tlz-mega-col {
+      padding: 0 !important;
+      border-right: 0 !important;
+      border-top: 0 !important;
+      margin-top: 16px !important;
+    }
+    .tlz-mega-col:first-child { margin-top: 0 !important; }
+  }
+</style>
+<div class="tlz-nav-stack" data-mobile-open="false">
+<nav class="tlz-nav" aria-label="站群导航"><div class="tlz-nav-inner">
+  <a class="tlz-nav-brand" href="https://tianlizeng.cloud/" data-site="home">曾田力</a>
+  <div class="tlz-nav-sep" aria-hidden="true"></div>
+  <div class="tlz-nav-triggers" role="menubar">
+    <button class="mega-trigger" data-cat="home" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-home">🏠 主站</button>
+    <button class="mega-trigger" data-cat="hydro" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-hydro">💧 水利</button>
+    <button class="mega-trigger" data-cat="dev" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-dev">🛠 开发</button>
+    <button class="mega-trigger" data-cat="content" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-content">📚 内容</button>
+    <button class="mega-trigger" data-cat="infra" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-infra">⚙️ 基础设施</button>
+  </div>
+  <button class="tlz-nav-hamburger" aria-label="菜单" aria-expanded="false" data-toggle="mobile">☰</button>
+</div></nav>
+<div class="tlz-mega-panel" data-for="home" id="mega-panel-home" role="menu" aria-label="🏠 主站" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>关于</h3>
+        <ul>
+          <li><a href="https://tianlizeng.cloud/about" role="menuitem"><span>关于我</span></a></li>
+          <li><a href="https://tianlizeng.cloud/projects" role="menuitem"><span>作品</span></a></li>
+          <li><a href="https://tianlizeng.cloud/research" role="menuitem"><span>研究</span></a></li>
+          <li><a href="https://tianlizeng.cloud/blog" role="menuitem"><span>博客</span></a></li>
+          <li><a href="https://tianlizeng.cloud/life" role="menuitem"><span>生活</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>入口</h3>
+        <ul>
+          <li><a href="https://tianlizeng.cloud/services" role="menuitem"><span>服务总览</span></a></li>
+          <li><a href="https://stack.tianlizeng.cloud" role="menuitem"><span>Stack</span></a></li>
+          <li><a href="https://cmds.tianlizeng.cloud" role="menuitem"><span>CC Docs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://dashboard.tianlizeng.cloud" role="menuitem"><span>Dashboard</span></a></li>
+          <li><a href="https://dashboard.tianlizeng.cloud/auggie" role="menuitem"><span>Auggie</span></a></li>
+          <li><a href="https://tianlizeng.cloud/search" role="menuitem"><span>搜索</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="hydro" id="mega-panel-hydro" role="menu" aria-label="💧 水利" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>主平台</h3>
+        <ul>
+          <li><a href="https://hydro.tianlizeng.cloud" role="menuitem"><span>Hydro Toolkit</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>水资源/调度</h3>
+        <ul>
+          <li><a href="https://hydro-annual.tianlizeng.cloud" role="menuitem"><span>水资源年报</span></a></li>
+          <li><a href="https://hydro-reservoir.tianlizeng.cloud" role="menuitem"><span>水库群调度</span></a></li>
+          <li><a href="https://hydro-district.tianlizeng.cloud" role="menuitem"><span>河区调度</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>评估/编码</h3>
+        <ul>
+          <li><a href="https://hydro-efficiency.tianlizeng.cloud" role="menuitem"><span>水效评估</span></a></li>
+          <li><a href="https://hydro-geocode.tianlizeng.cloud" role="menuitem"><span>地理编码</span></a></li>
+          <li><a href="https://hydro-capacity.tianlizeng.cloud" role="menuitem"><span>纳污能力</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>风险/降雨</h3>
+        <ul>
+          <li><a href="https://hydro-risk.tianlizeng.cloud" role="menuitem"><span>风险图数据</span></a></li>
+          <li><a href="https://hydro-rainfall.tianlizeng.cloud" role="menuitem"><span>降雨径流</span></a></li>
+          <li><a href="https://hydro-irrigation.tianlizeng.cloud" role="menuitem"><span>灌溉需水</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="dev" id="mega-panel-dev" role="menu" aria-label="🛠 开发" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>子域服务</h3>
+        <ul>
+          <li><a href="https://dashboard.tianlizeng.cloud" role="menuitem"><span>Repo Dashboard</span></a></li>
+          <li><a href="https://cclog.tianlizeng.cloud" role="menuitem"><span>CC 会话日志</span></a></li>
+          <li><a href="https://logs.tianlizeng.cloud" role="menuitem"><span>Logs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://dockit.tianlizeng.cloud" role="menuitem"><span>Dockit</span></a></li>
+          <li><a href="https://stack.tianlizeng.cloud" role="menuitem"><span>Stack</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://cmds.tianlizeng.cloud" role="menuitem"><span>CC Docs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://playbooks.tianlizeng.cloud" role="menuitem"><span>Playbooks</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>工具库</h3>
+        <ul>
+          <li><a href="https://github.com/zengtianli/cc-configs" role="menuitem"><span>cc-configs</span></a></li>
+          <li><a href="https://github.com/zengtianli/devtools" role="menuitem"><span>devtools</span></a></li>
+          <li><a href="https://github.com/zengtianli/doctools" role="menuitem"><span>doctools</span></a></li>
+          <li><a href="https://github.com/zengtianli/mactools" role="menuitem"><span>mactools</span></a></li>
+          <li><a href="https://github.com/zengtianli/clashx" role="menuitem"><span>clashx</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>Raycast / 配置</h3>
+        <ul>
+          <li><a href="https://github.com/zengtianli/raycast" role="menuitem"><span>raycast</span></a></li>
+          <li><a href="https://github.com/zengtianli/configs" role="menuitem"><span>configs</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="content" id="mega-panel-content" role="menu" aria-label="📚 内容" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>日志 / 知识</h3>
+        <ul>
+          <li><a href="https://logs.tianlizeng.cloud" role="menuitem"><span>Logs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://docs.tianlizeng.cloud" role="menuitem"><span>知识库</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://audiobook.tianlizeng.cloud" role="menuitem"><span>有声书</span></a></li>
+          <li><a href="https://cclog.tianlizeng.cloud" role="menuitem"><span>CC 会话</span></a></li>
+          <li><a href="https://playbooks.tianlizeng.cloud" role="menuitem"><span>Playbooks</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>投资</h3>
+        <ul>
+          <li><a href="https://assets.tianlizeng.cloud" role="menuitem"><span>理财笔记</span></a></li>
+          <li><a href="https://cc-options.tianlizeng.cloud" role="menuitem"><span>QQQ CC Dashboard</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="infra" id="mega-panel-infra" role="menu" aria-label="⚙️ 基础设施" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>监控 / 自动化</h3>
+        <ul>
+          <li><a href="https://status.tianlizeng.cloud" role="menuitem"><span>Uptime Kuma</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://n8n.tianlizeng.cloud" role="menuitem"><span>n8n</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>代理</h3>
+        <ul>
+          <li><a href="https://proxy.tianlizeng.cloud" role="menuitem"><span>OAuth Proxy</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://panel.tianlizeng.cloud" role="menuitem"><span>Marzban</span></a></li>
+          <li><a href="https://sub.tianlizeng.cloud" role="menuitem"><span>Marzban 订阅</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>WEBHOOK</h3>
+        <ul>
+          <li><a href="https://webhook.tianlizeng.cloud" role="menuitem"><span>Webhook</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+</div>
+<script>(function(){
+  var stack=document.querySelector('.tlz-nav-stack');
+  if(!stack)return;
+  var triggers=stack.querySelectorAll('.mega-trigger');
+  var panels=stack.querySelectorAll('.tlz-mega-panel');
+  var hamburger=stack.querySelector('.tlz-nav-hamburger');
+  var activeKey=null,hideTimer=null;
+  function hideAll(){
+    panels.forEach(function(p){p.setAttribute('data-open','false');});
+    triggers.forEach(function(t){t.setAttribute('aria-expanded','false');});
+    activeKey=null;
+  }
+  function show(k){
+    if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}
+    if(activeKey===k)return;
+    hideAll();
+    var t=stack.querySelector('.mega-trigger[data-cat="'+k+'"]');
+    var p=stack.querySelector('.tlz-mega-panel[data-for="'+k+'"]');
+    if(!t||!p)return;
+    t.setAttribute('aria-expanded','true');
+    p.setAttribute('data-open','true');
+    activeKey=k;
+  }
+  function schedHide(){if(hideTimer)clearTimeout(hideTimer);hideTimer=setTimeout(hideAll,160);}
+  triggers.forEach(function(t){
+    var k=t.getAttribute('data-cat');
+    t.addEventListener('mouseenter',function(){show(k);});
+    t.addEventListener('click',function(e){e.preventDefault();if(activeKey===k)hideAll();else show(k);});
+    t.addEventListener('mouseleave',schedHide);
+  });
+  panels.forEach(function(p){
+    p.addEventListener('mouseenter',function(){if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}});
+    p.addEventListener('mouseleave',schedHide);
+  });
+  document.addEventListener('click',function(e){if(!stack.contains(e.target))hideAll();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')hideAll();});
+  if(hamburger){
+    hamburger.addEventListener('click',function(){
+      var open=stack.getAttribute('data-mobile-open')==='true';
+      stack.setAttribute('data-mobile-open',open?'false':'true');
+      hamburger.setAttribute('aria-expanded',open?'false':'true');
+      if(open)hideAll();
+    });
+  }
+  // current highlight
+  var host=location.hostname;
+  var noCur=["hammerspoon.tianlizeng.cloud", "audiobook.tianlizeng.cloud", "auggie.tianlizeng.cloud", "proxy.tianlizeng.cloud"];
+  var hostMap={"stack.tianlizeng.cloud": "home", "cmds.tianlizeng.cloud": "home", "dashboard.tianlizeng.cloud": "dev", "logs.tianlizeng.cloud": "content", "docs.tianlizeng.cloud": "content", "audiobook.tianlizeng.cloud": "content", "cclog.tianlizeng.cloud": "content", "playbooks.tianlizeng.cloud": "content", "cc-options.tianlizeng.cloud": "content", "assets.tianlizeng.cloud": "content", "status.tianlizeng.cloud": "infra", "n8n.tianlizeng.cloud": "infra", "panel.tianlizeng.cloud": "infra", "sub.tianlizeng.cloud": "infra", "webhook.tianlizeng.cloud": "infra"};
+  var curKey=null;
+  if(noCur.indexOf(host)===-1){
+    curKey=hostMap[host]||null;
+    if(!curKey && (host==='hydro.tianlizeng.cloud' || host.indexOf('hydro-')===0)) curKey='hydro';
+    if(!curKey && host==='tianlizeng.cloud') curKey='home';
+  }
+  if(curKey){
+    var t=stack.querySelector('.mega-trigger[data-cat="'+curKey+'"]');
+    if(t)t.classList.add('current');
+  }
+})();</script>
+
+<div class="wrap">
+  <a class="back" href="../index.html">← Journal</a>
+  <h1>整理 international-assets 目录结构</h1>
+  <div class="meta-bar">
+    <span>PLAN</span> ·
+    <span>(plan)</span> ·
+    <span>2026-04-11 12:57</span> ·
+    <span class="path">~/.claude/plans/rosy-painting-garden.md</span>
+  </div>
+  <div class="md-src" style="display:none"># 整理 international-assets 目录结构
+
+## Context
+
+根目录散乱：14 个知识文档 + 脚本 + 数据混在一起。目标：
+1. 知识文档归入 `docs/`
+2. Dashboard 脚本+数据整合为自包含的 `cc-dashboard/` 子目录
+3. 清理垃圾文件
+
+## 最终目录结构
+
+```
+/
+├── README.md
+├── CLAUDE.md
+├── LICENSE
+├── .gitignore
+├── _files.md
+├── strategy-roll.md           ← 核心策略，保留根目录
+├── strategy-metrics-eval.md   ← 策略评估，保留根目录
+├── docs/
+│   ├── boxx-etf.md
+│   ├── carry-trade.md
+│   ├── claude-subscription.md
+│   ├── forex-spread.md
+│   ├── hsbc-dci.md
+│   ├── hsbc-lombard.md
+│   ├── hsbc-premier.md
+│   ├── hsbc-positions.md      (gitignored)
+│   ├── ibkr-forex.md
+│   ├── index-sharpe.md
+│   ├── private-banking.md
+│   ├── pulse-meituan.md
+│   ├── pulse-supplementary-fix.md
+│   ├── robinhood.md
+│   └── travel.md
+├── cc-dashboard/
+│   ├── .env                   (从根目录移入，gitignored)
+│   ├── .streamlit/config.toml
+│   ├── app.py
+│   ├── dashboard.py
+│   ├── daily_update.sh
+│   ├── lib_greeks.py
+│   ├── log_trade.py
+│   ├── overview.py
+│   ├── phase2_equity_curve.py
+│   ├── preview_pnl.py
+│   ├── rb_snapshot.py
+│   ├── st_activities.py
+│   ├── st_register.py
+│   ├── st_snapshot.py
+│   ├── data/
+│   │   ├── portfolio.json     (git tracked, 从根目录移入)
+│   │   ├── daily_nlv.csv      (git tracked)
+│   │   ├── activities.json    (git tracked)
+│   │   ├── portfolio.md       (gitignored)
+│   │   ├── dashboard.md       (gitignored)
+│   │   ├── dashboard_settings.json (gitignored)
+│   │   ├── trade_log.jsonl    (gitignored)
+│   │   ├── equity_curve.png   (gitignored)
+│   │   └── replay_state.json  (gitignored)
+│   └── analysis/
+│       └── report.md
+└── .claude/
+```
+
+删除：`.DS_Store`, `data/cron.log`, `HANDOFF.md`（已过期）, `data/carry-trade-jpy-vs-chf-research.md`（移到 docs/ 或删除，待确认）
+
+---
+
+## Step 1: 清理垃圾
+
+```bash
+rm .DS_Store data/cron.log
+# HANDOFF.md — 确认后删除
+```
+
+## Step 2: 创建 docs/ 并移动知识文档
+
+```bash
+mkdir docs
+git mv boxx-etf.md carry-trade.md claude-subscription.md forex-spread.md \
+      hsbc-dci.md hsbc-lombard.md hsbc-premier.md ibkr-forex.md \
+      index-sharpe.md private-banking.md pulse-meituan.md \
+      pulse-supplementary-fix.md robinhood.md travel.md docs/
+# hsbc-positions.md 是 gitignored，手动 mv
+mv hsbc-positions.md docs/
+```
+
+### 更新 docs/ 内文档的交叉引用
+
+**14 个文档的 `&gt; 隶属` 导航**：`(README.md)` → `(../README.md)`
+
+**README.md 内的链接**（8 处）：
+- `[robinhood.md](robinhood.md)` → `(docs/robinhood.md)`
+- `[carry-trade.md](carry-trade.md)` → `(docs/carry-trade.md)`
+- `[boxx-etf.md](boxx-etf.md)` → `(docs/boxx-etf.md)` (出现 in 同一行)
+- `[private-banking.md](private-banking.md)` → `(docs/private-banking.md)`
+- `[hsbc-premier.md](hsbc-premier.md)` → `(docs/hsbc-premier.md)`
+- `[travel.md](travel.md)` → `(docs/travel.md)`
+- `[pulse-meituan.md](pulse-meituan.md)` → `(docs/pulse-meituan.md)`
+- `[claude-subscription.md](claude-subscription.md)` → `(docs/claude-subscription.md)`
+
+**文档间互引**（docs/ 内部，路径不变因为同目录）：
+- `carry-trade.md` → `boxx-etf.md`, `private-banking.md` ✅ 不用改
+- `hsbc-lombard.md` → `private-banking.md`, `carry-trade.md`, `hsbc-dci.md` ✅ 不用改
+- `boxx-etf.md` → `carry-trade.md` ✅ 不用改
+- `hsbc-premier.md` → `travel-benefits.md` ⚠ 已经是坏链（应该是 travel.md），顺手修
+
+## Step 3: 重构 scripts/ + data/ → cc-dashboard/
+
+```bash
+git mv scripts cc-dashboard
+git mv data cc-dashboard/data   # data/ 整体移入
+git mv portfolio.json cc-dashboard/data/portfolio.json
+git mv .streamlit cc-dashboard/.streamlit
+mv .env cc-dashboard/.env       # gitignored，手动 mv
+# analysis/ 移入
+git mv analysis cc-dashboard/analysis
+```
+
+### 修改所有 Python 脚本的路径模式
+
+**核心变更**：每个脚本把 `parent.parent`（从 scripts/ 到 repo root）改为 `parent`（从 cc-dashboard/ 到 cc-dashboard/ 自身），因为 data/ 现在是 cc-dashboard/ 的子目录。
+
+需要一个 `REPO`（repo root）给 .env 读取和少量引用。
+
+**涉及 8 个脚本**，统一模式：
+
+```python
+# Before
+REPO = Path(__file__).resolve().parent.parent
+DATA = REPO / &quot;data&quot;
+
+# After
+DASH = Path(__file__).resolve().parent
+DATA = DASH / &quot;data&quot;
+```
+
+逐文件变更清单：
+
+| 文件 | 改动 |
+|------|------|
+| `app.py:18-19` | `REPO → DASH`, `DATA = DASH / &quot;data&quot;` |
+| `app.py:30` | `SETTINGS_FILE = DASH / &quot;data&quot; / &quot;dashboard_settings.json&quot;` |
+| `app.py:103,181` | `REPO / &quot;portfolio.json&quot;` → `DATA / &quot;portfolio.json&quot;` |
+| `app.py:114` | `scripts_dir = REPO / &quot;scripts&quot;` → `scripts_dir = DASH` |
+| `app.py:117` | `env_file = REPO / &quot;.env&quot;` → `env_file = DASH / &quot;.env&quot;` |
+| `app.py:238` | 错误信息 `scripts/st_snapshot.py` → `st_snapshot.py` |
+| `app.py:762` | 错误信息 `scripts/phase2_equity_curve.py` → `phase2_equity_curve.py` |
+| `st_snapshot.py:15` | `REPO → DASH` |
+| `st_snapshot.py:176-177` | `REPO / &quot;portfolio.json&quot;` → `DATA / &quot;portfolio.json&quot;`, `REPO / &quot;portfolio.md&quot;` → `DATA / &quot;portfolio.md&quot;` |
+| `st_activities.py:15-16` | `REPO → DASH`, `DATA = DASH / &quot;data&quot;` |
+| `phase2_equity_curve.py:28-30` | `REPO → DASH`, `DATA = DASH / &quot;data&quot;`, `ANALYSIS = DASH / &quot;analysis&quot;` |
+| `phase2_equity_curve.py:327` | `REPO / &quot;portfolio.json&quot;` → `DATA / &quot;portfolio.json&quot;` |
+| `dashboard.py:9` | `REPO → DASH` |
+| `dashboard.py:12` | `REPO / &quot;portfolio.json&quot;` → `DATA / &quot;portfolio.json&quot;` |
+| `dashboard.py:72` | `REPO / &quot;dashboard.md&quot;` → `DATA / &quot;dashboard.md&quot;` |
+| `log_trade.py:10-11` | `REPO → DASH`, `LOG = DASH / &quot;data&quot; / &quot;trade_log.jsonl&quot;` |
+| `log_trade.py:14-15` | `REPO / &quot;dashboard.md&quot;` → `DATA / &quot;dashboard.md&quot;`, `REPO / &quot;portfolio.json&quot;` → `DATA / &quot;portfolio.json&quot;` |
+| `preview_pnl.py:13` | `REPO → DASH` |
+| `preview_pnl.py:14-15` | `REPO / &quot;data/...&quot;` → `DATA / &quot;...&quot;`, `REPO / &quot;portfolio.json&quot;` → `DATA / &quot;portfolio.json&quot;` |
+| `rb_snapshot.py:11` | `REPO → DASH` |
+| `rb_snapshot.py:53,75` | `REPO / &quot;portfolio.json&quot;` → `DATA / &quot;portfolio.json&quot;`, `REPO / &quot;portfolio.md&quot;` → `DATA / &quot;portfolio.md&quot;` |
+| `overview.py:7` | 硬编码绝对路径 → `DATA / &quot;activities.json&quot;` + 加 `DASH`/`DATA` 定义 |
+
+**daily_update.sh** 改动：
+```bash
+# Before
+DIR=&quot;$(cd &quot;$(dirname &quot;$0&quot;)/..&quot; &amp;&amp; pwd)&quot;
+$PYTHON &quot;$DIR/scripts/st_snapshot.py&quot;
+
+# After
+DIR=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot; &amp;&amp; pwd)&quot;
+$PYTHON &quot;$DIR/st_snapshot.py&quot;
+$PYTHON &quot;$DIR/st_activities.py&quot;
+$PYTHON &quot;$DIR/phase2_equity_curve.py&quot;
+$PYTHON &quot;$DIR/dashboard.py&quot;
+```
+
+## Step 4: 更新 .gitignore
+
+```gitignore
+# Before                          # After
+.env                              cc-dashboard/.env
+portfolio.md                      cc-dashboard/data/portfolio.md
+hsbc-positions.md                 docs/hsbc-positions.md
+dashboard.md                      cc-dashboard/data/dashboard.md
+data/*                            cc-dashboard/data/*
+!data/daily_nlv.csv               !cc-dashboard/data/daily_nlv.csv
+!data/activities.json             !cc-dashboard/data/activities.json
+                                  !cc-dashboard/data/portfolio.json  ← 新增（原来在根目录被 git track）
+analysis/                         cc-dashboard/analysis/
+```
+
+## Step 5: 更新 CLAUDE.md
+
+需要更新的区块：
+- **文档结构**表：所有 md 路径加 `docs/` 前缀
+- **脚本工具链**表：`scripts/` → `cc-dashboard/`
+- **VPS 部署**：`streamlit run scripts/app.py` → `streamlit run cc-dashboard/app.py`
+- **CC 命令**：路径更新
+- **数据文件**表：路径全部更新
+- **敏感信息**：`.env` 路径
+
+## Step 6: 更新 SKILL.md (`.claude/skills/cc-dashboard/SKILL.md`)
+
+需要更新：
+- 脚本工具链表中所有路径
+- `refresh` 命令中的 `python3 scripts/xxx` → `python3 cc-dashboard/xxx`
+- `git add` 路径：`portfolio.json data/daily_nlv.csv data/activities.json` → `cc-dashboard/data/portfolio.json cc-dashboard/data/daily_nlv.csv cc-dashboard/data/activities.json`
+- `streamlit run scripts/app.py` → `streamlit run cc-dashboard/app.py`
+- 项目文档索引中的路径
+
+## Step 7: 更新 VPS 部署
+
+通过 SSH 更新：
+- systemd service: `ExecStart` 中 `streamlit run scripts/app.py` → `streamlit run cc-dashboard/app.py`
+- VPS `.env` 位置：`/var/www/rh-dashboard/.env` → `/var/www/rh-dashboard/cc-dashboard/.env`
+- `systemctl daemon-reload &amp;&amp; systemctl restart rh-dashboard`
+
+## Step 8: 清理
+
+- 删除 `HANDOFF.md`（已过期）
+- 删除 `data/cron.log`（垃圾）
+- `data/carry-trade-jpy-vs-chf-research.md` → 确认：移到 docs/ 还是删除？
+- 删除根目录空的 `data/`、`scripts/`、`analysis/`、`.streamlit/`（git mv 后应该已空）
+
+## 已确认
+
+1. **HANDOFF.md** → 删除
+2. **data/carry-trade-jpy-vs-chf-research.md** → 移到 docs/
+3. **data/daily_nlv_trimmed.csv** → 删除
+
+## 验证
+
+1. `cd ~/Dev/international-assets &amp;&amp; python3 cc-dashboard/st_snapshot.py` — 应正常输出
+2. `python3 cc-dashboard/st_activities.py` — 应正常输出
+3. `python3 cc-dashboard/phase2_equity_curve.py --incremental` — 应正常输出
+4. `streamlit run cc-dashboard/app.py` — 启动后页面正常，数据加载无报错
+5. 所有 docs/ 内文档的互链点击可达
+6. README.md 内链接点击可达
+7. `git diff --stat` 确认无遗漏文件
+8. VPS: push 后 `ssh root@104.218.100.67 &quot;systemctl is-active rh-dashboard&quot;` → active
+</div><div class="md-out"></div>
+</div>
+<script>
+document.querySelectorAll('.md-src').forEach(src => {
+  const out = src.nextElementSibling;
+  out.innerHTML = marked.parse(src.textContent);
+});
+</script>
+</body></html>

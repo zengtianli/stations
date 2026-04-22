@@ -1,0 +1,1001 @@
+[
+  {
+    "kind": "handoff",
+    "project": "ticket-reminder",
+    "path": "/Users/tianli/Dev/ticket-reminder/HANDOFF.md",
+    "mtime": "2026-04-21T10:31:11.005579",
+    "title": "ticket-reminder HANDOFF",
+    "summary": "**状态**：🚧 设计阶段，未开写代码 **日期**：2026-04-21 **目录**：`/Users/tianli/Dev/ticket-reminder/`（孵化位，稳定后 `/station-promote`）",
+    "slug": "ticket-reminder-20260421-1031"
+  },
+  {
+    "kind": "handoff",
+    "project": "eco-flow",
+    "path": "/Users/tianli/Work/eco-flow/HANDOFF.md",
+    "mtime": "2026-04-05T15:56:05.438905",
+    "title": "HANDOFF: eco-flow 天台县报告推进",
+    "summary": "更新: 2026-04-05 上一会话: branch of `099fb366` ---",
+    "slug": "eco-flow-20260405-1556"
+  },
+  {
+    "kind": "handoff",
+    "project": "panan-rigid-2026",
+    "path": "/Users/tianli/Work/bids/panan-rigid-2026/HANDOFF.md",
+    "mtime": "2026-04-09T16:33:27.893093",
+    "title": "Handoff · panan-rigid-2026",
+    "summary": "2026-04-09 · 3.5/3.6/4.1.4-6/第5章修改稿已生成，第6-7章未开始",
+    "slug": "panan-rigid-2026-20260409-1633"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/flickering-snacking-ritchie.md",
+    "mtime": "2026-04-13T21:42:14.395619",
+    "title": "Multi-Track 个人站实现计划",
+    "summary": "",
+    "slug": "plan-flickering-snacking-ritchie"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/elegant-giggling-patterson.md",
+    "mtime": "2026-04-01T09:41:22.129166",
+    "title": "Monorepo 重构：hydro-app-tauri → hydro-apps",
+    "summary": "",
+    "slug": "plan-elegant-giggling-patterson"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/wise-wibbling-cascade.md",
+    "mtime": "2026-04-02T14:43:50.998265",
+    "title": "整理 zdwp 目录 + 数据目录模式 + Git 瘦身",
+    "summary": "",
+    "slug": "plan-wise-wibbling-cascade"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/vast-squishing-volcano.md",
+    "mtime": "2026-04-11T08:38:18.595166",
+    "title": "Plan: 按 strategy-roll.md 重写 Roll 信号逻辑",
+    "summary": "",
+    "slug": "plan-vast-squishing-volcano"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/typed-crafting-hopcroft.md",
+    "mtime": "2026-04-02T21:31:48.926157",
+    "title": "Plan: zdwp 最终瘦身 — resources 独立 + 根目录清理",
+    "summary": "",
+    "slug": "plan-typed-crafting-hopcroft"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/federated-discovering-unicorn.md",
+    "mtime": "2026-03-30T14:59:05.251518",
+    "title": "Plan: 真实截图脚本 + 修复 README 渲染错误",
+    "summary": "",
+    "slug": "plan-federated-discovering-unicorn"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/polymorphic-swinging-bonbon.md",
+    "mtime": "2026-04-02T09:19:18.755746",
+    "title": "Scripts 精简计划（59 → 39）",
+    "summary": "",
+    "slug": "plan-polymorphic-swinging-bonbon"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/vast-coalescing-sky.md",
+    "mtime": "2026-04-19T11:57:03.502972",
+    "title": "第 6 轮：站内结构统一到 services 视觉 + 归档 journal/changelog",
+    "summary": "",
+    "slug": "plan-vast-coalescing-sky"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/2-docx-command-streamed-pearl.md",
+    "mtime": "2026-04-18T15:26:23.991967",
+    "title": "写 eco-flow + reclaim 的 Commands Cheatsheet",
+    "summary": "",
+    "slug": "plan-2-docx-command-streamed-pearl"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/wise-wibbling-cascade-agent-a5d6d759582a24b7c.md",
+    "mtime": "2026-04-02T14:39:40.145341",
+    "title": "Plan: Create _index.md catalog files for 8 projects",
+    "summary": "",
+    "slug": "plan-wise-wibbling-cascade-agent-a5d6d759582a24b7c"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/effervescent-petting-abelson.md",
+    "mtime": "2026-04-05T09:47:19.227226",
+    "title": "Plan: cc-harness → cc-configs 重构",
+    "summary": "",
+    "slug": "plan-effervescent-petting-abelson"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/modular-finding-lamport.md",
+    "mtime": "2026-04-04T09:46:55.534552",
+    "title": "gen-report：基于参考报告逐章生成新县市报告",
+    "summary": "",
+    "slug": "plan-modular-finding-lamport"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/splendid-jingling-starlight.md",
+    "mtime": "2026-04-22T10:31:45.462268",
+    "title": "Tier 1 重构 · #1 + #2 + #3 并发执行",
+    "summary": "",
+    "slug": "plan-splendid-jingling-starlight"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/cryptic-splashing-crescent.md",
+    "mtime": "2026-04-02T07:58:19.367028",
+    "title": "Plan: VPS 服务列表补全 — 加入 Docker 容器 + 完整域名映射",
+    "summary": "",
+    "slug": "plan-cryptic-splashing-crescent"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/majestic-percolating-tome.md",
+    "mtime": "2026-04-01T08:02:32.069394",
+    "title": "/promote 命令 — GitHub 项目推广",
+    "summary": "",
+    "slug": "plan-majestic-percolating-tome"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/fizzy-hatching-porcupine-agent-a26516ed8800997f3.md",
+    "mtime": "2026-04-20T16:57:54.697885",
+    "title": "6 Repo 批量推送计划",
+    "summary": "",
+    "slug": "plan-fizzy-hatching-porcupine-agent-a26516ed8800997f3"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/abundant-swimming-canyon.md",
+    "mtime": "2026-04-13T09:29:23.120070",
+    "title": "Audiobook Web Service — `audiobook.tianlizeng.cloud`",
+    "summary": "",
+    "slug": "plan-abundant-swimming-canyon"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/rosy-painting-garden.md",
+    "mtime": "2026-04-11T12:57:02.450446",
+    "title": "整理 international-assets 目录结构",
+    "summary": "",
+    "slug": "plan-rosy-painting-garden"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/tender-enchanting-dragon.md",
+    "mtime": "2026-04-16T08:02:57.663443",
+    "title": "修复 LaunchAgent miniforge3 遗留路径",
+    "summary": "",
+    "slug": "plan-tender-enchanting-dragon"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/handoff-md-floofy-charm.md",
+    "mtime": "2026-04-19T19:02:17.530812",
+    "title": "收官规划 · Playbook OS · 把工程化思维刻进全局",
+    "summary": "2026-04-19 · 替代原 R7 初版 plan · 本次 plan 的本质**不是站群文档**，是把用户的**工程化思维 = Playbook 方法论**作为 Claude 的元操作系统落地 ---",
+    "slug": "plan-handoff-md-floofy-charm"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/tranquil-shimmying-allen.md",
+    "mtime": "2026-04-15T16:34:35.682073",
+    "title": "修复 cclog MCP 搜索失效问题",
+    "summary": "",
+    "slug": "plan-tranquil-shimmying-allen"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/ancient-popping-wadler.md",
+    "mtime": "2026-04-03T15:42:43.547657",
+    "title": "Command 模块化重构计划",
+    "summary": "",
+    "slug": "plan-ancient-popping-wadler"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/effervescent-crafting-snail.md",
+    "mtime": "2026-03-31T10:38:21.025687",
+    "title": "Plan: 创建 cc-harness 和 cc-context 两个独立工具仓库",
+    "summary": "",
+    "slug": "plan-effervescent-crafting-snail"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/typed-floating-elephant.md",
+    "mtime": "2026-03-30T10:11:18.596526",
+    "title": "Downloads Organizer — GitHub 项目计划",
+    "summary": "",
+    "slug": "plan-typed-floating-elephant"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/dev-stations-docs-knowledge-session-ret-glittery-lerdorf.md",
+    "mtime": "2026-04-21T16:23:54.740441",
+    "title": "Plan: cc-options MVP 收尾（Phase 6-7）",
+    "summary": "",
+    "slug": "plan-dev-stations-docs-knowledge-session-ret-glittery-lerdorf"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/wild-greeting-lerdorf.md",
+    "mtime": "2026-04-01T16:52:28.128723",
+    "title": "计划：Repo Dashboard — 基于 Streamlit",
+    "summary": "",
+    "slug": "plan-wild-greeting-lerdorf"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/jaunty-swimming-petal.md",
+    "mtime": "2026-04-20T20:49:26.315790",
+    "title": "Auggie Dashboard 大幅简化",
+    "summary": "",
+    "slug": "plan-jaunty-swimming-petal"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/functional-tumbling-sloth.md",
+    "mtime": "2026-04-02T08:54:41.042355",
+    "title": "Scripts 目录整理计划",
+    "summary": "",
+    "slug": "plan-functional-tumbling-sloth"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/refactored-wibbling-waterfall.md",
+    "mtime": "2026-04-13T16:49:42.377622",
+    "title": "四个脚本 Repo 迁移到 uv 运行环境",
+    "summary": "",
+    "slug": "plan-refactored-wibbling-waterfall"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/stateless-pondering-spring.md",
+    "mtime": "2026-04-13T10:07:16.486318",
+    "title": "灌区培训资料重构计划",
+    "summary": "",
+    "slug": "plan-stateless-pondering-spring"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/robust-fluttering-fiddle.md",
+    "mtime": "2026-04-04T15:39:20.803394",
+    "title": "Resources 数据仓库清理方案",
+    "summary": "",
+    "slug": "plan-robust-fluttering-fiddle"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/hashed-snuggling-galaxy-agent-a380c1e7b73b86d6c.md",
+    "mtime": "2026-04-14T09:16:50.092976",
+    "title": "Website Redesign Implementation Plan",
+    "summary": "",
+    "slug": "plan-hashed-snuggling-galaxy-agent-a380c1e7b73b86d6c"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/hammerspoon-raycast-idempotent-robin.md",
+    "mtime": "2026-04-18T16:32:07.247115",
+    "title": "Plan · HS Dashboard 功能开关化 + Raycast/HS 职责分明",
+    "summary": "",
+    "slug": "plan-hammerspoon-raycast-idempotent-robin"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/elegant-squishing-mist.md",
+    "mtime": "2026-04-02T10:15:33.796624",
+    "title": "Plan: 拆分 scripts 仓库为 4 个独立 repo",
+    "summary": "",
+    "slug": "plan-elegant-squishing-mist"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/cached-gathering-hejlsberg.md",
+    "mtime": "2026-04-21T21:46:36.083340",
+    "title": "cc-options P2 · Streamlit 要素照搬 + 数据管道扩展",
+    "summary": "",
+    "slug": "plan-cached-gathering-hejlsberg"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/wise-wibbling-cascade-agent-a67f24f26bb3945c3.md",
+    "mtime": "2026-04-02T14:40:20.853848",
+    "title": "Plan: Create _index.md catalog files for 7 projects",
+    "summary": "",
+    "slug": "plan-wise-wibbling-cascade-agent-a67f24f26bb3945c3"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/1-2-rippling-donut.md",
+    "mtime": "2026-04-21T10:33:09.143793",
+    "title": "Stations 站群深度体检 · 诊断报告",
+    "summary": "",
+    "slug": "plan-1-2-rippling-donut"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/witty-wondering-honey.md",
+    "mtime": "2026-04-17T22:25:51.300483",
+    "title": "Fix ops-console navbar — 参与站群共享 navbar，不再做独立品牌",
+    "summary": "",
+    "slug": "plan-witty-wondering-honey"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/hashed-snuggling-galaxy.md",
+    "mtime": "2026-04-14T09:18:37.009489",
+    "title": "全站重构计划：Apple 风格 + 总览入口架构",
+    "summary": "",
+    "slug": "plan-hashed-snuggling-galaxy"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/hammerspoon-elegant-garden.md",
+    "mtime": "2026-04-18T19:02:06.230486",
+    "title": "HS 收尾：修 bug + 简化 HUD + 清除 ClashX 模块",
+    "summary": "",
+    "slug": "plan-hammerspoon-elegant-garden"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/glowing-honking-truffle.md",
+    "mtime": "2026-04-08T10:31:44.290053",
+    "title": "论文审稿意见修改计划",
+    "summary": "",
+    "slug": "plan-glowing-honking-truffle"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/wise-wibbling-cascade-agent-aeeb295cf712f5403.md",
+    "mtime": "2026-04-02T15:04:32.853914",
+    "title": "Skills 合并清理计划：16 → 9",
+    "summary": "",
+    "slug": "plan-wise-wibbling-cascade-agent-aeeb295cf712f5403"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/nested-zooming-church.md",
+    "mtime": "2026-04-16T10:42:11.855812",
+    "title": "知识蒸馏与能力内化计划",
+    "summary": "",
+    "slug": "plan-nested-zooming-church"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/transient-skipping-hare.md",
+    "mtime": "2026-04-16T08:41:23.541662",
+    "title": "Cockpit — 个人效率驾驶舱",
+    "summary": "",
+    "slug": "plan-transient-skipping-hare"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/hidden-sparking-beacon.md",
+    "mtime": "2026-04-15T07:52:33.362819",
+    "title": "Mind Map 通用工具 — 实现计划",
+    "summary": "",
+    "slug": "plan-hidden-sparking-beacon"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/eager-bouncing-lightning.md",
+    "mtime": "2026-04-06T17:28:02.805459",
+    "title": "计划：重写 app.py — 完整单页 Dashboard",
+    "summary": "",
+    "slug": "plan-eager-bouncing-lightning"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/adaptive-skipping-shamir.md",
+    "mtime": "2026-04-16T10:13:45.367599",
+    "title": "知识蒸馏与能力内化计划",
+    "summary": "",
+    "slug": "plan-adaptive-skipping-shamir"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/snoopy-nibbling-book.md",
+    "mtime": "2026-04-06T08:50:32.192744",
+    "title": "论文审稿意见修改计划",
+    "summary": "",
+    "slug": "plan-snoopy-nibbling-book"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/hashed-scribbling-feather.md",
+    "mtime": "2026-04-04T10:12:10.644251",
+    "title": "数据准备模块自动化：7 模块独立命令",
+    "summary": "",
+    "slug": "plan-hashed-scribbling-feather"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/virtual-zooming-zephyr.md",
+    "mtime": "2026-04-13T08:05:41.182440",
+    "title": "每日早报系统 — 实现方案",
+    "summary": "",
+    "slug": "plan-virtual-zooming-zephyr"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/witty-gathering-sundae.md",
+    "mtime": "2026-04-01T08:28:14.639264",
+    "title": "Promote All Repos — 统一 Topics + 修复缺失",
+    "summary": "",
+    "slug": "plan-witty-gathering-sundae"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/rippling-swinging-willow.md",
+    "mtime": "2026-04-17T21:23:20.021760",
+    "title": "应用 6 子域治理命令：修 auggie + 归档 hammerspoon + 真跑 rename cc",
+    "summary": "",
+    "slug": "plan-rippling-swinging-willow"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/1-985-golden-thimble.md",
+    "mtime": "2026-04-18T16:05:03.464126",
+    "title": "高才通资格调研 + 个人资料补档",
+    "summary": "",
+    "slug": "plan-1-985-golden-thimble"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/lazy-forging-biscuit.md",
+    "mtime": "2026-04-10T22:23:28.021806",
+    "title": "计划：重装 Claude Code（npm → Homebrew）修复 computer-use MCP",
+    "summary": "",
+    "slug": "plan-lazy-forging-biscuit"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/iridescent-snuggling-horizon.md",
+    "mtime": "2026-04-16T16:58:35.004216",
+    "title": "/services 页面全面升级 + 主题色 Bug 修复",
+    "summary": "",
+    "slug": "plan-iridescent-snuggling-horizon"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/ibkr-twinkly-bachman-agent-ab2771145fe0c6ebf.md",
+    "mtime": "2026-04-18T19:41:10.407161",
+    "title": "香港银行 USD→CNH 换汇 spread 调研报告（2025-2026）",
+    "summary": "调研日期：2026-04-18 用途：HSBC HK 持仓 USD 换 CNH，给 Pulse 双币卡在大陆消费 中间价基准：香港银行公会牌价 + Yahoo USD/CNH 实时中间价 ---",
+    "slug": "plan-ibkr-twinkly-bachman-agent-ab2771145fe0c6ebf"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/fizzy-hatching-porcupine.md",
+    "mtime": "2026-04-20T16:39:59.970683",
+    "title": "只走 auggie MCP，彻底断开 CLI；脱敏后推 GitHub",
+    "summary": "",
+    "slug": "plan-fizzy-hatching-porcupine"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/polished-cooking-hamming.md",
+    "mtime": "2026-04-14T11:52:48.225055",
+    "title": "CC Dashboard 美化计划",
+    "summary": "",
+    "slug": "plan-polished-cooking-hamming"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/luminous-meandering-mochi.md",
+    "mtime": "2026-04-03T07:42:55.686314",
+    "title": "Plan: /groom 命令 + repo 标准体系",
+    "summary": "",
+    "slug": "plan-luminous-meandering-mochi"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/distributed-wibbling-aurora.md",
+    "mtime": "2026-04-14T15:30:43.736881",
+    "title": "Plan: 关于我页面优化 — 技能精简 + 展望文案修复",
+    "summary": "",
+    "slug": "plan-distributed-wibbling-aurora"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/snazzy-knitting-swan.md",
+    "mtime": "2026-04-04T10:30:16.210964",
+    "title": "数据准备模块自动化：7 模块独立命令",
+    "summary": "",
+    "slug": "plan-snazzy-knitting-swan"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/concurrent-noodling-lynx.md",
+    "mtime": "2026-04-07T08:17:06.125082",
+    "title": "按大纲重整磐安项目目录和文件",
+    "summary": "",
+    "slug": "plan-concurrent-noodling-lynx"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/spicy-shimmying-storm.md",
+    "mtime": "2026-03-31T08:18:37.325221",
+    "title": "不要重复造轮子 — 教训总结与清理",
+    "summary": "",
+    "slug": "plan-spicy-shimmying-storm"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/vivid-growing-cherny.md",
+    "mtime": "2026-04-02T22:30:09.977762",
+    "title": "Plan: /groom 命令 + repo 标准体系",
+    "summary": "",
+    "slug": "plan-vivid-growing-cherny"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/generic-juggling-dove.md",
+    "mtime": "2026-03-31T22:14:12.463645",
+    "title": "Plan: ~/Dev/scripts 整理清理",
+    "summary": "",
+    "slug": "plan-generic-juggling-dove"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/wise-chasing-nova.md",
+    "mtime": "2026-04-13T14:19:48.438185",
+    "title": "标书大纲批注修改计划",
+    "summary": "",
+    "slug": "plan-wise-chasing-nova"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/1-2-image-1-staged-eagle.md",
+    "mtime": "2026-04-21T23:04:27.947156",
+    "title": "cc-options 微调批次 · 2026-04-21",
+    "summary": "",
+    "slug": "plan-1-2-image-1-staged-eagle"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/generic-imagining-valiant.md",
+    "mtime": "2026-04-04T20:07:46.069034",
+    "title": "Datasette 可视化计划",
+    "summary": "",
+    "slug": "plan-generic-imagining-valiant"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/calm-wiggling-popcorn.md",
+    "mtime": "2026-04-12T19:49:15.941086",
+    "title": "网站迁移 VPS + 搜索 + CMS 计划",
+    "summary": "",
+    "slug": "plan-calm-wiggling-popcorn"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/radiant-sparking-karp.md",
+    "mtime": "2026-04-04T19:01:04.819677",
+    "title": "Resources 数据仓库清理方案",
+    "summary": "",
+    "slug": "plan-radiant-sparking-karp"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/wise-wibbling-cascade-agent-a94043150cb1fb70f.md",
+    "mtime": "2026-04-02T15:03:26.142637",
+    "title": "ZDWP Git 清理与重建计划",
+    "summary": "",
+    "slug": "plan-wise-wibbling-cascade-agent-a94043150cb1fb70f"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/atomic-roaming-dewdrop.md",
+    "mtime": "2026-04-01T10:26:04.693073",
+    "title": "Monorepo 重构：hydro-app-tauri → hydro-apps",
+    "summary": "",
+    "slug": "plan-atomic-roaming-dewdrop"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/golden-wandering-alpaca.md",
+    "mtime": "2026-04-02T17:08:00.604169",
+    "title": "Plan: Skills 重命名 + resources skill 新建",
+    "summary": "",
+    "slug": "plan-golden-wandering-alpaca"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/squishy-bouncing-shamir.md",
+    "mtime": "2026-04-16T07:35:01.645360",
+    "title": "LLM 算法经验提升 — Phase 1: Gemma 4 微调",
+    "summary": "",
+    "slug": "plan-squishy-bouncing-shamir"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/goofy-dreaming-turtle.md",
+    "mtime": "2026-04-08T10:32:53.401107",
+    "title": "论文审稿意见修改计划",
+    "summary": "",
+    "slug": "plan-goofy-dreaming-turtle"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/immutable-chasing-blanket.md",
+    "mtime": "2026-04-03T16:40:02.957939",
+    "title": "Plan: 打印机修复脚本 + 全局 Command",
+    "summary": "",
+    "slug": "plan-immutable-chasing-blanket"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/jolly-riding-kahan.md",
+    "mtime": "2026-03-31T11:35:50.955388",
+    "title": "~/Dev 项目展示标准统一计划",
+    "summary": "",
+    "slug": "plan-jolly-riding-kahan"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/task-page-separation.md",
+    "mtime": "2026-04-02T11:39:03.972009",
+    "title": "任务追踪独立页面",
+    "summary": "",
+    "slug": "plan-task-page-separation"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/atomic-juggling-token.md",
+    "mtime": "2026-04-17T15:56:57.098540",
+    "title": "计划：站点体系整合 — 统一 Navbar + GitHub Actions 自动部署",
+    "summary": "",
+    "slug": "plan-atomic-juggling-token"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/ibkr-twinkly-bachman.md",
+    "mtime": "2026-04-19T20:08:33.401568",
+    "title": "站群治理 Skill 补全 · web-scaffold playbook 立项 · slash 生态整顿",
+    "summary": "计划日期：2026-04-19 触发：assets.tianlizeng.cloud 上线时，我手工做了 `/ship-site` 本就覆盖的事（ssh 写 nginx、/cf 登记、首次 deploy），是 stations.md anti-pattern #7 的严重违反。 前一个 plan（换汇研究）已完成，此文件被覆写。 ---",
+    "slug": "plan-ibkr-twinkly-bachman"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/sparkling-drifting-boole.md",
+    "mtime": "2026-04-08T11:13:43.334055",
+    "title": "论文审稿意见修改计划",
+    "summary": "",
+    "slug": "plan-sparkling-drifting-boole"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/woolly-splashing-kitten.md",
+    "mtime": "2026-04-03T15:55:25.883360",
+    "title": "Command 模块化重构计划",
+    "summary": "",
+    "slug": "plan-woolly-splashing-kitten"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/piped-tinkering-nest.md",
+    "mtime": "2026-04-20T20:21:59.227427",
+    "title": "Plan · HANDOFF 按项目落地 + /handoff 智能判主项目",
+    "summary": "用户决定：HANDOFF 越细节越好、按主项目智能判定、不 symlink；/warmup 扫多位置 + 旧 ~/Dev/HANDOFF.md 归档 stations/docs/handoffs/。",
+    "slug": "plan-piped-tinkering-nest"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/playful-wondering-grove.md",
+    "mtime": "2026-04-02T08:39:39.056200",
+    "title": "Scripts 目录整理计划",
+    "summary": "",
+    "slug": "plan-playful-wondering-grove"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/robust-yawning-naur.md",
+    "mtime": "2026-04-06T15:48:49.842978",
+    "title": "Plan: Streamlit Robinhood CC Dashboard",
+    "summary": "",
+    "slug": "plan-robust-yawning-naur"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/purrfect-tumbling-platypus.md",
+    "mtime": "2026-04-15T22:32:36.922814",
+    "title": "sync → ~/Dev/dotfiles 精简迁移方案",
+    "summary": "",
+    "slug": "plan-purrfect-tumbling-platypus"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/witty-inventing-origami.md",
+    "mtime": "2026-04-14T14:25:05.540633",
+    "title": "CC Dashboard 美化计划",
+    "summary": "",
+    "slug": "plan-witty-inventing-origami"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/calm-waddling-hedgehog.md",
+    "mtime": "2026-04-16T17:02:32.851730",
+    "title": "Hammerspoon 整合 Raycast 功能 + Web Dashboard",
+    "summary": "",
+    "slug": "plan-calm-waddling-hedgehog"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/peaceful-tumbling-pizza.md",
+    "mtime": "2026-04-03T07:58:55.846209",
+    "title": "新增两个全局命令：/dashboard 和 /context",
+    "summary": "",
+    "slug": "plan-peaceful-tumbling-pizza"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/tidy-slash-shimmying-bengio.md",
+    "mtime": "2026-04-19T21:21:22.572063",
+    "title": "Streamlit → Next.js 全迁 · Turborepo monorepo · /stack-classify 分类清单",
+    "summary": "",
+    "slug": "plan-tidy-slash-shimmying-bengio"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/indexed-purring-cat.md",
+    "mtime": "2026-04-01T15:20:47.923296",
+    "title": "hydro-toolkit 插件集成架构",
+    "summary": "",
+    "slug": "plan-indexed-purring-cat"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/serialized-singing-cascade.md",
+    "mtime": "2026-04-11T11:11:28.419111",
+    "title": "Plan: Dashboard 指标重构 — 落实 strategy-roll.md 到代码和页面",
+    "summary": "",
+    "slug": "plan-serialized-singing-cascade"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/piped-tinkering-nest-agent-a447a89f73998532e.md",
+    "mtime": "2026-04-20T14:41:10.945399",
+    "title": "A 档 3 个遗留小问题修复 · Plan",
+    "summary": "⚠️ **状态说明**：在 Plan mode 激活前，我已执行了以下步骤（不可撤回，但都是安全的局部修改，未 commit 未 push）：  **已完成（未 commit）**： - 修改 `~/Dev/devtools/scripts/api-smoke.sh` 加 `SUBDOMAIN_FOR` 函数（hydro-toolkit → \"hydro\"） - 已跑 `bash ~/Dev/devtools/scripts/api-smoke.sh hydro-toolki",
+    "slug": "plan-piped-tinkering-nest-agent-a447a89f73998532e"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/valiant-floating-piglet.md",
+    "mtime": "2026-04-13T17:12:44.939474",
+    "title": "Multi-Track 个人站实现计划",
+    "summary": "",
+    "slug": "plan-valiant-floating-piglet"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/soft-gathering-porcupine.md",
+    "mtime": "2026-04-04T14:08:09.479050",
+    "title": "数据库全面修复计划",
+    "summary": "",
+    "slug": "plan-soft-gathering-porcupine"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/soft-conjuring-bubble.md",
+    "mtime": "2026-03-30T21:26:47.228696",
+    "title": "CC API 管理平台（仿 MMKG CODE）",
+    "summary": "",
+    "slug": "plan-soft-conjuring-bubble"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/bubbly-cuddling-puppy.md",
+    "mtime": "2026-04-16T06:58:16.083844",
+    "title": "HSBC HIBOR 低息贷款 + Robinhood CC 融资优化方案",
+    "summary": "",
+    "slug": "plan-bubbly-cuddling-puppy"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "LLM 反馈闭环",
+    "summary": "核心引擎 · done · session_reflect.py 用正则（\"不要|别|错了\"）检测反馈信号，",
+    "slug": "cc-evolution-001"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "Skills 动态注入",
+    "summary": "分发层 · done · 16 个 skills 全部在 ~/.claude/skills/ 全局 symlink，",
+    "slug": "cc-evolution-002"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "统一知识 MCP",
+    "summary": "扩展层 · done · 知识分布在 5 个独立存储：cclog DB, memory/*.md,",
+    "slug": "cc-evolution-003"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "Commands 合并",
+    "summary": "分发层 · done · 50 个 commands（39 active + 12 archived），",
+    "slug": "cc-evolution-004"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "Memory TTL & Confidence",
+    "summary": "数据层 · done · 32 个 memory 文件，frontmatter 只有 name/description/type。",
+    "slug": "cc-evolution-005"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "CLAUDE.md 瘦身",
+    "summary": "数据层 · done · ~/Dev/CLAUDE.md 约 152 行，包含 VPS 详情、",
+    "slug": "cc-evolution-006"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "Hook 链并行化",
+    "summary": "核心引擎 · done · SessionEnd hook 串行执行：",
+    "slug": "cc-evolution-007"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "Skill 自动毕业",
+    "summary": "扩展层 · done · skill-candidates.md 追踪模式出现次数。",
+    "slug": "cc-evolution-008"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "会话质量评分",
+    "summary": "扩展层 · done · task_analyzer 用 Haiku 判断 done/in-progress/stale，",
+    "slug": "cc-evolution-009"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "HANDOFF.md 自动生成",
+    "summary": "自动化层 · done · HANDOFF.md 由 /handoff 命令手动生成。",
+    "slug": "cc-evolution-010"
+  },
+  {
+    "kind": "evolution",
+    "project": "(cc-evolution)",
+    "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
+    "mtime": "2026-04-19T12:04:58.184859",
+    "title": "Changelog 站点",
+    "summary": "Changelog 站点 · done · 配置变更只记录在 git log 和本地文档里，",
+    "slug": "cc-evolution-011"
+  }
+]

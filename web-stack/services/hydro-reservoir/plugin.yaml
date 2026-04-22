@@ -1,0 +1,6 @@
+name: reservoir
+title: 水库群调度
+icon: "⚡"
+order: 20
+description: 梯级水库发电调度优化计算
+version: 1.0.0

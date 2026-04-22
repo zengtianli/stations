@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Journal · 曾田力</title>
+<style>/* tianlizeng.cloud 站群统一站内样式 (SSOT)
+ * 来源：~/Dev/devtools/lib/templates/site-content.css
+ * 编辑这里 → /site-content-refresh 同步到所有消费者站
+ * 视觉对标：services 页 (~/Dev/stations/website/components/service-dashboard.tsx)
+ */
+
+/* ===== 页面骨架 ===== */
+body.tlz-page {
+  background: #f5f5f7;
+  color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+
+.tlz-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+@media (min-width: 768px) {
+  .tlz-container { padding: 0 32px 48px; }
+}
+
+/* ===== Stats bar（统计条，site-header 之下）===== */
+.tlz-stats-bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 16px;
+  margin: 24px 0 32px;
+  font-size: 14px; color: #86868b;
+}
+.tlz-stats-bar > * { display: inline-flex; align-items: center; gap: 6px; }
+.tlz-stats-bar strong { color: #1d1d1f; font-weight: 500; }
+
+/* ===== Search box ===== */
+.tlz-search-wrap {
+  position: relative;
+  width: 100%; max-width: 448px;
+  margin: 0 auto 32px;
+}
+.tlz-search {
+  width: 100%; box-sizing: border-box;
+  padding: 10px 16px 10px 40px;
+  background: rgba(255,255,255,0.5);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 12px;
+  font: 14px/1.4 inherit;
+  color: #1d1d1f; outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.tlz-search:focus {
+  border-color: rgba(0,113,227,0.3);
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.20);
+}
+.tlz-search::placeholder { color: rgba(134,134,139,0.6); }
+
+/* ===== Filter buttons ===== */
+.tlz-filters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
+.tlz-btn {
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.5);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 999px;
+  font: 13px/1 inherit; color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tlz-btn:hover { background: rgba(255,255,255,0.7); color: #1d1d1f; }
+.tlz-btn.active { background: #1f2328; color: #fff; border-color: #1f2328; }
+
+/* ===== Section（一个分组）===== */
+.tlz-section { margin-bottom: 40px; }
+.tlz-section-title {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+  font-size: 18px; font-weight: 600; color: #1d1d1f;
+}
+.tlz-section-title .tlz-icon { font-size: 20px; line-height: 1; }
+.tlz-section-title .tlz-count { font-size: 12px; color: #86868b; font-weight: 400; margin-left: 4px; }
+
+/* ===== Grid ===== */
+.tlz-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+@media (min-width: 768px) {
+  .tlz-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ===== Card（玻璃卡片，所有 list item 都用这个）===== */
+.tlz-card {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,0.5);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 12px;
+  padding: 12px 16px;
+  text-decoration: none; color: inherit;
+  transition: all 0.2s;
+}
+.tlz-card:hover {
+  background: rgba(255,255,255,0.7);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.tlz-card-body { min-width: 0; flex: 1; }
+.tlz-card-header { display: flex; align-items: center; gap: 8px; }
+.tlz-card-name {
+  font-size: 14px; font-weight: 500; color: #1d1d1f;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tlz-card-meta {
+  font-size: 10px; color: #86868b;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  flex-shrink: 0;
+}
+.tlz-card-desc {
+  font-size: 12px; color: #86868b;
+  margin-top: 2px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tlz-card-tail { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* Card 行式变体（logs 时间线用）*/
+.tlz-card--row .tlz-card-body { display: grid; grid-template-columns: 100px 1fr; gap: 12px; align-items: baseline; }
+.tlz-card--row .tlz-card-meta { font-size: 12px; }
+
+/* ===== Status dot ===== */
+.tlz-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+.tlz-dot--ok { background: #34c759; }
+.tlz-dot--bad { background: #ff3b30; }
+.tlz-dot--warn { background: #ff9500; }
+.tlz-dot--unknown { background: #d2d2d7; }
+
+/* ===== Tag chip ===== */
+.tlz-tag {
+  display: inline-block;
+  background: rgba(0,0,0,0.06); color: #495057;
+  font-size: 10px; font-weight: 500;
+  padding: 1px 7px; border-radius: 4px;
+  margin-right: 4px;
+}
+
+/* ===== Lock icon (CF Access 标识) ===== */
+.tlz-lock {
+  display: inline-block; width: 12px; height: 12px;
+  vertical-align: middle; opacity: 0.5;
+}
+
+/* ===== Footer ===== */
+.tlz-footer {
+  text-align: center; color: #86868b; font-size: 12px;
+  margin-top: 48px; padding: 24px 0;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+.tlz-footer a { color: #0071e3; text-decoration: none; }
+.tlz-footer a:hover { text-decoration: underline; }
+
+/* ===== Hidden helper ===== */
+.tlz-hidden { display: none !important; }
+</style>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'PingFang SC', Helvetica, sans-serif;
+       color: #1f2328; }
+h1, h2, h3 { color: #1f2328; letter-spacing: -0.01em; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.subtitle { color: #6b7280; font-size: 13px; margin-bottom: 24px; }
+
+/* logs 时间线：每个 row 用 .tlz-card.tlz-card--row（玻璃风格）+ 自身 grid 布局 */
+.tlz-card.tlz-card--row {
+  display: grid;
+  grid-template-columns: 100px 140px 1fr 60px;
+  gap: 16px;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.tlz-card.tlz-card--row .date { color: #86868b; font-variant-numeric: tabular-nums; font-size: 12px; font-family: ui-monospace, monospace; }
+.tlz-card.tlz-card--row .proj { font-weight: 600; color: #1f2328; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlz-card.tlz-card--row .title { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlz-card.tlz-card--row .kind { font-size: 10px; text-transform: uppercase; color: #9ca3af; text-align: right; letter-spacing: 0.05em; }
+.timeline { display: flex; flex-direction: column; }
+@media (max-width: 640px) {
+  .tlz-card.tlz-card--row { grid-template-columns: 80px 1fr; }
+  .tlz-card.tlz-card--row .proj { display: none; }
+  .tlz-card.tlz-card--row .kind { display: none; }
+}
+
+.detail .md-out { font-size: 14px; line-height: 1.7; max-width: 900px; }
+.detail .md-out h1 { font-size: 22px; margin: 24px 0 12px; }
+.detail .md-out h2 { font-size: 18px; margin: 20px 0 10px; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 4px; }
+.detail .md-out h3 { font-size: 16px; margin: 16px 0 8px; }
+.detail .md-out p { margin: 8px 0; }
+.detail .md-out code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font: 13px ui-monospace, Menlo, monospace; }
+.detail .md-out pre { background: #0d1117; color: #e6edf3; padding: 12px 16px; border-radius: 8px; overflow-x: auto; font: 12px/1.6 ui-monospace, Menlo, monospace; }
+.detail .md-out pre code { background: transparent; padding: 0; color: inherit; }
+.detail .md-out ul, .detail .md-out ol { margin: 8px 0; padding-left: 22px; }
+.detail .md-out li { margin: 3px 0; }
+.detail .md-out a { color: #0071E3; text-decoration: none; }
+.detail .md-out a:hover { text-decoration: underline; }
+.detail .md-out blockquote { border-left: 3px solid #0071E3; padding-left: 12px; color: #6b7280; margin: 8px 0; }
+.detail .md-out table { border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.detail .md-out th, .detail .md-out td { border: 1px solid rgba(0,0,0,0.1); padding: 6px 10px; text-align: left; }
+.detail .md-out th { background: #f3f4f6; font-weight: 600; }
+
+.meta-bar { color: #6b7280; font-size: 12px; margin-bottom: 20px; padding: 10px 14px; background: #fff; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); }
+.meta-bar .path { font-family: ui-monospace, Menlo, monospace; }
+.back { display: inline-block; margin-bottom: 12px; color: #0071E3; text-decoration: none; font-size: 13px; }
+.back:hover { text-decoration: underline; }
+</style>
+</head>
+<body class="tlz-page">
+<style>
+  /* ============================================================
+     Mega Menu · HSBC-style unified light (R7.2)
+     - Brand bar 64px · 单色浅灰 panel 全 4 列等宽
+     - hover 触发 · 150ms 延迟关闭 · display:none 默认严格隐藏
+     - html/body overflow-x:hidden 防横滚兜底
+  ============================================================ */
+
+  :root {
+    --tlz-bg-panel:       #F5F5F5;
+    --tlz-text-primary:   #111111;
+    --tlz-text-secondary: #333333;
+    --tlz-border-subtle:  #E5E5E5;
+    --tlz-border-divider: #E0E0E0;
+    --tlz-badge-border:   #BFBFBF;
+    --tlz-badge-text:     #6B7177;
+    --tlz-accent:         #D40000;
+  }
+
+  html, body { overflow-x: hidden; }
+  body { padding-top: 64px !important; }
+
+  .tlz-nav-stack {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    font: 400 15px/1 -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  }
+
+  /* ===== Brand bar ===== */
+  .tlz-nav {
+    height: 64px;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--tlz-border-subtle);
+    display: flex; align-items: center;
+  }
+  .tlz-nav-inner {
+    max-width: 1280px; width: 100%; margin: 0 auto;
+    padding: 0 24px; display: flex; align-items: center;
+    min-width: 0;
+  }
+  .tlz-nav-brand {
+    font-weight: 500; font-size: 18px; color: #000;
+    text-decoration: none; transition: color 0.12s;
+    flex-shrink: 0;
+  }
+  .tlz-nav-brand:hover { color: var(--tlz-accent); }
+  .tlz-nav-sep { width: 1px; height: 32px; background: var(--tlz-border-subtle); margin: 0 24px; flex-shrink: 0; }
+
+  .tlz-nav-triggers { display: flex; align-items: center; gap: 32px; flex: 1; min-width: 0; }
+  .tlz-nav .mega-trigger {
+    background: transparent; border: 0;
+    font: inherit; font-size: 15px; font-weight: 400;
+    color: var(--tlz-text-secondary);
+    padding: 8px 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 4px;
+    transition: color 0.12s; white-space: nowrap;
+  }
+  .tlz-nav .mega-trigger::after {
+    content: "\25be"; font-size: 12px; opacity: 0.6;
+    transition: transform 0.18s ease-out;
+  }
+  .tlz-nav .mega-trigger:hover { color: #000; }
+  .tlz-nav .mega-trigger[aria-expanded="true"] { color: #000; font-weight: 500; }
+  .tlz-nav .mega-trigger[aria-expanded="true"]::after { transform: rotate(180deg); }
+  .tlz-nav .mega-trigger.current { color: #000; font-weight: 500; }
+
+  /* ===== Mega Panel · 默认完全隐藏 ===== */
+  .tlz-mega-panel {
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: var(--tlz-bg-panel);
+    display: none;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    box-shadow: 0 8px 16px -8px rgba(0,0,0,0.08);
+  }
+  .tlz-mega-panel[data-open="true"] { display: block; }
+
+  /* 内部 max-width 1280px 居中 · 4 列等宽 */
+  .tlz-mega-inner {
+    max-width: 1280px; width: 100%;
+    margin: 0 auto;
+    padding: 40px 48px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    min-height: 320px;
+  }
+
+  .tlz-mega-col {
+    padding: 0 24px;
+    border-right: 1px solid var(--tlz-border-divider);
+    min-width: 0;
+  }
+  .tlz-mega-col:first-child { padding-left: 0; }
+  .tlz-mega-col:last-child { border-right: 0; padding-right: 0; }
+
+  /* Group */
+  .tlz-mega-group { margin-bottom: 24px; }
+  .tlz-mega-group:last-child { margin-bottom: 0; }
+  .tlz-mega-group h3 {
+    font-size: 15px; font-weight: 600; color: var(--tlz-text-primary);
+    margin: 0 0 12px;
+  }
+  .tlz-mega-group ul { list-style: none; padding: 0; margin: 0; }
+  .tlz-mega-group a {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tlz-text-secondary); text-decoration: none;
+    font-size: 14px; font-weight: 400; line-height: 28px;
+    transition: color 0.12s;
+  }
+  .tlz-mega-group a:hover { color: var(--tlz-accent); }
+
+  /* CF badge（统一浅灰规格） */
+  .tlz-mega-group .cf-badge {
+    height: 18px; padding: 0 6px;
+    display: inline-flex; align-items: center;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.05em;
+    color: var(--tlz-badge-text);
+    background: transparent;
+    border: 1px solid var(--tlz-badge-border);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* Hamburger */
+  .tlz-nav-hamburger {
+    display: none; background: transparent; border: 0;
+    color: var(--tlz-text-secondary); padding: 8px; margin-left: auto;
+    cursor: pointer; font-size: 20px;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 1023px) {
+    .tlz-mega-inner {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 32px 24px;
+    }
+    .tlz-mega-col:nth-child(2n) { border-right: 0; padding-right: 0; }
+    .tlz-mega-col:nth-child(n+3) {
+      padding-top: 24px; margin-top: 24px;
+      border-top: 1px solid var(--tlz-border-divider);
+    }
+    .tlz-mega-col:nth-child(3) { padding-left: 0; }
+  }
+
+  @media (max-width: 768px) {
+    body { padding-top: 56px !important; }
+    .tlz-nav { height: 56px; }
+    .tlz-nav-inner { padding: 0 16px; }
+    .tlz-nav-sep { display: none; }
+    .tlz-nav-triggers { display: none; }
+    .tlz-nav-hamburger { display: inline-flex; }
+
+    .tlz-nav-stack[data-mobile-open="true"] .tlz-nav-triggers {
+      display: flex; flex-direction: column; align-items: stretch;
+      position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+      background: #FFFFFF;
+      padding: 0; gap: 0; overflow-y: auto; z-index: 10000;
+    }
+    .tlz-nav-stack[data-mobile-open="true"] .mega-trigger {
+      width: 100%; justify-content: space-between;
+      padding: 16px 20px; border-radius: 0;
+      border-bottom: 1px solid var(--tlz-border-subtle);
+      font-size: 16px;
+    }
+
+    .tlz-mega-panel {
+      top: 56px; max-height: calc(100vh - 56px);
+      position: static; box-shadow: none;
+    }
+    .tlz-mega-inner {
+      grid-template-columns: 1fr;
+      padding: 16px 20px;
+    }
+    .tlz-mega-col {
+      padding: 0 !important;
+      border-right: 0 !important;
+      border-top: 0 !important;
+      margin-top: 16px !important;
+    }
+    .tlz-mega-col:first-child { margin-top: 0 !important; }
+  }
+</style>
+<div class="tlz-nav-stack" data-mobile-open="false">
+<nav class="tlz-nav" aria-label="站群导航"><div class="tlz-nav-inner">
+  <a class="tlz-nav-brand" href="https://tianlizeng.cloud/" data-site="home">曾田力</a>
+  <div class="tlz-nav-sep" aria-hidden="true"></div>
+  <div class="tlz-nav-triggers" role="menubar">
+    <button class="mega-trigger" data-cat="home" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-home">🏠 主站</button>
+    <button class="mega-trigger" data-cat="hydro" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-hydro">💧 水利</button>
+    <button class="mega-trigger" data-cat="dev" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-dev">🛠 开发</button>
+    <button class="mega-trigger" data-cat="content" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-content">📚 内容</button>
+    <button class="mega-trigger" data-cat="infra" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-infra">⚙️ 基础设施</button>
+  </div>
+  <button class="tlz-nav-hamburger" aria-label="菜单" aria-expanded="false" data-toggle="mobile">☰</button>
+</div></nav>
+<div class="tlz-mega-panel" data-for="home" id="mega-panel-home" role="menu" aria-label="🏠 主站" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>关于</h3>
+        <ul>
+          <li><a href="https://tianlizeng.cloud/about" role="menuitem"><span>关于我</span></a></li>
+          <li><a href="https://tianlizeng.cloud/projects" role="menuitem"><span>作品</span></a></li>
+          <li><a href="https://tianlizeng.cloud/research" role="menuitem"><span>研究</span></a></li>
+          <li><a href="https://tianlizeng.cloud/blog" role="menuitem"><span>博客</span></a></li>
+          <li><a href="https://tianlizeng.cloud/life" role="menuitem"><span>生活</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>入口</h3>
+        <ul>
+          <li><a href="https://tianlizeng.cloud/services" role="menuitem"><span>服务总览</span></a></li>
+          <li><a href="https://stack.tianlizeng.cloud" role="menuitem"><span>Stack</span></a></li>
+          <li><a href="https://cmds.tianlizeng.cloud" role="menuitem"><span>CC Docs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://dashboard.tianlizeng.cloud" role="menuitem"><span>Dashboard</span></a></li>
+          <li><a href="https://dashboard.tianlizeng.cloud/auggie" role="menuitem"><span>Auggie</span></a></li>
+          <li><a href="https://tianlizeng.cloud/search" role="menuitem"><span>搜索</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="hydro" id="mega-panel-hydro" role="menu" aria-label="💧 水利" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>主平台</h3>
+        <ul>
+          <li><a href="https://hydro.tianlizeng.cloud" role="menuitem"><span>Hydro Toolkit</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>水资源/调度</h3>
+        <ul>
+          <li><a href="https://hydro-annual.tianlizeng.cloud" role="menuitem"><span>水资源年报</span></a></li>
+          <li><a href="https://hydro-reservoir.tianlizeng.cloud" role="menuitem"><span>水库群调度</span></a></li>
+          <li><a href="https://hydro-district.tianlizeng.cloud" role="menuitem"><span>河区调度</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>评估/编码</h3>
+        <ul>
+          <li><a href="https://hydro-efficiency.tianlizeng.cloud" role="menuitem"><span>水效评估</span></a></li>
+          <li><a href="https://hydro-geocode.tianlizeng.cloud" role="menuitem"><span>地理编码</span></a></li>
+          <li><a href="https://hydro-capacity.tianlizeng.cloud" role="menuitem"><span>纳污能力</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>风险/降雨</h3>
+        <ul>
+          <li><a href="https://hydro-risk.tianlizeng.cloud" role="menuitem"><span>风险图数据</span></a></li>
+          <li><a href="https://hydro-rainfall.tianlizeng.cloud" role="menuitem"><span>降雨径流</span></a></li>
+          <li><a href="https://hydro-irrigation.tianlizeng.cloud" role="menuitem"><span>灌溉需水</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="dev" id="mega-panel-dev" role="menu" aria-label="🛠 开发" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>子域服务</h3>
+        <ul>
+          <li><a href="https://dashboard.tianlizeng.cloud" role="menuitem"><span>Repo Dashboard</span></a></li>
+          <li><a href="https://cclog.tianlizeng.cloud" role="menuitem"><span>CC 会话日志</span></a></li>
+          <li><a href="https://logs.tianlizeng.cloud" role="menuitem"><span>Logs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://dockit.tianlizeng.cloud" role="menuitem"><span>Dockit</span></a></li>
+          <li><a href="https://stack.tianlizeng.cloud" role="menuitem"><span>Stack</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://cmds.tianlizeng.cloud" role="menuitem"><span>CC Docs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://playbooks.tianlizeng.cloud" role="menuitem"><span>Playbooks</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>工具库</h3>
+        <ul>
+          <li><a href="https://github.com/zengtianli/cc-configs" role="menuitem"><span>cc-configs</span></a></li>
+          <li><a href="https://github.com/zengtianli/devtools" role="menuitem"><span>devtools</span></a></li>
+          <li><a href="https://github.com/zengtianli/doctools" role="menuitem"><span>doctools</span></a></li>
+          <li><a href="https://github.com/zengtianli/mactools" role="menuitem"><span>mactools</span></a></li>
+          <li><a href="https://github.com/zengtianli/clashx" role="menuitem"><span>clashx</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>Raycast / 配置</h3>
+        <ul>
+          <li><a href="https://github.com/zengtianli/raycast" role="menuitem"><span>raycast</span></a></li>
+          <li><a href="https://github.com/zengtianli/configs" role="menuitem"><span>configs</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="content" id="mega-panel-content" role="menu" aria-label="📚 内容" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>日志 / 知识</h3>
+        <ul>
+          <li><a href="https://logs.tianlizeng.cloud" role="menuitem"><span>Logs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://docs.tianlizeng.cloud" role="menuitem"><span>知识库</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://audiobook.tianlizeng.cloud" role="menuitem"><span>有声书</span></a></li>
+          <li><a href="https://cclog.tianlizeng.cloud" role="menuitem"><span>CC 会话</span></a></li>
+          <li><a href="https://playbooks.tianlizeng.cloud" role="menuitem"><span>Playbooks</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>投资</h3>
+        <ul>
+          <li><a href="https://assets.tianlizeng.cloud" role="menuitem"><span>理财笔记</span></a></li>
+          <li><a href="https://cc-options.tianlizeng.cloud" role="menuitem"><span>QQQ CC Dashboard</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="infra" id="mega-panel-infra" role="menu" aria-label="⚙️ 基础设施" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>监控 / 自动化</h3>
+        <ul>
+          <li><a href="https://status.tianlizeng.cloud" role="menuitem"><span>Uptime Kuma</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://n8n.tianlizeng.cloud" role="menuitem"><span>n8n</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>代理</h3>
+        <ul>
+          <li><a href="https://proxy.tianlizeng.cloud" role="menuitem"><span>OAuth Proxy</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://panel.tianlizeng.cloud" role="menuitem"><span>Marzban</span></a></li>
+          <li><a href="https://sub.tianlizeng.cloud" role="menuitem"><span>Marzban 订阅</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>WEBHOOK</h3>
+        <ul>
+          <li><a href="https://webhook.tianlizeng.cloud" role="menuitem"><span>Webhook</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+</div>
+<script>(function(){
+  var stack=document.querySelector('.tlz-nav-stack');
+  if(!stack)return;
+  var triggers=stack.querySelectorAll('.mega-trigger');
+  var panels=stack.querySelectorAll('.tlz-mega-panel');
+  var hamburger=stack.querySelector('.tlz-nav-hamburger');
+  var activeKey=null,hideTimer=null;
+  function hideAll(){
+    panels.forEach(function(p){p.setAttribute('data-open','false');});
+    triggers.forEach(function(t){t.setAttribute('aria-expanded','false');});
+    activeKey=null;
+  }
+  function show(k){
+    if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}
+    if(activeKey===k)return;
+    hideAll();
+    var t=stack.querySelector('.mega-trigger[data-cat="'+k+'"]');
+    var p=stack.querySelector('.tlz-mega-panel[data-for="'+k+'"]');
+    if(!t||!p)return;
+    t.setAttribute('aria-expanded','true');
+    p.setAttribute('data-open','true');
+    activeKey=k;
+  }
+  function schedHide(){if(hideTimer)clearTimeout(hideTimer);hideTimer=setTimeout(hideAll,160);}
+  triggers.forEach(function(t){
+    var k=t.getAttribute('data-cat');
+    t.addEventListener('mouseenter',function(){show(k);});
+    t.addEventListener('click',function(e){e.preventDefault();if(activeKey===k)hideAll();else show(k);});
+    t.addEventListener('mouseleave',schedHide);
+  });
+  panels.forEach(function(p){
+    p.addEventListener('mouseenter',function(){if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}});
+    p.addEventListener('mouseleave',schedHide);
+  });
+  document.addEventListener('click',function(e){if(!stack.contains(e.target))hideAll();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')hideAll();});
+  if(hamburger){
+    hamburger.addEventListener('click',function(){
+      var open=stack.getAttribute('data-mobile-open')==='true';
+      stack.setAttribute('data-mobile-open',open?'false':'true');
+      hamburger.setAttribute('aria-expanded',open?'false':'true');
+      if(open)hideAll();
+    });
+  }
+  // current highlight
+  var host=location.hostname;
+  var noCur=["hammerspoon.tianlizeng.cloud", "audiobook.tianlizeng.cloud", "auggie.tianlizeng.cloud", "proxy.tianlizeng.cloud"];
+  var hostMap={"stack.tianlizeng.cloud": "home", "cmds.tianlizeng.cloud": "home", "dashboard.tianlizeng.cloud": "dev", "logs.tianlizeng.cloud": "content", "docs.tianlizeng.cloud": "content", "audiobook.tianlizeng.cloud": "content", "cclog.tianlizeng.cloud": "content", "playbooks.tianlizeng.cloud": "content", "cc-options.tianlizeng.cloud": "content", "assets.tianlizeng.cloud": "content", "status.tianlizeng.cloud": "infra", "n8n.tianlizeng.cloud": "infra", "panel.tianlizeng.cloud": "infra", "sub.tianlizeng.cloud": "infra", "webhook.tianlizeng.cloud": "infra"};
+  var curKey=null;
+  if(noCur.indexOf(host)===-1){
+    curKey=hostMap[host]||null;
+    if(!curKey && (host==='hydro.tianlizeng.cloud' || host.indexOf('hydro-')===0)) curKey='hydro';
+    if(!curKey && host==='tianlizeng.cloud') curKey='home';
+  }
+  if(curKey){
+    var t=stack.querySelector('.mega-trigger[data-cat="'+curKey+'"]');
+    if(t)t.classList.add('current');
+  }
+})();</script>
+
+<style>
+  .tlz-site-header {
+    max-width: 1500px; margin: 0 auto; padding: 24px 20px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'PingFang SC', Helvetica, sans-serif;
+  }
+  .tlz-site-header .tlz-crumb {
+    font-size: 12px; color: #86868b; margin-bottom: 6px;
+  }
+  .tlz-site-header .tlz-crumb a {
+    color: #86868b; text-decoration: none;
+  }
+  .tlz-site-header .tlz-crumb a:hover { color: #0071E3; }
+  .tlz-site-header h1 {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
+    color: #1f2328; margin: 0;
+  }
+  .tlz-site-header h1 .tlz-icon { margin-right: 8px; }
+  .tlz-site-header .tlz-tagline {
+    font-size: 13px; color: #6b7280; margin: 4px 0 0;
+  }
+</style>
+<header class="tlz-site-header">
+  <div class="tlz-crumb"><a href="https://tianlizeng.cloud/">tianlizeng.cloud</a> / <a href="https://tianlizeng.cloud/services">Services</a> / <span>Logs</span></div>
+  <h1><span class="tlz-icon">📋</span>Logs</h1>
+  <p class="tlz-tagline">HANDOFF · 方案 · 复盘 · CC 进化 — 统一时间线</p>
+</header>
+
+<div class="tlz-container">
+  <header class="tlz-stats-bar">
+    <span><strong>111</strong> 条（按修改时间倒序）</span>
+  </header>
+
+  <div class="tlz-filters">
+    <button class="tlz-btn active" data-filter="all">全部</button>
+    <button class="tlz-btn" data-filter="kind:handoff">HANDOFF</button>
+    <button class="tlz-btn" data-filter="kind:plan">Plan</button>
+    <button class="tlz-btn" data-filter="kind:evolution">CC 进化</button>
+  </div>
+  <div class="tlz-filters">
+    <button class="tlz-btn" data-filter="proj:(cc-evolution)">(cc-evolution)</button><button class="tlz-btn" data-filter="proj:(plan)">(plan)</button><button class="tlz-btn" data-filter="proj:eco-flow">eco-flow</button><button class="tlz-btn" data-filter="proj:panan-rigid-2026">panan-rigid-2026</button><button class="tlz-btn" data-filter="proj:ticket-reminder">ticket-reminder</button>
+  </div>
+
+  <div class="timeline" id="timeline">
+    <a class="tlz-card tlz-card--row" href="d/plan-splendid-jingling-starlight.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-22 10:31</span><span class="proj">(plan)</span><span class="title">Tier 1 重构 · #1 + #2 + #3 并发执行</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-1-2-image-1-staged-eagle.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-21 23:04</span><span class="proj">(plan)</span><span class="title">cc-options 微调批次 · 2026-04-21</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-cached-gathering-hejlsberg.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-21 21:46</span><span class="proj">(plan)</span><span class="title">cc-options P2 · Streamlit 要素照搬 + 数据管道扩展</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-dev-stations-docs-knowledge-session-ret-glittery-lerdorf.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-21 16:23</span><span class="proj">(plan)</span><span class="title">Plan: cc-options MVP 收尾（Phase 6-7）</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-1-2-rippling-donut.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-21 10:33</span><span class="proj">(plan)</span><span class="title">Stations 站群深度体检 · 诊断报告</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/ticket-reminder-20260421-1031.html" data-kind="handoff" data-project="ticket-reminder"><span class="date">2026-04-21 10:31</span><span class="proj">ticket-reminder</span><span class="title">ticket-reminder HANDOFF</span><span class="kind">handoff</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-jaunty-swimming-petal.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-20 20:49</span><span class="proj">(plan)</span><span class="title">Auggie Dashboard 大幅简化</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-piped-tinkering-nest.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-20 20:21</span><span class="proj">(plan)</span><span class="title">Plan · HANDOFF 按项目落地 + /handoff 智能判主项目</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-fizzy-hatching-porcupine-agent-a26516ed8800997f3.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-20 16:57</span><span class="proj">(plan)</span><span class="title">6 Repo 批量推送计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-fizzy-hatching-porcupine.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-20 16:39</span><span class="proj">(plan)</span><span class="title">只走 auggie MCP，彻底断开 CLI；脱敏后推 GitHub</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-piped-tinkering-nest-agent-a447a89f73998532e.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-20 14:41</span><span class="proj">(plan)</span><span class="title">A 档 3 个遗留小问题修复 · Plan</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-tidy-slash-shimmying-bengio.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-19 21:21</span><span class="proj">(plan)</span><span class="title">Streamlit → Next.js 全迁 · Turborepo monorepo · /stack-classify 分类清单</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-ibkr-twinkly-bachman.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-19 20:08</span><span class="proj">(plan)</span><span class="title">站群治理 Skill 补全 · web-scaffold playbook 立项 · slash 生态整顿</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-handoff-md-floofy-charm.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-19 19:02</span><span class="proj">(plan)</span><span class="title">收官规划 · Playbook OS · 把工程化思维刻进全局</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-001.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">LLM 反馈闭环</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-002.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Skills 动态注入</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-003.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">统一知识 MCP</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-004.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Commands 合并</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-005.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Memory TTL &amp; Confidence</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-006.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">CLAUDE.md 瘦身</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-007.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Hook 链并行化</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-008.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Skill 自动毕业</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-009.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">会话质量评分</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-010.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">HANDOFF.md 自动生成</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-011.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Changelog 站点</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-vast-coalescing-sky.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-19 11:57</span><span class="proj">(plan)</span><span class="title">第 6 轮：站内结构统一到 services 视觉 + 归档 journal/changelog</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-ibkr-twinkly-bachman-agent-ab2771145fe0c6ebf.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-18 19:41</span><span class="proj">(plan)</span><span class="title">香港银行 USD→CNH 换汇 spread 调研报告（2025-2026）</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-hammerspoon-elegant-garden.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-18 19:02</span><span class="proj">(plan)</span><span class="title">HS 收尾：修 bug + 简化 HUD + 清除 ClashX 模块</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-hammerspoon-raycast-idempotent-robin.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-18 16:32</span><span class="proj">(plan)</span><span class="title">Plan · HS Dashboard 功能开关化 + Raycast/HS 职责分明</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-1-985-golden-thimble.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-18 16:05</span><span class="proj">(plan)</span><span class="title">高才通资格调研 + 个人资料补档</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-2-docx-command-streamed-pearl.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-18 15:26</span><span class="proj">(plan)</span><span class="title">写 eco-flow + reclaim 的 Commands Cheatsheet</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-witty-wondering-honey.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-17 22:25</span><span class="proj">(plan)</span><span class="title">Fix ops-console navbar — 参与站群共享 navbar，不再做独立品牌</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-rippling-swinging-willow.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-17 21:23</span><span class="proj">(plan)</span><span class="title">应用 6 子域治理命令：修 auggie + 归档 hammerspoon + 真跑 rename cc</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-atomic-juggling-token.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-17 15:56</span><span class="proj">(plan)</span><span class="title">计划：站点体系整合 — 统一 Navbar + GitHub Actions 自动部署</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-calm-waddling-hedgehog.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-16 17:02</span><span class="proj">(plan)</span><span class="title">Hammerspoon 整合 Raycast 功能 + Web Dashboard</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-iridescent-snuggling-horizon.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-16 16:58</span><span class="proj">(plan)</span><span class="title">/services 页面全面升级 + 主题色 Bug 修复</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-nested-zooming-church.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-16 10:42</span><span class="proj">(plan)</span><span class="title">知识蒸馏与能力内化计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-adaptive-skipping-shamir.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-16 10:13</span><span class="proj">(plan)</span><span class="title">知识蒸馏与能力内化计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-transient-skipping-hare.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-16 08:41</span><span class="proj">(plan)</span><span class="title">Cockpit — 个人效率驾驶舱</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-tender-enchanting-dragon.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-16 08:02</span><span class="proj">(plan)</span><span class="title">修复 LaunchAgent miniforge3 遗留路径</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-squishy-bouncing-shamir.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-16 07:35</span><span class="proj">(plan)</span><span class="title">LLM 算法经验提升 — Phase 1: Gemma 4 微调</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-bubbly-cuddling-puppy.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-16 06:58</span><span class="proj">(plan)</span><span class="title">HSBC HIBOR 低息贷款 + Robinhood CC 融资优化方案</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-purrfect-tumbling-platypus.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-15 22:32</span><span class="proj">(plan)</span><span class="title">sync → ~/Dev/dotfiles 精简迁移方案</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-tranquil-shimmying-allen.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-15 16:34</span><span class="proj">(plan)</span><span class="title">修复 cclog MCP 搜索失效问题</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-hidden-sparking-beacon.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-15 07:52</span><span class="proj">(plan)</span><span class="title">Mind Map 通用工具 — 实现计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-distributed-wibbling-aurora.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-14 15:30</span><span class="proj">(plan)</span><span class="title">Plan: 关于我页面优化 — 技能精简 + 展望文案修复</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-witty-inventing-origami.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-14 14:25</span><span class="proj">(plan)</span><span class="title">CC Dashboard 美化计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-polished-cooking-hamming.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-14 11:52</span><span class="proj">(plan)</span><span class="title">CC Dashboard 美化计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-hashed-snuggling-galaxy.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-14 09:18</span><span class="proj">(plan)</span><span class="title">全站重构计划：Apple 风格 + 总览入口架构</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-hashed-snuggling-galaxy-agent-a380c1e7b73b86d6c.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-14 09:16</span><span class="proj">(plan)</span><span class="title">Website Redesign Implementation Plan</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-flickering-snacking-ritchie.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-13 21:42</span><span class="proj">(plan)</span><span class="title">Multi-Track 个人站实现计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-valiant-floating-piglet.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-13 17:12</span><span class="proj">(plan)</span><span class="title">Multi-Track 个人站实现计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-refactored-wibbling-waterfall.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-13 16:49</span><span class="proj">(plan)</span><span class="title">四个脚本 Repo 迁移到 uv 运行环境</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-wise-chasing-nova.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-13 14:19</span><span class="proj">(plan)</span><span class="title">标书大纲批注修改计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-stateless-pondering-spring.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-13 10:07</span><span class="proj">(plan)</span><span class="title">灌区培训资料重构计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-abundant-swimming-canyon.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-13 09:29</span><span class="proj">(plan)</span><span class="title">Audiobook Web Service — `audiobook.tianlizeng.cloud`</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-virtual-zooming-zephyr.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-13 08:05</span><span class="proj">(plan)</span><span class="title">每日早报系统 — 实现方案</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-calm-wiggling-popcorn.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-12 19:49</span><span class="proj">(plan)</span><span class="title">网站迁移 VPS + 搜索 + CMS 计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-rosy-painting-garden.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-11 12:57</span><span class="proj">(plan)</span><span class="title">整理 international-assets 目录结构</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-serialized-singing-cascade.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-11 11:11</span><span class="proj">(plan)</span><span class="title">Plan: Dashboard 指标重构 — 落实 strategy-roll.md 到代码和页面</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-vast-squishing-volcano.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-11 08:38</span><span class="proj">(plan)</span><span class="title">Plan: 按 strategy-roll.md 重写 Roll 信号逻辑</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-lazy-forging-biscuit.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-10 22:23</span><span class="proj">(plan)</span><span class="title">计划：重装 Claude Code（npm → Homebrew）修复 computer-use MCP</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/panan-rigid-2026-20260409-1633.html" data-kind="handoff" data-project="panan-rigid-2026"><span class="date">2026-04-09 16:33</span><span class="proj">panan-rigid-2026</span><span class="title">Handoff · panan-rigid-2026</span><span class="kind">handoff</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-sparkling-drifting-boole.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-08 11:13</span><span class="proj">(plan)</span><span class="title">论文审稿意见修改计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-goofy-dreaming-turtle.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-08 10:32</span><span class="proj">(plan)</span><span class="title">论文审稿意见修改计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-glowing-honking-truffle.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-08 10:31</span><span class="proj">(plan)</span><span class="title">论文审稿意见修改计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-concurrent-noodling-lynx.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-07 08:17</span><span class="proj">(plan)</span><span class="title">按大纲重整磐安项目目录和文件</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-eager-bouncing-lightning.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-06 17:28</span><span class="proj">(plan)</span><span class="title">计划：重写 app.py — 完整单页 Dashboard</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-robust-yawning-naur.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-06 15:48</span><span class="proj">(plan)</span><span class="title">Plan: Streamlit Robinhood CC Dashboard</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-snoopy-nibbling-book.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-06 08:50</span><span class="proj">(plan)</span><span class="title">论文审稿意见修改计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/eco-flow-20260405-1556.html" data-kind="handoff" data-project="eco-flow"><span class="date">2026-04-05 15:56</span><span class="proj">eco-flow</span><span class="title">HANDOFF: eco-flow 天台县报告推进</span><span class="kind">handoff</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-effervescent-petting-abelson.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-05 09:47</span><span class="proj">(plan)</span><span class="title">Plan: cc-harness → cc-configs 重构</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-generic-imagining-valiant.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-04 20:07</span><span class="proj">(plan)</span><span class="title">Datasette 可视化计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-radiant-sparking-karp.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-04 19:01</span><span class="proj">(plan)</span><span class="title">Resources 数据仓库清理方案</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-robust-fluttering-fiddle.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-04 15:39</span><span class="proj">(plan)</span><span class="title">Resources 数据仓库清理方案</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-soft-gathering-porcupine.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-04 14:08</span><span class="proj">(plan)</span><span class="title">数据库全面修复计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-snazzy-knitting-swan.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-04 10:30</span><span class="proj">(plan)</span><span class="title">数据准备模块自动化：7 模块独立命令</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-hashed-scribbling-feather.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-04 10:12</span><span class="proj">(plan)</span><span class="title">数据准备模块自动化：7 模块独立命令</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-modular-finding-lamport.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-04 09:46</span><span class="proj">(plan)</span><span class="title">gen-report：基于参考报告逐章生成新县市报告</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-immutable-chasing-blanket.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-03 16:40</span><span class="proj">(plan)</span><span class="title">Plan: 打印机修复脚本 + 全局 Command</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-woolly-splashing-kitten.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-03 15:55</span><span class="proj">(plan)</span><span class="title">Command 模块化重构计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-ancient-popping-wadler.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-03 15:42</span><span class="proj">(plan)</span><span class="title">Command 模块化重构计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-peaceful-tumbling-pizza.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-03 07:58</span><span class="proj">(plan)</span><span class="title">新增两个全局命令：/dashboard 和 /context</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-luminous-meandering-mochi.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-03 07:42</span><span class="proj">(plan)</span><span class="title">Plan: /groom 命令 + repo 标准体系</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-vivid-growing-cherny.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 22:30</span><span class="proj">(plan)</span><span class="title">Plan: /groom 命令 + repo 标准体系</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-typed-crafting-hopcroft.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 21:31</span><span class="proj">(plan)</span><span class="title">Plan: zdwp 最终瘦身 — resources 独立 + 根目录清理</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-golden-wandering-alpaca.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 17:08</span><span class="proj">(plan)</span><span class="title">Plan: Skills 重命名 + resources skill 新建</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-wise-wibbling-cascade-agent-aeeb295cf712f5403.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 15:04</span><span class="proj">(plan)</span><span class="title">Skills 合并清理计划：16 → 9</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-wise-wibbling-cascade-agent-a94043150cb1fb70f.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 15:03</span><span class="proj">(plan)</span><span class="title">ZDWP Git 清理与重建计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-wise-wibbling-cascade.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 14:43</span><span class="proj">(plan)</span><span class="title">整理 zdwp 目录 + 数据目录模式 + Git 瘦身</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-wise-wibbling-cascade-agent-a67f24f26bb3945c3.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 14:40</span><span class="proj">(plan)</span><span class="title">Plan: Create _index.md catalog files for 7 projects</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-wise-wibbling-cascade-agent-a5d6d759582a24b7c.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 14:39</span><span class="proj">(plan)</span><span class="title">Plan: Create _index.md catalog files for 8 projects</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-task-page-separation.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 11:39</span><span class="proj">(plan)</span><span class="title">任务追踪独立页面</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-elegant-squishing-mist.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 10:15</span><span class="proj">(plan)</span><span class="title">Plan: 拆分 scripts 仓库为 4 个独立 repo</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-polymorphic-swinging-bonbon.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 09:19</span><span class="proj">(plan)</span><span class="title">Scripts 精简计划（59 → 39）</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-functional-tumbling-sloth.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 08:54</span><span class="proj">(plan)</span><span class="title">Scripts 目录整理计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-playful-wondering-grove.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 08:39</span><span class="proj">(plan)</span><span class="title">Scripts 目录整理计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-cryptic-splashing-crescent.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-02 07:58</span><span class="proj">(plan)</span><span class="title">Plan: VPS 服务列表补全 — 加入 Docker 容器 + 完整域名映射</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-wild-greeting-lerdorf.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-01 16:52</span><span class="proj">(plan)</span><span class="title">计划：Repo Dashboard — 基于 Streamlit</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-indexed-purring-cat.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-01 15:20</span><span class="proj">(plan)</span><span class="title">hydro-toolkit 插件集成架构</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-atomic-roaming-dewdrop.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-01 10:26</span><span class="proj">(plan)</span><span class="title">Monorepo 重构：hydro-app-tauri → hydro-apps</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-elegant-giggling-patterson.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-01 09:41</span><span class="proj">(plan)</span><span class="title">Monorepo 重构：hydro-app-tauri → hydro-apps</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-witty-gathering-sundae.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-01 08:28</span><span class="proj">(plan)</span><span class="title">Promote All Repos — 统一 Topics + 修复缺失</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-majestic-percolating-tome.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-01 08:02</span><span class="proj">(plan)</span><span class="title">/promote 命令 — GitHub 项目推广</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-generic-juggling-dove.html" data-kind="plan" data-project="(plan)"><span class="date">2026-03-31 22:14</span><span class="proj">(plan)</span><span class="title">Plan: ~/Dev/scripts 整理清理</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-jolly-riding-kahan.html" data-kind="plan" data-project="(plan)"><span class="date">2026-03-31 11:35</span><span class="proj">(plan)</span><span class="title">~/Dev 项目展示标准统一计划</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-effervescent-crafting-snail.html" data-kind="plan" data-project="(plan)"><span class="date">2026-03-31 10:38</span><span class="proj">(plan)</span><span class="title">Plan: 创建 cc-harness 和 cc-context 两个独立工具仓库</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-spicy-shimmying-storm.html" data-kind="plan" data-project="(plan)"><span class="date">2026-03-31 08:18</span><span class="proj">(plan)</span><span class="title">不要重复造轮子 — 教训总结与清理</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-soft-conjuring-bubble.html" data-kind="plan" data-project="(plan)"><span class="date">2026-03-30 21:26</span><span class="proj">(plan)</span><span class="title">CC API 管理平台（仿 MMKG CODE）</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-federated-discovering-unicorn.html" data-kind="plan" data-project="(plan)"><span class="date">2026-03-30 14:59</span><span class="proj">(plan)</span><span class="title">Plan: 真实截图脚本 + 修复 README 渲染错误</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-typed-floating-elephant.html" data-kind="plan" data-project="(plan)"><span class="date">2026-03-30 10:11</span><span class="proj">(plan)</span><span class="title">Downloads Organizer — GitHub 项目计划</span><span class="kind">plan</span></a>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tlz-filters .tlz-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tlz-filters .tlz-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.tlz-card--row').forEach(row => {
+      let show = f === 'all';
+      if (!show && f.startsWith('kind:')) show = row.dataset.kind === f.slice(5);
+      if (!show && f.startsWith('proj:')) show = row.dataset.project === f.slice(5);
+      row.style.display = show ? '' : 'none';
+    });
+  });
+});
+</script>
+</body></html>

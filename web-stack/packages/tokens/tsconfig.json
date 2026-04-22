@@ -1,0 +1,8 @@
+{
+  "extends": "@tlz/config/tsconfig/base.json",
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+  "include": ["src/**/*", "tailwind-preset.ts"],
+  "exclude": ["node_modules", "dist"]
+}

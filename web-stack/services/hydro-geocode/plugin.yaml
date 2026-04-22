@@ -1,0 +1,6 @@
+name: geocode
+title: 地理编码
+icon: "📍"
+order: 90
+description: 批量地理编码与逆编码（高德地图API）
+version: 1.0.0

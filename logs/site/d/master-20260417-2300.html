@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Handoff · 磨刀完成：engineering-mode skill + journal.tianlizeng.cloud 都上线 · Journal</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'PingFang SC', Helvetica, sans-serif;
+       color: #1f2328; }
+h1, h2, h3 { color: #1f2328; letter-spacing: -0.01em; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.subtitle { color: #6b7280; font-size: 13px; margin-bottom: 24px; }
+
+/* logs 时间线：每个 row 用 .tlz-card.tlz-card--row（玻璃风格）+ 自身 grid 布局 */
+.tlz-card.tlz-card--row {
+  display: grid;
+  grid-template-columns: 100px 140px 1fr 60px;
+  gap: 16px;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.tlz-card.tlz-card--row .date { color: #86868b; font-variant-numeric: tabular-nums; font-size: 12px; font-family: ui-monospace, monospace; }
+.tlz-card.tlz-card--row .proj { font-weight: 600; color: #1f2328; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlz-card.tlz-card--row .title { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlz-card.tlz-card--row .kind { font-size: 10px; text-transform: uppercase; color: #9ca3af; text-align: right; letter-spacing: 0.05em; }
+.timeline { display: flex; flex-direction: column; }
+@media (max-width: 640px) {
+  .tlz-card.tlz-card--row { grid-template-columns: 80px 1fr; }
+  .tlz-card.tlz-card--row .proj { display: none; }
+  .tlz-card.tlz-card--row .kind { display: none; }
+}
+
+.detail .md-out { font-size: 14px; line-height: 1.7; max-width: 900px; }
+.detail .md-out h1 { font-size: 22px; margin: 24px 0 12px; }
+.detail .md-out h2 { font-size: 18px; margin: 20px 0 10px; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 4px; }
+.detail .md-out h3 { font-size: 16px; margin: 16px 0 8px; }
+.detail .md-out p { margin: 8px 0; }
+.detail .md-out code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font: 13px ui-monospace, Menlo, monospace; }
+.detail .md-out pre { background: #0d1117; color: #e6edf3; padding: 12px 16px; border-radius: 8px; overflow-x: auto; font: 12px/1.6 ui-monospace, Menlo, monospace; }
+.detail .md-out pre code { background: transparent; padding: 0; color: inherit; }
+.detail .md-out ul, .detail .md-out ol { margin: 8px 0; padding-left: 22px; }
+.detail .md-out li { margin: 3px 0; }
+.detail .md-out a { color: #0071E3; text-decoration: none; }
+.detail .md-out a:hover { text-decoration: underline; }
+.detail .md-out blockquote { border-left: 3px solid #0071E3; padding-left: 12px; color: #6b7280; margin: 8px 0; }
+.detail .md-out table { border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.detail .md-out th, .detail .md-out td { border: 1px solid rgba(0,0,0,0.1); padding: 6px 10px; text-align: left; }
+.detail .md-out th { background: #f3f4f6; font-weight: 600; }
+
+.meta-bar { color: #6b7280; font-size: 12px; margin-bottom: 20px; padding: 10px 14px; background: #fff; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); }
+.meta-bar .path { font-family: ui-monospace, Menlo, monospace; }
+.back { display: inline-block; margin-bottom: 12px; color: #0071E3; text-decoration: none; font-size: 13px; }
+.back:hover { text-decoration: underline; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="detail">
+<style>
+  body { padding-top: 56px !important; }
+  .tlz-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    height: 44px;
+    background: rgba(255,255,255,0.85);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    display: flex; align-items: center;
+  }
+  .tlz-nav-inner {
+    max-width: 1500px; width: 100%; margin: 0 auto;
+    padding: 0 20px; display: flex; align-items: center; gap: 4px;
+    font: 500 13px/1 -apple-system, BlinkMacSystemFont, 'PingFang SC', Helvetica, sans-serif;
+  }
+  .tlz-nav a {
+    color: #6b7280; text-decoration: none;
+    padding: 6px 12px; border-radius: 7px;
+    transition: all 0.12s;
+  }
+  .tlz-nav a:hover { background: rgba(0,0,0,0.05); color: #1f2328; }
+  .tlz-nav a.current { background: #1f2328; color: #fff; }
+  .tlz-nav a[data-site="home"] { font-weight: 700; color: #1f2328; padding-left: 0; }
+  .tlz-nav a[data-site="home"]:hover { background: transparent; color: #0071E3; }
+  .tlz-nav .sep { width: 1px; height: 18px; background: rgba(0,0,0,0.12); margin: 0 8px; }
+  @media (max-width: 640px) {
+    .tlz-nav-inner { padding: 0 12px; gap: 2px; font-size: 12px; }
+    .tlz-nav a { padding: 5px 8px; }
+    .tlz-nav .sep { margin: 0 4px; }
+  }
+</style>
+<nav class="tlz-nav"><div class="tlz-nav-inner">
+  <a href="https://tianlizeng.cloud/" data-site="home">曾田力</a>
+  <div class="sep"></div>
+  <a href="https://tianlizeng.cloud/services" data-site="services">Services</a>
+  <a href="https://stack.tianlizeng.cloud" data-site="stack">Stack</a>
+  <a href="https://cmds.tianlizeng.cloud" data-site="cmds">CC Docs</a>
+  <a href="https://dashboard.tianlizeng.cloud" data-site="dashboard">Dashboard</a>
+  <a href="https://logs.tianlizeng.cloud" data-site="logs">Logs</a>
+</div></nav>
+<script>(function(){var h=location.hostname,k='home';if(h==='stack.tianlizeng.cloud')k='stack';else if(h==='cmds.tianlizeng.cloud')k='cmds';else if(h==='dashboard.tianlizeng.cloud')k='dashboard';else if(h==='logs.tianlizeng.cloud')k='logs';else if(h==='hammerspoon.tianlizeng.cloud'||h==='audiobook.tianlizeng.cloud'||h==='auggie.tianlizeng.cloud'||h==='proxy.tianlizeng.cloud')k='';else if(location.pathname.indexOf('/services')===0)k='services';var e=document.querySelector('.tlz-nav a[data-site="'+k+'"]');if(e)e.classList.add('current');})();</script>
+
+<div class="wrap">
+  <a class="back" href="../index.html">← Journal</a>
+  <h1>Handoff · 磨刀完成：engineering-mode skill + journal.tianlizeng.cloud 都上线</h1>
+  <div class="meta-bar">
+    <span>HANDOFF</span> ·
+    <span>master</span> ·
+    <span>2026-04-17 23:00</span> ·
+    <span class="path">~/Dev/HANDOFF.md</span>
+  </div>
+  <div class="md-src" style="display:none"># Handoff · 磨刀完成：engineering-mode skill + journal.tianlizeng.cloud 都上线
+
+&gt; 2026-04-17 深夜 · 为 `~/Work/bids/panan-rigid-2026` 做的准备工作
+
+## 本轮交付
+
+### 1. `engineering-mode` skill（新全局 skill）
+**位置**：`~/Dev/tools/cc-configs/skills/engineering-mode/SKILL.md`
+**注册**：`harness.yaml` → `global_skills` 里，所有项目自动加载
+**作用**：把本次会话跑通的&quot;计划 → Task → Dry-run → 执行 → 验证 → 归档&quot;7 步协议成文，并记录了本会话踩过的 4 个反面教材（UI 统一理解歪、先抽象再验证、build 绿不等生产 200、`--delete` 吃数据）。
+
+下次你进 CC 任何项目（包括 panan-rigid-2026），开场不用额外说&quot;按工程学模式走&quot;——skill 自动触发。
+
+### 2. `journal.tianlizeng.cloud`（新站）
+**代码**：`~/Dev/journal/`（已 push 到 github.com/zengtianli/journal）
+**线上**：https://journal.tianlizeng.cloud（CF Access 保护）
+**作用**：全局 HANDOFF + plan + recap 的**远程可查面板**，以后任何网络都能翻。
+
+**数据源扫描**：
+- `~/Dev/HANDOFF.md` + `~/Dev/*/HANDOFF.md`
+- `~/Work/**/HANDOFF.md`（包含 panan-rigid-2026 的老 HANDOFF）
+- `~/.claude/plans/*.md`
+首次生成 83 条目。
+
+**刷新**：`cd ~/Dev/journal &amp;&amp; bash deploy.sh` — 重跑 generate.py + rsync。
+
+**建议习惯**：每次 `/handoff` 完，顺手跑一下 journal deploy，这样网络对端就能看到最新 HANDOFF。（下一轮可以加 hook/cron 自动做）
+
+### 3. 站群 navbar 加 Journal 链接
+`~/Dev/devtools/lib/templates/site-navbar.html` 加了 Journal 项，`/navbar-refresh` 已把 5 个消费者 repo 全同步。`services.ts` 也加了 journal 条目。
+
+## 本轮 commits
+
+- `~/Dev/tools/cc-configs`：`6958728 feat(skills): engineering-mode`
+- `~/Dev/devtools`：`ff7d3b8 feat(navbar): add Journal link`
+- `~/Dev/journal`：initial（pushed）
+- `~/Dev/website`：`aaba6bf chore(services): add Journal subdomain`
+- `~/Dev/{stack,cmds,cc-evolution,audiobook,ops-console}`：各 1 条 `chore(navbar): sync` commit（/navbar-refresh 自动）
+
+## 下轮正式开工：`~/Work/bids/panan-rigid-2026`
+
+该项目的 HANDOFF 还是 2026-04-09 的，一个月没碰了。进场顺序建议：
+
+```bash
+cd ~/Work/bids/panan-rigid-2026
+cat HANDOFF.md            # 看老 handoff
+# 如果没 CLAUDE.md：/harness 初始化
+# 本轮目标聊清楚 → 开 plan mode → 按 7 步协议跑
+```
+
+engineering-mode skill 会提醒我（CC）：
+- 遇到&quot;统一/合并&quot;先确认画面
+- 破坏性操作前写方案
+- TaskCreate 追踪进度
+- 每步验证才算完
+- 结束必产出 HANDOFF.md + 存到 journal
+
+## 下轮开工前需要提一嘴的（给我）
+
+你可以任何时候说：
+- &quot;按工程学模式&quot; → 我强制进 7 步协议
+- &quot;精准高效&quot; → 同上
+- 不说的话，engineering-mode 也会在多步操作/跨系统时自动触发
+
+## 未做但可考虑（优先级低）
+
+- **journal 自动刷新**：目前要手动 `bash ~/Dev/journal/deploy.sh`。可加：
+  - 本地 cron（每日 2am）
+  - 或在 `/handoff` 命令里加一步自动 deploy
+  - 或 VPS 上放个脚本 + webhook 触发
+- **journal 内容增强**：当前只扫 HANDOFF + plan。以后可以加 memory 文件、commit 高光、recap 专门文件
+- **engineering-mode skill 还没实战**：本轮是写出来，下轮在 panan 项目用一次、回头看哪些条目该调整
+
+## 关键路径速查
+
+```
+engineering-mode skill  ~/Dev/tools/cc-configs/skills/engineering-mode/SKILL.md
+harness.yaml            ~/Dev/tools/cc-configs/harness.yaml
+journal 代码             ~/Dev/journal/
+journal 线上            https://journal.tianlizeng.cloud
+shared navbar SSOT      ~/Dev/devtools/lib/templates/site-navbar.html
+/navbar-refresh         ~/Dev/devtools/scripts/tools/navbar_refresh.sh
+```
+</div><div class="md-out"></div>
+</div>
+<script>
+document.querySelectorAll('.md-src').forEach(src => {
+  const out = src.nextElementSibling;
+  out.innerHTML = marked.parse(src.textContent);
+});
+</script>
+</body></html>

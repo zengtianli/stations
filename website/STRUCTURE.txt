@@ -1,0 +1,283 @@
+# 网站部目录结构说明
+# 生成时间：2025-01-08
+# ================================================================
+
+personal_site/
+│
+├── .cursor/                    # 🔧 Cursor IDE 配置
+│   ├── agents/                 # AI Agent 定义
+│   │   └── website_developer.md  # 网站开发师（唯一 agent，极简版）
+│   └── rules/                  # 项目规则
+│       ├── memory.mdc          # AI 记忆
+│       ├── shared-python.mdc   # Python 规范（软链接总部）
+│       ├── shared-react.mdc    # React 规范（软链接总部）
+│       └── website-architecture.mdc  # 网站架构规则
+│
+├── .github/                    # 📦 GitHub 配置
+│   └── workflows/              # GitHub Actions 工作流
+│
+├── app/                        # 📱 Next.js 页面（App Router）
+│   │                           # 每个文件夹 = 一个路由
+│   ├── page.tsx                # 首页 /
+│   ├── layout.tsx              # 全局布局（导航、字体、SEO）
+│   ├── globals.css             # 全局样式（CSS 变量、动画）
+│   ├── sitemap.ts              # 网站地图生成器
+│   │
+│   ├── about/                  # 关于页 /about
+│   │   └── page.tsx
+│   │
+│   ├── blog/                   # 博客
+│   │   ├── page.tsx            # 博客列表 /blog
+│   │   └── [slug]/             # 博客详情 /blog/xxx
+│   │       └── page.tsx        # 动态路由，slug 从 URL 获取
+│   │
+│   ├── projects/               # 项目展示
+│   │   ├── page.tsx            # 项目列表 /projects
+│   │   └── [slug]/             # 项目详情 /projects/xxx
+│   │       ├── page.tsx
+│   │       └── project-content.css  # 项目详情页专用样式
+│   │
+│   ├── research/               # 研究成果 /research
+│   │   └── page.tsx            # 论文、专利、软著、奖项
+│   │
+│   ├── resume/                 # 简历系统
+│   │   ├── page.tsx            # 简历选择页 /resume
+│   │   ├── [version]/          # 简历版本 /resume/综合版
+│   │   │   └── page.tsx
+│   │   └── view/[id]/          # 简历查看 /resume/view/xxx
+│   │       └── page.tsx        # 用于打印/导出的干净视图
+│   │
+│   ├── tools/                  # 工具介绍 /tools
+│   │   └── page.tsx
+│   │
+│   ├── contact/                # 联系页 /contact
+│   │   └── page.tsx
+│   │
+│   └── api/                    # 🔌 API 路由（服务端）
+│       ├── contact/            # POST /api/contact
+│       │   └── route.ts        # 处理联系表单，发邮件
+│       ├── debug/              # GET /api/debug
+│       │   └── route.ts        # 调试接口
+│       └── tools/[id]/         # GET /api/tools/:id
+│           └── route.ts        # 工具详情 API
+│
+├── components/                 # 🧩 React 组件
+│   │
+│   ├── navbar.tsx              # 顶部导航栏
+│   ├── footer.tsx              # 页脚
+│   ├── hero-section.tsx        # 首页主横幅
+│   ├── page-header.tsx         # 通用页面标题
+│   ├── scroll-to-top.tsx       # 回到顶部按钮
+│   ├── theme-provider.tsx      # 主题切换（暗色/亮色）
+│   ├── markdown-renderer.tsx   # Markdown 渲染（支持代码高亮、Mermaid）
+│   ├── download-pdf-button.tsx # PDF 下载按钮
+│   ├── tool-card.tsx           # 工具卡片
+│   │
+│   ├── card-components.tsx     # 🎴 卡片类组件合集
+│   │                           # - BlogCard 博客卡片
+│   │                           # - ProjectGrid 项目网格
+│   │                           # - LatestUpdates 最新动态
+│   │
+│   ├── project-filter.tsx      # 🗂️ 项目筛选组件（按分类）
+│   │
+│   ├── page-sections.tsx       # 📄 关于页组件合集
+│   │                           # - AboutIntro 个人介绍
+│   │                           # - Timeline 时间线
+│   │                           # - SkillsVisual 技能展示
+│   │                           # - FutureOutlook 未来展望
+│   │                           # - StrengthsSection 能力优势
+│   │
+│   ├── research-sections.tsx   # 🔬 研究页组件合集
+│   │                           # - AcademicPapers 学术论文
+│   │                           # - Patents 专利
+│   │                           # - SoftwareCopyrights 软著
+│   │                           # - Awards 奖项
+│   │
+│   ├── contact-sections.tsx    # 📞 联系页组件合集
+│   │                           # - ContactForm 联系表单
+│   │                           # - ContactInfo 联系方式卡片
+│   │
+│   ├── sports-achievement.tsx  # 🏀 体育成就展示
+│   │
+│   ├── resume/                 # 📋 简历专用组件
+│   │   └── ResumeLayout.tsx    # 简历页面布局
+│   │
+│   ├── shared/                 # 🔄 跨页面共享组件
+│   │   └── PrintButton.tsx     # 打印按钮
+│   │
+│   └── ui/                     # 🎨 基础 UI 组件（shadcn/ui）
+│       ├── badge.tsx           # 标签
+│       ├── button.tsx          # 按钮
+│       ├── card.tsx            # 卡片
+│       ├── input.tsx           # 输入框
+│       ├── label.tsx           # 标签文字
+│       ├── textarea.tsx        # 文本域
+│       ├── toast.tsx           # 提示消息
+│       └── toaster.tsx         # 提示消息容器
+│
+├── content/                    # 📝 Markdown 内容（网站数据源）
+│   │
+│   ├── about/                  # 关于页内容
+│   │   ├── intro.md            # 个人介绍
+│   │   ├── skills.md           # 技能描述
+│   │   ├── timeline.md         # 时间线数据
+│   │   ├── future.md           # 未来展望
+│   │   └── sports.md           # 体育成就
+│   │
+│   ├── blog/                   # 博客文章
+│   │   ├── welcome.md          # 欢迎文章
+│   │   └── digital-twin-xxx.md # 技术博客
+│   │
+│   ├── home/                   # 首页内容
+│   │   ├── hero.md             # 主横幅文案
+│   │   └── latest-updates.md   # 最新动态
+│   │
+│   ├── project-source/         # 🔗 → 总部项目素材（软链接）
+│   │   └── → ~/cursor-shared/personal/projects/
+│   │       ├── _index.md                       # 项目列表配置
+│   │       ├── zhedong-water-diversion.md      # 数字孪生浙东引水
+│   │       ├── qiantang-shoreline.md           # 钱塘江岸线规划
+│   │       ├── water-carrying-capacity.md      # 水资源承载力
+│   │       ├── ecological-flow.md              # 河湖生态流量
+│   │       ├── jinyun-water-network.md         # 缙云供水管网
+│   │       └── ... (更多项目)
+│   │
+│   ├── research/               # 研究成果
+│   │   ├── _index.md           # 研究页配置
+│   │   ├── academic-papers.md  # 论文列表
+│   │   ├── patents.md          # 专利列表
+│   │   ├── software-copyrights.md  # 软著列表
+│   │   └── awards.md           # 奖项列表
+│   │
+│   ├── resume/                 # 简历展示配置（网站本地）
+│   │   ├── _index.md           # 简历中心配置（版本、颜色、图标）
+│   │   ├── comprehensive.md    # 综合简历配置
+│   │   ├── work.md             # 工作简历配置
+│   │   └── sports.md           # 体育简历配置
+│   │
+│   ├── resume-source/          # 🔗 → 总部简历素材（软链接）
+│   │   └── → ~/cursor-shared/personal/resume/
+│   │
+│   ├── tools/                  # 工具介绍
+│   │   ├── _index.md           # 工具列表配置
+│   │   ├── neovim.md           # Neovim 介绍
+│   │   ├── zsh.md              # Zsh 介绍
+│   │   └── execute.md          # 执行工具介绍
+│   │
+│   ├── contact/                # 联系页内容（如有）
+│   │
+│   └── global/                 # 全局配置
+│       └── navbar.md           # 导航栏配置
+│
+├── lib/                        # 🛠️ 工具函数和配置
+│   │
+│   ├── content.ts              # 📖 内容读取器
+│   │                           # - 读取 Markdown 文件
+│   │                           # - 解析 frontmatter
+│   │                           # - 获取博客/项目列表
+│   │
+│   ├── utils.ts                # 通用工具函数（cn 类名合并等）
+│   │
+│   ├── seo-config.ts           # 🔍 SEO 配置
+│   │                           # - 网站标题、描述、关键词
+│   │                           # - Open Graph 配置
+│   │                           # - Twitter Card 配置
+│   │
+│   ├── profile-config.ts       # 👤 个人信息配置
+│   │                           # - 姓名、职位、联系方式
+│   │                           # - 社交链接
+│   │
+│   ├── analytics.ts            # 📊 分析追踪（Google Analytics）
+│   │
+│   ├── styles.ts               # 样式常量
+│   │
+│   ├── ui-texts.ts             # UI 文案常量
+│   │
+│   ├── resume-builder.ts       # 简历构建器
+│   ├── resume-data.ts          # 简历数据
+│   ├── resume-loader.ts        # 简历加载器
+│   │
+│   └── design-system/          # 🎨 设计系统
+│       ├── index.ts            # 导出入口
+│       ├── tokens.ts           # 设计令牌（颜色、间距、字体）
+│       ├── variants.ts         # 组件变体（按钮样式等）
+│       └── utils.ts            # 设计系统工具函数
+│
+├── hooks/                      # 🪝 自定义 React Hooks
+│   ├── use-mobile.tsx          # 移动端检测
+│   └── use-toast.ts            # Toast 提示消息
+│
+├── public/                     # 📁 静态资源（直接可访问）
+│   │
+│   ├── favicon.ico             # 网站图标
+│   ├── favicon.svg             # SVG 图标
+│   ├── site.webmanifest        # PWA 配置
+│   ├── robots.txt              # 爬虫规则
+│   ├── zengtianli-cv.pdf       # 可下载的 PDF 简历
+│   │
+│   ├── archives/               # 🔗 → 总部档案（软链接）
+│   │   └── → ~/cursor-shared/archives/
+│   │
+│   ├── images/                 # 🖼️ 图片资源
+│   │   ├── zengtianli.jpg      # 个人照片
+│   │   ├── og-image.png        # 社交分享图
+│   │   ├── og-image.svg
+│   │   ├── compressed-images/  # 压缩后的图片
+│   │   └── optimized/          # 优化后的 WebP 图片
+│   │       └── compressed-images/  # 多尺寸响应式图片
+│   │
+│   ├── projects/               # 项目配图目录（新）
+│   │   ├── zhedong-cover.png             # 数字孪生浙东引水
+│   │   ├── shoreline-cover.png           # 钱塘江岸线规划
+│   │   ├── water-capacity-cover.png      # 水资源承载力
+│   │   └── water-consumption-cover.png   # 用水量预测
+│   │
+│   ├── soft_copyright/         # 软著证书 PDF
+│   │   ├── 浙水设计-水资源承载力模型软件.pdf
+│   │   ├── 浙水设计-水资源优化调度模型软件.pdf
+│   │   └── 浙水设计-Excel至MIKE智能数据转换软件.pdf
+│   │
+│   └── placeholder.svg         # 占位图（fallback）
+│
+├── docs/                       # 📚 项目文档
+│   ├── ARCHITECTURE.md         # 系统架构说明
+│   ├── DEVELOPMENT.md          # 开发维护指南
+│   ├── CONTENT_MANAGEMENT.md   # 内容管理指南
+│   └── GIT_HISTORY_CLEANUP.md  # Git 历史清理指南
+│
+├── scripts/                    # 🔧 构建脚本
+│   └── optimize-images.mjs     # 图片优化脚本（生成 WebP）
+│
+├── README.md                   # 📖 项目说明
+│
+└── 配置文件
+    ├── package.json            # 依赖和脚本
+    ├── pnpm-lock.yaml          # 依赖锁定
+    ├── next.config.mjs         # Next.js 配置
+    ├── tailwind.config.ts      # Tailwind CSS 配置
+    ├── tsconfig.json           # TypeScript 配置
+    ├── postcss.config.mjs      # PostCSS 配置
+    ├── components.json         # shadcn/ui 配置
+    └── .env.local              # 环境变量（不提交）
+
+# ================================================================
+# 📌 数据流向说明
+# ================================================================
+#
+# 总部数据 → 软链接 → 网站渲染
+#
+# ~/cursor-shared/personal/resume/    →  content/resume-source/
+# ~/cursor-shared/personal/projects/  →  content/project-source/
+# ~/cursor-shared/archives/           →  public/archives/
+#
+# ================================================================
+# 📌 常用命令
+# ================================================================
+#
+# pnpm dev      # 启动开发服务器
+# pnpm build    # 生产构建
+# pnpm start    # 启动生产服务器
+# git push      # 部署（Vercel 自动）
+#
+# ================================================================
+

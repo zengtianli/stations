@@ -1,0 +1,6 @@
+name: risk
+title: 风险图数据
+icon: "⚠️"
+order: 80
+description: 风险图数据表自动填充（GeoJSON→Excel三阶段ETL）
+version: 1.0.0

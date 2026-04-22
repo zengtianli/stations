@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stack — 项目架构说明书</title>
+<style>
+/* tianlizeng.cloud 站群统一站内样式 (SSOT)
+ * 来源：~/Dev/devtools/lib/templates/site-content.css
+ * 编辑这里 → /site-content-refresh 同步到所有消费者站
+ * 视觉对标：services 页 (~/Dev/stations/website/components/service-dashboard.tsx)
+ */
+
+/* ===== 页面骨架 ===== */
+body.tlz-page {
+  background: #f5f5f7;
+  color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+
+.tlz-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+@media (min-width: 768px) {
+  .tlz-container { padding: 0 32px 48px; }
+}
+
+/* ===== Stats bar（统计条，site-header 之下）===== */
+.tlz-stats-bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 16px;
+  margin: 24px 0 32px;
+  font-size: 14px; color: #86868b;
+}
+.tlz-stats-bar > * { display: inline-flex; align-items: center; gap: 6px; }
+.tlz-stats-bar strong { color: #1d1d1f; font-weight: 500; }
+
+/* ===== Search box ===== */
+.tlz-search-wrap {
+  position: relative;
+  width: 100%; max-width: 448px;
+  margin: 0 auto 32px;
+}
+.tlz-search {
+  width: 100%; box-sizing: border-box;
+  padding: 10px 16px 10px 40px;
+  background: rgba(255,255,255,0.5);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 12px;
+  font: 14px/1.4 inherit;
+  color: #1d1d1f; outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.tlz-search:focus {
+  border-color: rgba(0,113,227,0.3);
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.20);
+}
+.tlz-search::placeholder { color: rgba(134,134,139,0.6); }
+
+/* ===== Filter buttons ===== */
+.tlz-filters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
+.tlz-btn {
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.5);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 999px;
+  font: 13px/1 inherit; color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tlz-btn:hover { background: rgba(255,255,255,0.7); color: #1d1d1f; }
+.tlz-btn.active { background: #1f2328; color: #fff; border-color: #1f2328; }
+
+/* ===== Section（一个分组）===== */
+.tlz-section { margin-bottom: 40px; }
+.tlz-section-title {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+  font-size: 18px; font-weight: 600; color: #1d1d1f;
+}
+.tlz-section-title .tlz-icon { font-size: 20px; line-height: 1; }
+.tlz-section-title .tlz-count { font-size: 12px; color: #86868b; font-weight: 400; margin-left: 4px; }
+
+/* ===== Grid ===== */
+.tlz-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+@media (min-width: 768px) {
+  .tlz-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ===== Card（玻璃卡片，所有 list item 都用这个）===== */
+.tlz-card {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,0.5);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 12px;
+  padding: 12px 16px;
+  text-decoration: none; color: inherit;
+  transition: all 0.2s;
+}
+.tlz-card:hover {
+  background: rgba(255,255,255,0.7);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.tlz-card-body { min-width: 0; flex: 1; }
+.tlz-card-header { display: flex; align-items: center; gap: 8px; }
+.tlz-card-name {
+  font-size: 14px; font-weight: 500; color: #1d1d1f;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tlz-card-meta {
+  font-size: 10px; color: #86868b;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  flex-shrink: 0;
+}
+.tlz-card-desc {
+  font-size: 12px; color: #86868b;
+  margin-top: 2px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tlz-card-tail { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* Card 行式变体（logs 时间线用）*/
+.tlz-card--row .tlz-card-body { display: grid; grid-template-columns: 100px 1fr; gap: 12px; align-items: baseline; }
+.tlz-card--row .tlz-card-meta { font-size: 12px; }
+
+/* ===== Status dot ===== */
+.tlz-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+.tlz-dot--ok { background: #34c759; }
+.tlz-dot--bad { background: #ff3b30; }
+.tlz-dot--warn { background: #ff9500; }
+.tlz-dot--unknown { background: #d2d2d7; }
+
+/* ===== Tag chip ===== */
+.tlz-tag {
+  display: inline-block;
+  background: rgba(0,0,0,0.06); color: #495057;
+  font-size: 10px; font-weight: 500;
+  padding: 1px 7px; border-radius: 4px;
+  margin-right: 4px;
+}
+
+/* ===== Lock icon (CF Access 标识) ===== */
+.tlz-lock {
+  display: inline-block; width: 12px; height: 12px;
+  vertical-align: middle; opacity: 0.5;
+}
+
+/* ===== Footer ===== */
+.tlz-footer {
+  text-align: center; color: #86868b; font-size: 12px;
+  margin-top: 48px; padding: 24px 0;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+.tlz-footer a { color: #0071e3; text-decoration: none; }
+.tlz-footer a:hover { text-decoration: underline; }
+
+/* ===== Hidden helper ===== */
+.tlz-hidden { display: none !important; }
+
+/* stack 站独有样式（卡片细节）*/
+.stack-card-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 4px; font-size: 11.5px; }
+.stack-card-meta .domain { color: #0071e3; text-decoration: none; font-family: ui-monospace, monospace; }
+.stack-card-meta .port { color: #86868b; font-family: ui-monospace, monospace; }
+.stack-tags { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+.stack-card-path { font-size: 10.5px; color: #9ca3af; font-family: ui-monospace, monospace; margin-top: 4px; }
+.notes { font-size: 11.5px; color: #92630d; background: #fffbeb; padding: 4px 8px; border-radius: 6px; border-left: 2px solid #f59e0b; margin-top: 4px; }
+:root {
+    --bg: #f5f5f7;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --text: #1f2328;
+    --muted: #6b7280;
+    --accent: #0071E3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+  header .tagline { color: var(--muted); font-size: 13px; }
+
+  .stats {
+    display: flex;
+    gap: 20px;
+    margin-left: auto;
+    font-size: 13px;
+  }
+  .stat { color: var(--muted); }
+  .stat strong { color: var(--text); font-weight: 600; }
+
+  .toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  #search {
+    flex: 1;
+    min-width: 280px;
+    padding: 10px 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  #search:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.12);
+  }
+  .filters { display: flex; gap: 6px; }
+  .filter-btn {
+    padding: 8px 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { color: var(--text); }
+  .filter-btn.active {
+    background: #1f2328;
+    color: #fff;
+    border-color: #1f2328;
+  }
+
+  .group { margin-bottom: 24px; }
+  .group-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 3px solid var(--c);
+    color: var(--c);
+  }
+  .group-name { letter-spacing: -0.01em; }
+  .group-count {
+    background: var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 8px;
+    border-radius: 10px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--g);
+    border-radius: 10px;
+    padding: 12px 14px;
+    transition: box-shadow 0.15s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    cursor: pointer;
+  }
+  .card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transform: translateY(-1px);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .card-name {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .purpose {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card.expanded {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+    z-index: 2;
+    position: relative;
+  }
+  .card.expanded .purpose {
+    -webkit-line-clamp: unset;
+    display: block;
+    overflow: visible;
+  }
+  .card.expanded .card-name {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+  .card.expanded .domain {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+  .card.expanded .path {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    max-width: 100%;
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .card.expanded .notes {
+    font-size: 12px;
+  }
+
+  .meta { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+  .domain {
+    color: var(--accent);
+    text-decoration: none;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 11.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .domain:hover { text-decoration: underline; }
+  .port { color: var(--muted); font-family: ui-monospace, monospace; font-size: 11.5px; }
+
+  .tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .tag {
+    background: #f1f3f5;
+    color: #495057;
+    font-size: 10.5px;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .path-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    font-size: 10.5px;
+  }
+  .path {
+    color: #9ca3af;
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+  }
+  .type-tag {
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .notes {
+    font-size: 11.5px;
+    color: #92630d;
+    background: #fffbeb;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border-left: 2px solid #f59e0b;
+    margin-top: 2px;
+  }
+
+  .hidden { display: none !important; }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 640px) {
+    body { padding: 16px; }
+    .stats { margin-left: 0; flex-wrap: wrap; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body class="tlz-page">
+<style>
+  /* ============================================================
+     Mega Menu · HSBC-style unified light (R7.2)
+     - Brand bar 64px · 单色浅灰 panel 全 4 列等宽
+     - hover 触发 · 150ms 延迟关闭 · display:none 默认严格隐藏
+     - html/body overflow-x:hidden 防横滚兜底
+  ============================================================ */
+
+  :root {
+    --tlz-bg-panel:       #F5F5F5;
+    --tlz-text-primary:   #111111;
+    --tlz-text-secondary: #333333;
+    --tlz-border-subtle:  #E5E5E5;
+    --tlz-border-divider: #E0E0E0;
+    --tlz-badge-border:   #BFBFBF;
+    --tlz-badge-text:     #6B7177;
+    --tlz-accent:         #D40000;
+  }
+
+  html, body { overflow-x: hidden; }
+  body { padding-top: 64px !important; }
+
+  .tlz-nav-stack {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    font: 400 15px/1 -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  }
+
+  /* ===== Brand bar ===== */
+  .tlz-nav {
+    height: 64px;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--tlz-border-subtle);
+    display: flex; align-items: center;
+  }
+  .tlz-nav-inner {
+    max-width: 1280px; width: 100%; margin: 0 auto;
+    padding: 0 24px; display: flex; align-items: center;
+    min-width: 0;
+  }
+  .tlz-nav-brand {
+    font-weight: 500; font-size: 18px; color: #000;
+    text-decoration: none; transition: color 0.12s;
+    flex-shrink: 0;
+  }
+  .tlz-nav-brand:hover { color: var(--tlz-accent); }
+  .tlz-nav-sep { width: 1px; height: 32px; background: var(--tlz-border-subtle); margin: 0 24px; flex-shrink: 0; }
+
+  .tlz-nav-triggers { display: flex; align-items: center; gap: 32px; flex: 1; min-width: 0; }
+  .tlz-nav .mega-trigger {
+    background: transparent; border: 0;
+    font: inherit; font-size: 15px; font-weight: 400;
+    color: var(--tlz-text-secondary);
+    padding: 8px 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 4px;
+    transition: color 0.12s; white-space: nowrap;
+  }
+  .tlz-nav .mega-trigger::after {
+    content: "\25be"; font-size: 12px; opacity: 0.6;
+    transition: transform 0.18s ease-out;
+  }
+  .tlz-nav .mega-trigger:hover { color: #000; }
+  .tlz-nav .mega-trigger[aria-expanded="true"] { color: #000; font-weight: 500; }
+  .tlz-nav .mega-trigger[aria-expanded="true"]::after { transform: rotate(180deg); }
+  .tlz-nav .mega-trigger.current { color: #000; font-weight: 500; }
+
+  /* ===== Mega Panel · 默认完全隐藏 ===== */
+  .tlz-mega-panel {
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: var(--tlz-bg-panel);
+    display: none;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    box-shadow: 0 8px 16px -8px rgba(0,0,0,0.08);
+  }
+  .tlz-mega-panel[data-open="true"] { display: block; }
+
+  /* 内部 max-width 1280px 居中 · 4 列等宽 */
+  .tlz-mega-inner {
+    max-width: 1280px; width: 100%;
+    margin: 0 auto;
+    padding: 40px 48px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    min-height: 320px;
+  }
+
+  .tlz-mega-col {
+    padding: 0 24px;
+    border-right: 1px solid var(--tlz-border-divider);
+    min-width: 0;
+  }
+  .tlz-mega-col:first-child { padding-left: 0; }
+  .tlz-mega-col:last-child { border-right: 0; padding-right: 0; }
+
+  /* Group */
+  .tlz-mega-group { margin-bottom: 24px; }
+  .tlz-mega-group:last-child { margin-bottom: 0; }
+  .tlz-mega-group h3 {
+    font-size: 15px; font-weight: 600; color: var(--tlz-text-primary);
+    margin: 0 0 12px;
+  }
+  .tlz-mega-group ul { list-style: none; padding: 0; margin: 0; }
+  .tlz-mega-group a {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tlz-text-secondary); text-decoration: none;
+    font-size: 14px; font-weight: 400; line-height: 28px;
+    transition: color 0.12s;
+  }
+  .tlz-mega-group a:hover { color: var(--tlz-accent); }
+
+  /* CF badge（统一浅灰规格） */
+  .tlz-mega-group .cf-badge {
+    height: 18px; padding: 0 6px;
+    display: inline-flex; align-items: center;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.05em;
+    color: var(--tlz-badge-text);
+    background: transparent;
+    border: 1px solid var(--tlz-badge-border);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* Hamburger */
+  .tlz-nav-hamburger {
+    display: none; background: transparent; border: 0;
+    color: var(--tlz-text-secondary); padding: 8px; margin-left: auto;
+    cursor: pointer; font-size: 20px;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 1023px) {
+    .tlz-mega-inner {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 32px 24px;
+    }
+    .tlz-mega-col:nth-child(2n) { border-right: 0; padding-right: 0; }
+    .tlz-mega-col:nth-child(n+3) {
+      padding-top: 24px; margin-top: 24px;
+      border-top: 1px solid var(--tlz-border-divider);
+    }
+    .tlz-mega-col:nth-child(3) { padding-left: 0; }
+  }
+
+  @media (max-width: 768px) {
+    body { padding-top: 56px !important; }
+    .tlz-nav { height: 56px; }
+    .tlz-nav-inner { padding: 0 16px; }
+    .tlz-nav-sep { display: none; }
+    .tlz-nav-triggers { display: none; }
+    .tlz-nav-hamburger { display: inline-flex; }
+
+    .tlz-nav-stack[data-mobile-open="true"] .tlz-nav-triggers {
+      display: flex; flex-direction: column; align-items: stretch;
+      position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+      background: #FFFFFF;
+      padding: 0; gap: 0; overflow-y: auto; z-index: 10000;
+    }
+    .tlz-nav-stack[data-mobile-open="true"] .mega-trigger {
+      width: 100%; justify-content: space-between;
+      padding: 16px 20px; border-radius: 0;
+      border-bottom: 1px solid var(--tlz-border-subtle);
+      font-size: 16px;
+    }
+
+    .tlz-mega-panel {
+      top: 56px; max-height: calc(100vh - 56px);
+      position: static; box-shadow: none;
+    }
+    .tlz-mega-inner {
+      grid-template-columns: 1fr;
+      padding: 16px 20px;
+    }
+    .tlz-mega-col {
+      padding: 0 !important;
+      border-right: 0 !important;
+      border-top: 0 !important;
+      margin-top: 16px !important;
+    }
+    .tlz-mega-col:first-child { margin-top: 0 !important; }
+  }
+</style>
+<div class="tlz-nav-stack" data-mobile-open="false">
+<nav class="tlz-nav" aria-label="站群导航"><div class="tlz-nav-inner">
+  <a class="tlz-nav-brand" href="https://tianlizeng.cloud/" data-site="home">曾田力</a>
+  <div class="tlz-nav-sep" aria-hidden="true"></div>
+  <div class="tlz-nav-triggers" role="menubar">
+    <button class="mega-trigger" data-cat="home" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-home">🏠 主站</button>
+    <button class="mega-trigger" data-cat="hydro" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-hydro">💧 水利</button>
+    <button class="mega-trigger" data-cat="dev" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-dev">🛠 开发</button>
+    <button class="mega-trigger" data-cat="content" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-content">📚 内容</button>
+    <button class="mega-trigger" data-cat="infra" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-infra">⚙️ 基础设施</button>
+  </div>
+  <button class="tlz-nav-hamburger" aria-label="菜单" aria-expanded="false" data-toggle="mobile">☰</button>
+</div></nav>
+<div class="tlz-mega-panel" data-for="home" id="mega-panel-home" role="menu" aria-label="🏠 主站" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>关于</h3>
+        <ul>
+          <li><a href="https://tianlizeng.cloud/about" role="menuitem"><span>关于我</span></a></li>
+          <li><a href="https://tianlizeng.cloud/projects" role="menuitem"><span>作品</span></a></li>
+          <li><a href="https://tianlizeng.cloud/research" role="menuitem"><span>研究</span></a></li>
+          <li><a href="https://tianlizeng.cloud/blog" role="menuitem"><span>博客</span></a></li>
+          <li><a href="https://tianlizeng.cloud/life" role="menuitem"><span>生活</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>入口</h3>
+        <ul>
+          <li><a href="https://tianlizeng.cloud/services" role="menuitem"><span>服务总览</span></a></li>
+          <li><a href="https://stack.tianlizeng.cloud" role="menuitem"><span>Stack</span></a></li>
+          <li><a href="https://cmds.tianlizeng.cloud" role="menuitem"><span>CC Docs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://dashboard.tianlizeng.cloud" role="menuitem"><span>Dashboard</span></a></li>
+          <li><a href="https://dashboard.tianlizeng.cloud/auggie" role="menuitem"><span>Auggie</span></a></li>
+          <li><a href="https://tianlizeng.cloud/search" role="menuitem"><span>搜索</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="hydro" id="mega-panel-hydro" role="menu" aria-label="💧 水利" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>主平台</h3>
+        <ul>
+          <li><a href="https://hydro.tianlizeng.cloud" role="menuitem"><span>Hydro Toolkit</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>水资源/调度</h3>
+        <ul>
+          <li><a href="https://hydro-annual.tianlizeng.cloud" role="menuitem"><span>水资源年报</span></a></li>
+          <li><a href="https://hydro-reservoir.tianlizeng.cloud" role="menuitem"><span>水库群调度</span></a></li>
+          <li><a href="https://hydro-district.tianlizeng.cloud" role="menuitem"><span>河区调度</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>评估/编码</h3>
+        <ul>
+          <li><a href="https://hydro-efficiency.tianlizeng.cloud" role="menuitem"><span>水效评估</span></a></li>
+          <li><a href="https://hydro-geocode.tianlizeng.cloud" role="menuitem"><span>地理编码</span></a></li>
+          <li><a href="https://hydro-capacity.tianlizeng.cloud" role="menuitem"><span>纳污能力</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>风险/降雨</h3>
+        <ul>
+          <li><a href="https://hydro-risk.tianlizeng.cloud" role="menuitem"><span>风险图数据</span></a></li>
+          <li><a href="https://hydro-rainfall.tianlizeng.cloud" role="menuitem"><span>降雨径流</span></a></li>
+          <li><a href="https://hydro-irrigation.tianlizeng.cloud" role="menuitem"><span>灌溉需水</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="dev" id="mega-panel-dev" role="menu" aria-label="🛠 开发" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>子域服务</h3>
+        <ul>
+          <li><a href="https://dashboard.tianlizeng.cloud" role="menuitem"><span>Repo Dashboard</span></a></li>
+          <li><a href="https://cclog.tianlizeng.cloud" role="menuitem"><span>CC 会话日志</span></a></li>
+          <li><a href="https://logs.tianlizeng.cloud" role="menuitem"><span>Logs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://dockit.tianlizeng.cloud" role="menuitem"><span>Dockit</span></a></li>
+          <li><a href="https://stack.tianlizeng.cloud" role="menuitem"><span>Stack</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://cmds.tianlizeng.cloud" role="menuitem"><span>CC Docs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://playbooks.tianlizeng.cloud" role="menuitem"><span>Playbooks</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>工具库</h3>
+        <ul>
+          <li><a href="https://github.com/zengtianli/cc-configs" role="menuitem"><span>cc-configs</span></a></li>
+          <li><a href="https://github.com/zengtianli/devtools" role="menuitem"><span>devtools</span></a></li>
+          <li><a href="https://github.com/zengtianli/doctools" role="menuitem"><span>doctools</span></a></li>
+          <li><a href="https://github.com/zengtianli/mactools" role="menuitem"><span>mactools</span></a></li>
+          <li><a href="https://github.com/zengtianli/clashx" role="menuitem"><span>clashx</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>Raycast / 配置</h3>
+        <ul>
+          <li><a href="https://github.com/zengtianli/raycast" role="menuitem"><span>raycast</span></a></li>
+          <li><a href="https://github.com/zengtianli/configs" role="menuitem"><span>configs</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="content" id="mega-panel-content" role="menu" aria-label="📚 内容" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>日志 / 知识</h3>
+        <ul>
+          <li><a href="https://logs.tianlizeng.cloud" role="menuitem"><span>Logs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://docs.tianlizeng.cloud" role="menuitem"><span>知识库</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://audiobook.tianlizeng.cloud" role="menuitem"><span>有声书</span></a></li>
+          <li><a href="https://cclog.tianlizeng.cloud" role="menuitem"><span>CC 会话</span></a></li>
+          <li><a href="https://playbooks.tianlizeng.cloud" role="menuitem"><span>Playbooks</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>投资</h3>
+        <ul>
+          <li><a href="https://assets.tianlizeng.cloud" role="menuitem"><span>理财笔记</span></a></li>
+          <li><a href="https://cc-options.tianlizeng.cloud" role="menuitem"><span>QQQ CC Dashboard</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="infra" id="mega-panel-infra" role="menu" aria-label="⚙️ 基础设施" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>监控 / 自动化</h3>
+        <ul>
+          <li><a href="https://status.tianlizeng.cloud" role="menuitem"><span>Uptime Kuma</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://n8n.tianlizeng.cloud" role="menuitem"><span>n8n</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>代理</h3>
+        <ul>
+          <li><a href="https://proxy.tianlizeng.cloud" role="menuitem"><span>OAuth Proxy</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://panel.tianlizeng.cloud" role="menuitem"><span>Marzban</span></a></li>
+          <li><a href="https://sub.tianlizeng.cloud" role="menuitem"><span>Marzban 订阅</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>WEBHOOK</h3>
+        <ul>
+          <li><a href="https://webhook.tianlizeng.cloud" role="menuitem"><span>Webhook</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+</div>
+<script>(function(){
+  var stack=document.querySelector('.tlz-nav-stack');
+  if(!stack)return;
+  var triggers=stack.querySelectorAll('.mega-trigger');
+  var panels=stack.querySelectorAll('.tlz-mega-panel');
+  var hamburger=stack.querySelector('.tlz-nav-hamburger');
+  var activeKey=null,hideTimer=null;
+  function hideAll(){
+    panels.forEach(function(p){p.setAttribute('data-open','false');});
+    triggers.forEach(function(t){t.setAttribute('aria-expanded','false');});
+    activeKey=null;
+  }
+  function show(k){
+    if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}
+    if(activeKey===k)return;
+    hideAll();
+    var t=stack.querySelector('.mega-trigger[data-cat="'+k+'"]');
+    var p=stack.querySelector('.tlz-mega-panel[data-for="'+k+'"]');
+    if(!t||!p)return;
+    t.setAttribute('aria-expanded','true');
+    p.setAttribute('data-open','true');
+    activeKey=k;
+  }
+  function schedHide(){if(hideTimer)clearTimeout(hideTimer);hideTimer=setTimeout(hideAll,160);}
+  triggers.forEach(function(t){
+    var k=t.getAttribute('data-cat');
+    t.addEventListener('mouseenter',function(){show(k);});
+    t.addEventListener('click',function(e){e.preventDefault();if(activeKey===k)hideAll();else show(k);});
+    t.addEventListener('mouseleave',schedHide);
+  });
+  panels.forEach(function(p){
+    p.addEventListener('mouseenter',function(){if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}});
+    p.addEventListener('mouseleave',schedHide);
+  });
+  document.addEventListener('click',function(e){if(!stack.contains(e.target))hideAll();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')hideAll();});
+  if(hamburger){
+    hamburger.addEventListener('click',function(){
+      var open=stack.getAttribute('data-mobile-open')==='true';
+      stack.setAttribute('data-mobile-open',open?'false':'true');
+      hamburger.setAttribute('aria-expanded',open?'false':'true');
+      if(open)hideAll();
+    });
+  }
+  // current highlight
+  var host=location.hostname;
+  var noCur=["hammerspoon.tianlizeng.cloud", "audiobook.tianlizeng.cloud", "auggie.tianlizeng.cloud", "proxy.tianlizeng.cloud"];
+  var hostMap={"stack.tianlizeng.cloud": "home", "cmds.tianlizeng.cloud": "home", "dashboard.tianlizeng.cloud": "dev", "logs.tianlizeng.cloud": "content", "docs.tianlizeng.cloud": "content", "audiobook.tianlizeng.cloud": "content", "cclog.tianlizeng.cloud": "content", "playbooks.tianlizeng.cloud": "content", "cc-options.tianlizeng.cloud": "content", "assets.tianlizeng.cloud": "content", "status.tianlizeng.cloud": "infra", "n8n.tianlizeng.cloud": "infra", "panel.tianlizeng.cloud": "infra", "sub.tianlizeng.cloud": "infra", "webhook.tianlizeng.cloud": "infra"};
+  var curKey=null;
+  if(noCur.indexOf(host)===-1){
+    curKey=hostMap[host]||null;
+    if(!curKey && (host==='hydro.tianlizeng.cloud' || host.indexOf('hydro-')===0)) curKey='hydro';
+    if(!curKey && host==='tianlizeng.cloud') curKey='home';
+  }
+  if(curKey){
+    var t=stack.querySelector('.mega-trigger[data-cat="'+curKey+'"]');
+    if(t)t.classList.add('current');
+  }
+})();</script>
+
+<style>
+  .tlz-site-header {
+    max-width: 1500px; margin: 0 auto; padding: 24px 20px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'PingFang SC', Helvetica, sans-serif;
+  }
+  .tlz-site-header .tlz-crumb {
+    font-size: 12px; color: #86868b; margin-bottom: 6px;
+  }
+  .tlz-site-header .tlz-crumb a {
+    color: #86868b; text-decoration: none;
+  }
+  .tlz-site-header .tlz-crumb a:hover { color: #0071E3; }
+  .tlz-site-header h1 {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
+    color: #1f2328; margin: 0;
+  }
+  .tlz-site-header h1 .tlz-icon { margin-right: 8px; }
+  .tlz-site-header .tlz-tagline {
+    font-size: 13px; color: #6b7280; margin: 4px 0 0;
+  }
+</style>
+<header class="tlz-site-header">
+  <div class="tlz-crumb"><a href="https://tianlizeng.cloud/">tianlizeng.cloud</a> / <a href="https://tianlizeng.cloud/services">Services</a> / <span>Stack</span></div>
+  <h1><span class="tlz-icon">🗂</span>Stack</h1>
+  <p class="tlz-tagline">~/Dev 项目架构地图</p>
+</header>
+
+<div class="tlz-container">
+<header class="tlz-stats-bar">
+    <span><strong>51</strong> 项目</span>
+    <span><strong>0</strong> 命令</span>
+    <span><strong>0</strong> 技能</span>
+    <span><strong>26</strong> 子域名</span>
+    <span><strong>1</strong> 可能废弃</span>
+    <span><strong>3</strong> 归档候选</span>
+</header>
+
+<div class="tlz-search-wrap">
+  <input id="search" class="tlz-search" type="search" placeholder="搜索项目 / 域名 / 技术栈 / 路径…" autocomplete="off">
+</div>
+<div class="tlz-filters" data-group="kind">
+  <button class="tlz-btn active" data-kind="all">全部</button>
+  <button class="tlz-btn" data-kind="project">项目</button>
+  <button class="tlz-btn" data-kind="command">命令</button>
+  <button class="tlz-btn" data-kind="skill">技能</button>
+</div>
+<div class="tlz-filters" data-group="status">
+  <button class="tlz-btn active" data-status="all">全状态</button>
+  <button class="tlz-btn" data-status="active">运行中</button>
+  <button class="tlz-btn" data-status="likely-stale">可能废弃</button>
+  <button class="tlz-btn" data-status="archive-candidate">归档候选</button>
+</div>
+
+<main>
+<section class="tlz-section" data-group="水利工具">
+  <div class="tlz-section-title" style="--c:#2563eb">
+    <span class="tlz-icon">📦</span>
+    <h2>水利工具</h2>
+    <span class="tlz-count">12</span>
+  </div>
+  <div class="tlz-grid">
+    <div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="hydro toolkit 水利计算工具集主平台，插件式集成多个计算模块 ~/dev/stations/web-stack/services/hydro-toolkit hydro.tianlizeng.cloud 8510 web-app  streamlit python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">Hydro Toolkit</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">水利计算工具集主平台，插件式集成多个计算模块</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hydro.tianlizeng.cloud" target="_blank" rel="noopener">hydro.tianlizeng.cloud</a><span class="port">:8510</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/web-stack/services/hydro-toolkit</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="水资源年报 浙江省水资源年报查询（2019-2024） ~/dev/stations/web-stack/services/hydro-annual hydro-annual.tianlizeng.cloud 8514 web-app  streamlit python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">水资源年报</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">浙江省水资源年报查询（2019-2024）</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hydro-annual.tianlizeng.cloud" target="_blank" rel="noopener">hydro-annual.tianlizeng.cloud</a><span class="port">:8514</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/web-stack/services/hydro-annual</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="纳污能力 河流/水库纳污能力计算，支持分段与多方案对比 ~/dev/stations/web-stack/services/hydro-capacity hydro-capacity.tianlizeng.cloud 8511 web-app  streamlit numpy">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">纳污能力</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">河流/水库纳污能力计算，支持分段与多方案对比</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hydro-capacity.tianlizeng.cloud" target="_blank" rel="noopener">hydro-capacity.tianlizeng.cloud</a><span class="port">:8511</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">NumPy</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/web-stack/services/hydro-capacity</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="河区调度 浙东 19 河区日调度模型，水平衡与分水枢纽计算 ~/dev/stations/web-stack/services/hydro-district hydro-district.tianlizeng.cloud 8516 web-app  streamlit python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">河区调度</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">浙东 19 河区日调度模型，水平衡与分水枢纽计算</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hydro-district.tianlizeng.cloud" target="_blank" rel="noopener">hydro-district.tianlizeng.cloud</a><span class="port">:8516</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/web-stack/services/hydro-district</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="水效评估 工业集聚区水效评估（ahp+critic+topsis） ~/dev/stations/web-stack/services/hydro-efficiency hydro-efficiency.tianlizeng.cloud 8513 web-app  streamlit python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">水效评估</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">工业集聚区水效评估（AHP+CRITIC+TOPSIS）</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hydro-efficiency.tianlizeng.cloud" target="_blank" rel="noopener">hydro-efficiency.tianlizeng.cloud</a><span class="port">:8513</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/web-stack/services/hydro-efficiency</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="地理编码 经纬度/地址互转与企业 poi 搜索（高德 api） ~/dev/stations/web-stack/services/hydro-geocode hydro-geocode.tianlizeng.cloud 8517 web-app  streamlit 高德">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">地理编码</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">经纬度/地址互转与企业 POI 搜索（高德 API）</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hydro-geocode.tianlizeng.cloud" target="_blank" rel="noopener">hydro-geocode.tianlizeng.cloud</a><span class="port">:8517</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">高德</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/web-stack/services/hydro-geocode</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="灌溉需水 灌溉需水量计算，上传数据计算并导出 ~/dev/stations/web-stack/services/hydro-irrigation hydro-irrigation.tianlizeng.cloud 8515 web-app  streamlit python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">灌溉需水</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">灌溉需水量计算，上传数据计算并导出</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hydro-irrigation.tianlizeng.cloud" target="_blank" rel="noopener">hydro-irrigation.tianlizeng.cloud</a><span class="port">:8515</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/web-stack/services/hydro-irrigation</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="降雨径流 228 湖降雨径流 etl 管线 ~/dev/stations/web-stack/services/hydro-rainfall hydro-rainfall.tianlizeng.cloud 8518 web-app  streamlit python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">降雨径流</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">228 湖降雨径流 ETL 管线</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hydro-rainfall.tianlizeng.cloud" target="_blank" rel="noopener">hydro-rainfall.tianlizeng.cloud</a><span class="port">:8518</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/web-stack/services/hydro-rainfall</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="水库群调度 梯级水库群发电调度，参数配置与结果可视化 ~/dev/stations/web-stack/services/hydro-reservoir hydro-reservoir.tianlizeng.cloud 8512 web-app  streamlit numpy">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">水库群调度</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">梯级水库群发电调度，参数配置与结果可视化</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hydro-reservoir.tianlizeng.cloud" target="_blank" rel="noopener">hydro-reservoir.tianlizeng.cloud</a><span class="port">:8512</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">NumPy</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/web-stack/services/hydro-reservoir</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="风险图数据 洪水风险图数据三阶段 etl（geojson 填表） ~/dev/stations/web-stack/services/hydro-risk hydro-risk.tianlizeng.cloud 8519 web-app  streamlit python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">风险图数据</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">洪水风险图数据三阶段 ETL（GeoJSON 填表）</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hydro-risk.tianlizeng.cloud" target="_blank" rel="noopener">hydro-risk.tianlizeng.cloud</a><span class="port">:8519</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/web-stack/services/hydro-risk</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="hydro apps 水利计算 react/tauri 库（hydro-capacity / hydro-irrigation path dep） ~/dev/labs/hydro-apps   library 被 cockpit 引用 rust react tauri">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">Hydro Apps</span>
+      <span class="tlz-card-meta">library</span>
+    </div>
+    <div class="tlz-card-desc">水利计算 React/Tauri 库（hydro-capacity / hydro-irrigation path dep）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Rust</span><span class="tag">React</span><span class="tag">Tauri</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/labs/hydro-apps</code>
+    </div>
+    <div class="notes">被 cockpit 引用</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="hydro qgis qgis 插件，水利 gis 扩展 ~/dev/labs/hydro-qgis   library  python qgis">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">Hydro QGIS</span>
+      <span class="tlz-card-meta">library</span>
+    </div>
+    <div class="tlz-card-desc">QGIS 插件，水利 GIS 扩展</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">QGIS</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/labs/hydro-qgis</code>
+    </div>
+    
+  </div>
+</div>
+  </div>
+</section>
+<section class="tlz-section" data-group="开发工具">
+  <div class="tlz-section-title" style="--c:#7c3aed">
+    <span class="tlz-icon">📦</span>
+    <h2>开发工具</h2>
+    <span class="tlz-count">8</span>
+  </div>
+  <div class="tlz-grid">
+    <div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="devtools git/llm/tts/仓库管理工具集（cc hooks + raycast + cf 脚本） ~/dev/devtools   cli  python shell raycast">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">devtools</span>
+      <span class="tlz-card-meta">cli</span>
+    </div>
+    <div class="tlz-card-desc">Git/LLM/TTS/仓库管理工具集（CC hooks + Raycast + CF 脚本）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">Shell</span><span class="tag">Raycast</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/devtools</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="doctools 文档处理与数据转换工具集（13 doc scripts + 27 raycast） ~/dev/tools/doctools   cli  python raycast">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">doctools</span>
+      <span class="tlz-card-meta">cli</span>
+    </div>
+    <div class="tlz-card-desc">文档处理与数据转换工具集（13 doc scripts + 27 Raycast）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">Raycast</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/tools/doctools</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="dockit word/ppt/excel/chart 处理库 ~/dev/stations/dockit dockit.tianlizeng.cloud 8503 web-app  python python-docx">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">dockit</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">Word/PPT/Excel/Chart 处理库</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://dockit.tianlizeng.cloud" target="_blank" rel="noopener">dockit.tianlizeng.cloud</a><span class="port">:8503</span>
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">python-docx</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/dockit</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="dockit-raycast dockit 的 raycast 扩展 ~/dev/raycast/dockit-ext   cli  typescript raycast">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">dockit-raycast</span>
+      <span class="tlz-card-meta">cli</span>
+    </div>
+    <div class="tlz-card-desc">dockit 的 Raycast 扩展</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">TypeScript</span><span class="tag">Raycast</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/raycast/dockit-ext</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="mactools macos 文件/系统/窗口操作（13 raycast commands） ~/dev/tools/mactools   cli  python shell raycast">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">mactools</span>
+      <span class="tlz-card-meta">cli</span>
+    </div>
+    <div class="tlz-card-desc">macOS 文件/系统/窗口操作（13 Raycast commands）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">Shell</span><span class="tag">Raycast</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/tools/mactools</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="clashx clashx 代理管理工具（6 raycast commands） ~/dev/tools/clashx   cli  shell raycast">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">clashx</span>
+      <span class="tlz-card-meta">cli</span>
+    </div>
+    <div class="tlz-card-desc">ClashX 代理管理工具（6 Raycast commands）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Shell</span><span class="tag">Raycast</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/tools/clashx</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="downloads-organizer downloads 文件夹自动整理（customtkinter gui） ~/dev/labs/downloads-organizer   desktop-app  python customtkinter">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">downloads-organizer</span>
+      <span class="tlz-card-meta">desktop-app</span>
+    </div>
+    <div class="tlz-card-desc">Downloads 文件夹自动整理（customtkinter GUI）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">customtkinter</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/labs/downloads-organizer</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="raycast raycast commands 索引 hub（symlink 各项目脚本） ~/dev/tools/raycast   config  typescript">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">raycast</span>
+      <span class="tlz-card-meta">config</span>
+    </div>
+    <div class="tlz-card-desc">Raycast commands 索引 hub（symlink 各项目脚本）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">TypeScript</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/tools/raycast</code>
+    </div>
+    
+  </div>
+</div>
+  </div>
+</section>
+<section class="tlz-section" data-group="CC 生态">
+  <div class="tlz-section-title" style="--c:#db2777">
+    <span class="tlz-icon">📦</span>
+    <h2>CC 生态</h2>
+    <span class="tlz-count">4</span>
+  </div>
+  <div class="tlz-grid">
+    <div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="cc-configs claude code 配置中心（commands/skills/agents/rules） ~/dev/tools/cc-configs   config symlink → ~/.claude python markdown">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">cc-configs</span>
+      <span class="tlz-card-meta">config</span>
+    </div>
+    <div class="tlz-card-desc">Claude Code 配置中心（commands/skills/agents/rules）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">Markdown</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/tools/cc-configs</code>
+    </div>
+    <div class="notes">symlink → ~/.claude</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="cclog cc 会话浏览&amp;amp;分析工具 + mcp + 知识搜索 ~/dev/stations/cclog cclog.tianlizeng.cloud  cli 2026-04-17 修复了 uv tool 失效问题 python sqlite fastapi">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">cclog</span>
+      <span class="tlz-card-meta">cli</span>
+    </div>
+    <div class="tlz-card-desc">CC 会话浏览&amp;分析工具 + MCP + 知识搜索</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://cclog.tianlizeng.cloud" target="_blank" rel="noopener">cclog.tianlizeng.cloud</a>
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">SQLite</span><span class="tag">FastAPI</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/cclog</code>
+    </div>
+    <div class="notes">2026-04-17 修复了 uv tool 失效问题</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="archived" data-kind="project" data-search="cc-evolution cc 自我进化系统变更日志（静态站点） ~/dev/_archive/cc-evolution-20260419 changelog.tianlizeng.cloud  static-site 2026-04-19 归档；11 个进化条目，记录 hermes 借鉴 python html">
+  <span class="tlz-dot tlz-dot--unknown" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">cc-evolution</span>
+      <span class="tlz-card-meta">static-site</span>
+    </div>
+    <div class="tlz-card-desc">CC 自我进化系统变更日志（静态站点）</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://changelog.tianlizeng.cloud" target="_blank" rel="noopener">changelog.tianlizeng.cloud</a>
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">HTML</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/_archive/cc-evolution-20260419</code>
+    </div>
+    <div class="notes">2026-04-19 归档；11 个进化条目，记录 hermes 借鉴</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="archive-candidate" data-kind="project" data-search="cockpit 个人效率驾驶舱（tauri 2 桌面 app, dashboard+knowledge+calculators） ~/dev/labs/cockpit   desktop-app handoff 自评&amp;quot;质量太差了&amp;quot;，ai 功能太弱 rust react tauri">
+  <span class="tlz-dot tlz-dot--unknown" title="归档候选"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">cockpit</span>
+      <span class="tlz-card-meta">desktop-app</span>
+    </div>
+    <div class="tlz-card-desc">个人效率驾驶舱（Tauri 2 桌面 app, Dashboard+Knowledge+Calculators）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Rust</span><span class="tag">React</span><span class="tag">Tauri</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/labs/cockpit</code>
+    </div>
+    <div class="notes">HANDOFF 自评&quot;质量太差了&quot;，AI 功能太弱</div>
+  </div>
+</div>
+  </div>
+</section>
+<section class="tlz-section" data-group="Web 服务">
+  <div class="tlz-section-title" style="--c:#0891b2">
+    <span class="tlz-icon">📦</span>
+    <h2>Web 服务</h2>
+    <span class="tlz-count">6</span>
+  </div>
+  <div class="tlz-grid">
+    <div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="website 个人作品集网站（主站） ~/dev/stations/website tianlizeng.cloud  web-app standalone 部署，bash deploy.sh next.js 15 react 19 typescript">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">website</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">个人作品集网站（主站）</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://tianlizeng.cloud" target="_blank" rel="noopener">tianlizeng.cloud</a>
+      <span class="stack-tags"><span class="tag">Next.js 15</span><span class="tag">React 19</span><span class="tag">TypeScript</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/website</code>
+    </div>
+    <div class="notes">standalone 部署，bash deploy.sh</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="archived" data-kind="project" data-search="repo-dashboard 项目控制台（已被 ops-console 取代，2026-04-19 归档） ~/dev/_archive/repo-dashboard-20260419   web-app ops-console 接管 dashboard.tianlizeng.cloud 子域 streamlit python">
+  <span class="tlz-dot tlz-dot--unknown" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">repo-dashboard</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">项目控制台（已被 ops-console 取代，2026-04-19 归档）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/_archive/repo-dashboard-20260419</code>
+    </div>
+    <div class="notes">ops-console 接管 dashboard.tianlizeng.cloud 子域</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="audiobook markdown 转有声书（edge-tts） ~/dev/stations/audiobook audiobook.tianlizeng.cloud 9200 web-app  fastapi edge-tts">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">audiobook</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">Markdown 转有声书（edge-tts）</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://audiobook.tianlizeng.cloud" target="_blank" rel="noopener">audiobook.tianlizeng.cloud</a><span class="port">:9200</span>
+      <span class="stack-tags"><span class="tag">FastAPI</span><span class="tag">edge-tts</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/audiobook</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="likely-stale" data-kind="project" data-search="mindmap 思维导图 web 工具 ~/dev/labs/mindmap   web-app phase 2 未部署 next.js 16 mind elixir">
+  <span class="tlz-dot tlz-dot--warn" title="可能废弃"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">mindmap</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">思维导图 Web 工具</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Next.js 16</span><span class="tag">Mind Elixir</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/labs/mindmap</code>
+    </div>
+    <div class="notes">Phase 2 未部署</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="oauth-proxy anthropic api 管理 &amp;amp; cf access 认证代理 ~/dev/stations/oauth-proxy proxy.tianlizeng.cloud 9100 web-app  aiohttp react vite">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">oauth-proxy</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">Anthropic API 管理 &amp; CF Access 认证代理</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://proxy.tianlizeng.cloud" target="_blank" rel="noopener">proxy.tianlizeng.cloud</a><span class="port">:9100</span>
+      <span class="stack-tags"><span class="tag">aiohttp</span><span class="tag">React</span><span class="tag">Vite</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/oauth-proxy</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="auggie-dashboard auggie 代码库扫描 + scan.json 数据源（被 ops-console /auggie 页消费） ~/dev/labs/auggie-dashboard   cli 不是 subdomain 服务；scan.json → ops-console。angie 入口归宿待定（见 plan） python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">auggie-dashboard</span>
+      <span class="tlz-card-meta">cli</span>
+    </div>
+    <div class="tlz-card-desc">Auggie 代码库扫描 + scan.json 数据源（被 ops-console /auggie 页消费）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/labs/auggie-dashboard</code>
+    </div>
+    <div class="notes">不是 subdomain 服务；scan.json → ops-console。Angie 入口归宿待定（见 plan）</div>
+  </div>
+</div>
+  </div>
+</section>
+<section class="tlz-section" data-group="桌面与配置">
+  <div class="tlz-section-title" style="--c:#059669">
+    <span class="tlz-icon">📦</span>
+    <h2>桌面与配置</h2>
+    <span class="tlz-count">4</span>
+  </div>
+  <div class="tlz-grid">
+    <div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="configs macos 配置仓库（nvim/zsh/yabai/karabiner/ghostty/starship） ~/dev/tools/configs   config symlink → ~/.config lua shell json">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">configs</span>
+      <span class="tlz-card-meta">config</span>
+    </div>
+    <div class="tlz-card-desc">macOS 配置仓库（nvim/zsh/yabai/karabiner/ghostty/starship）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Lua</span><span class="tag">Shell</span><span class="tag">JSON</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/tools/configs</code>
+    </div>
+    <div class="notes">symlink → ~/.config</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="archived" data-kind="project" data-search="hammerspoon hammerspoon 自动化（按键重映射 + finder 增强） ~/dev/tools/hammerspoon   config 2026-04-17 归档；symlink → ~/.hammerspoon lua">
+  <span class="tlz-dot tlz-dot--unknown" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">hammerspoon</span>
+      <span class="tlz-card-meta">config</span>
+    </div>
+    <div class="tlz-card-desc">Hammerspoon 自动化（按键重映射 + Finder 增强）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Lua</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/tools/hammerspoon</code>
+    </div>
+    <div class="notes">2026-04-17 归档；symlink → ~/.hammerspoon</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="dotfiles shell/ghostty/yazi/starship 配置 ~/dev/tools/configs/_dotfiles   config  shell toml">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">dotfiles</span>
+      <span class="tlz-card-meta">config</span>
+    </div>
+    <div class="tlz-card-desc">Shell/Ghostty/Yazi/Starship 配置</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Shell</span><span class="tag">TOML</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/tools/configs/_dotfiles</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="archived" data-kind="project" data-search="hs-dashboard hammerspoon 状态可视化 web ~/dev/_archive/hs-dashboard-20260418 hammerspoon.tianlizeng.cloud  web-app 2026-04-18 归档 streamlit">
+  <span class="tlz-dot tlz-dot--unknown" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">hs-dashboard</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">Hammerspoon 状态可视化 Web</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://hammerspoon.tianlizeng.cloud" target="_blank" rel="noopener">hammerspoon.tianlizeng.cloud</a>
+      <span class="stack-tags"><span class="tag">Streamlit</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/_archive/hs-dashboard-20260418</code>
+    </div>
+    <div class="notes">2026-04-18 归档</div>
+  </div>
+</div>
+  </div>
+</section>
+<section class="tlz-section" data-group="知识与内容">
+  <div class="tlz-section-title" style="--c:#d97706">
+    <span class="tlz-icon">📦</span>
+    <h2>知识与内容</h2>
+    <span class="tlz-count">4</span>
+  </div>
+  <div class="tlz-grid">
+    <div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="docs 个人知识库（架构/指南/技术笔记），含 meilisearch 搜索 ~/dev/stations/docs docs.tianlizeng.cloud  docs cf access 保护 markdown meilisearch">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">docs</span>
+      <span class="tlz-card-meta">docs</span>
+    </div>
+    <div class="tlz-card-desc">个人知识库（架构/指南/技术笔记），含 Meilisearch 搜索</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://docs.tianlizeng.cloud" target="_blank" rel="noopener">docs.tianlizeng.cloud</a>
+      <span class="stack-tags"><span class="tag">Markdown</span><span class="tag">Meilisearch</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/docs</code>
+    </div>
+    <div class="notes">CF Access 保护</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="essays 学术论文写作（艺术 + 水利） ~/dev/content/essays   docs  markdown word">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">essays</span>
+      <span class="tlz-card-meta">docs</span>
+    </div>
+    <div class="tlz-card-desc">学术论文写作（艺术 + 水利）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Markdown</span><span class="tag">Word</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/content/essays</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="resume 求职管理系统（简历 + 岗位追踪） ~/dev/content/resume   docs  markdown">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">resume</span>
+      <span class="tlz-card-meta">docs</span>
+    </div>
+    <div class="tlz-card-desc">求职管理系统（简历 + 岗位追踪）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Markdown</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/content/resume</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="learn ai 工程学习笔记（6 层架构理论 + 实战） ~/dev/content/learn   docs  markdown">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">learn</span>
+      <span class="tlz-card-meta">docs</span>
+    </div>
+    <div class="tlz-card-desc">AI 工程学习笔记（6 层架构理论 + 实战）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Markdown</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/content/learn</code>
+    </div>
+    
+  </div>
+</div>
+  </div>
+</section>
+<section class="tlz-section" data-group="投资与 AI">
+  <div class="tlz-section-title" style="--c:#16a34a">
+    <span class="tlz-icon">📦</span>
+    <h2>投资与 AI</h2>
+    <span class="tlz-count">2</span>
+  </div>
+  <div class="tlz-grid">
+    <div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="international-assets 国际资产配置体系（qqq cc 策略 + ibkr + robinhood） ~/dev/content/investment cc-options.tianlizeng.cloud 8521 web-app cf access 保护 streamlit python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">international-assets</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">国际资产配置体系（QQQ CC 策略 + IBKR + Robinhood）</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://cc-options.tianlizeng.cloud" target="_blank" rel="noopener">cc-options.tianlizeng.cloud</a><span class="port">:8521</span>
+      <span class="stack-tags"><span class="tag">Streamlit</span><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/content/investment</code>
+    </div>
+    <div class="notes">CF Access 保护</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="llm-finetune qlora fine-tuning pipeline（qwen2.5） ~/dev/labs/llm-finetune   library  python transformers peft">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">llm-finetune</span>
+      <span class="tlz-card-meta">library</span>
+    </div>
+    <div class="tlz-card-desc">QLoRA fine-tuning pipeline（Qwen2.5）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">transformers</span><span class="tag">peft</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/labs/llm-finetune</code>
+    </div>
+    
+  </div>
+</div>
+  </div>
+</section>
+<section class="tlz-section" data-group="基础设施">
+  <div class="tlz-section-title" style="--c:#6b7280">
+    <span class="tlz-icon">📦</span>
+    <h2>基础设施</h2>
+    <span class="tlz-count">8</span>
+  </div>
+  <div class="tlz-grid">
+    <div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="vps vps 文档与配置 ~/dev/tools/vps   docs vps host ssot 在 ~/dev/devtools/lib/vps_config.sh markdown shell">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">vps</span>
+      <span class="tlz-card-meta">docs</span>
+    </div>
+    <div class="tlz-card-desc">VPS 文档与配置</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"><span class="tag">Markdown</span><span class="tag">Shell</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/tools/vps</code>
+    </div>
+    <div class="notes">VPS host SSOT 在 ~/Dev/devtools/lib/vps_config.sh</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="stack 本站 — 项目架构说明书（cf access） ~/dev/stations/stack stack.tianlizeng.cloud  static-site  python html">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">stack</span>
+      <span class="tlz-card-meta">static-site</span>
+    </div>
+    <div class="tlz-card-desc">本站 — 项目架构说明书（CF Access）</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://stack.tianlizeng.cloud" target="_blank" rel="noopener">stack.tianlizeng.cloud</a>
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">HTML</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/stack</code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="cmds cc 命令 &amp;amp; 技能说明书 — 每条命令独立详情页，marked.js 客户端渲染原 md ~/dev/stations/cmds cmds.tianlizeng.cloud  static-site 数据源直接扫 ~/dev/tools/cc-configs，不维护 yaml python html marked.js">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">cmds</span>
+      <span class="tlz-card-meta">static-site</span>
+    </div>
+    <div class="tlz-card-desc">CC 命令 &amp; 技能说明书 — 每条命令独立详情页，marked.js 客户端渲染原 md</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://cmds.tianlizeng.cloud" target="_blank" rel="noopener">cmds.tianlizeng.cloud</a>
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">HTML</span><span class="tag">marked.js</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/stations/cmds</code>
+    </div>
+    <div class="notes">数据源直接扫 ~/Dev/tools/cc-configs，不维护 yaml</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="uptime-kuma 服务可用性监控  status.tianlizeng.cloud 3001 web-app cf access node.js">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">uptime-kuma</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">服务可用性监控</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://status.tianlizeng.cloud" target="_blank" rel="noopener">status.tianlizeng.cloud</a><span class="port">:3001</span>
+      <span class="stack-tags"><span class="tag">Node.js</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code></code>
+    </div>
+    <div class="notes">CF Access</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="n8n 工作流自动化引擎  n8n.tianlizeng.cloud 5678 web-app cf access node.js">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">n8n</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">工作流自动化引擎</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://n8n.tianlizeng.cloud" target="_blank" rel="noopener">n8n.tianlizeng.cloud</a><span class="port">:5678</span>
+      <span class="stack-tags"><span class="tag">Node.js</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code></code>
+    </div>
+    <div class="notes">CF Access</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="marzban 代理面板管理  panel.tianlizeng.cloud 8000 web-app  python fastapi">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">Marzban</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">代理面板管理</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://panel.tianlizeng.cloud" target="_blank" rel="noopener">panel.tianlizeng.cloud</a><span class="port">:8000</span>
+      <span class="stack-tags"><span class="tag">Python</span><span class="tag">FastAPI</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code></code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="marzban 订阅 代理客户端订阅端点  sub.tianlizeng.cloud 8000 web-app  python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">Marzban 订阅</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">代理客户端订阅端点</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://sub.tianlizeng.cloud" target="_blank" rel="noopener">sub.tianlizeng.cloud</a><span class="port">:8000</span>
+      <span class="stack-tags"><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code></code>
+    </div>
+    
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="webhook github webhook 接收器  webhook.tianlizeng.cloud 9000 web-app  python">
+  <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">Webhook</span>
+      <span class="tlz-card-meta">web-app</span>
+    </div>
+    <div class="tlz-card-desc">GitHub Webhook 接收器</div>
+    <div class="stack-card-meta">
+      <a class="domain" href="https://webhook.tianlizeng.cloud" target="_blank" rel="noopener">webhook.tianlizeng.cloud</a><span class="port">:9000</span>
+      <span class="stack-tags"><span class="tag">Python</span></span>
+    </div>
+    <div class="stack-card-path">
+      <code></code>
+    </div>
+    
+  </div>
+</div>
+  </div>
+</section>
+<section class="tlz-section" data-group="归档候选">
+  <div class="tlz-section-title" style="--c:#9ca3af">
+    <span class="tlz-icon">📦</span>
+    <h2>归档候选</h2>
+    <span class="tlz-count">3</span>
+  </div>
+  <div class="tlz-grid">
+    <div class="tlz-card stack-card" data-status="archive-candidate" data-kind="project" data-search="analysis-hermes-vs-mine hermes vs 自建对比分析（无 readme） ~/dev/content/analysis-hermes-vs-mine   docs 无活动，可归档">
+  <span class="tlz-dot tlz-dot--unknown" title="归档候选"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">analysis-hermes-vs-mine</span>
+      <span class="tlz-card-meta">docs</span>
+    </div>
+    <div class="tlz-card-desc">Hermes vs 自建对比分析（无 README）</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/content/analysis-hermes-vs-mine</code>
+    </div>
+    <div class="notes">无活动，可归档</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="archived" data-kind="project" data-search="scripts-archive 旧脚本归档 ~/dev/_archive/scripts-archive   docs 2026-04-16 github 已 archive">
+  <span class="tlz-dot tlz-dot--unknown" title="运行中"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">scripts-archive</span>
+      <span class="tlz-card-meta">docs</span>
+    </div>
+    <div class="tlz-card-desc">旧脚本归档</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/_archive/scripts-archive</code>
+    </div>
+    <div class="notes">2026-04-16 GitHub 已 archive</div>
+  </div>
+</div>
+<div class="tlz-card stack-card" data-status="archive-candidate" data-kind="project" data-search="scripts 单目录，无活动 ~/dev/tools/scripts   config ">
+  <span class="tlz-dot tlz-dot--unknown" title="归档候选"></span>
+  <div class="tlz-card-body">
+    <div class="tlz-card-header">
+      <span class="tlz-card-name">scripts</span>
+      <span class="tlz-card-meta">config</span>
+    </div>
+    <div class="tlz-card-desc">单目录，无活动</div>
+    <div class="stack-card-meta">
+      
+      <span class="stack-tags"></span>
+    </div>
+    <div class="stack-card-path">
+      <code>~/Dev/tools/scripts</code>
+    </div>
+    
+  </div>
+</div>
+  </div>
+</section>
+</main>
+
+<footer class="tlz-footer">
+  Generated 2026-04-22 12:49 · <a href="https://github.com/zengtianli/stack">stack</a>
+</footer>
+</div>
+
+<script src="site-filter.js"></script>
+<script>
+(function() {
+  initSiteFilter({
+    searchInput: document.getElementById('search'),
+    searchAttrs: ['search'],
+    filterGroups: [
+      {
+        buttons: Array.from(document.querySelectorAll('.tlz-filters[data-group="kind"] .tlz-btn')),
+        cardAttr: 'data-kind'
+      },
+      {
+        buttons: Array.from(document.querySelectorAll('.tlz-filters[data-group="status"] .tlz-btn')),
+        cardAttr: 'data-status'
+      }
+    ],
+    cards: Array.from(document.querySelectorAll('.tlz-card')),
+    sectionSelector: '.tlz-section',
+    cardClass: 'tlz-card',
+    keyboard: {searchFocus: '/', clear: 'Escape'}
+  });
+
+  const cards = Array.from(document.querySelectorAll('.tlz-card'));
+  // Click card to expand / collapse (但链接点击不触发)
+  cards.forEach(c => {
+    c.addEventListener('click', e => {
+      if (e.target.tagName === 'A') return;
+      c.classList.toggle('expanded');
+    });
+  });
+
+  // Keyboard: / focuses search, Esc clears
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement !== search) {
+      e.preventDefault();
+      search.focus();
+    }
+    if (e.key === 'Escape' && document.activeElement === search) {
+      search.value = '';
+      currentQuery = '';
+      apply();
+      search.blur();
+    }
+    // Esc (in body) collapses all expanded cards
+    if (e.key === 'Escape' && document.activeElement !== search) {
+      document.querySelectorAll('.card.expanded').forEach(c => c.classList.remove('expanded'));
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

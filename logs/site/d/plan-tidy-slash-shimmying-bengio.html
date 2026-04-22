@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Streamlit → Next.js 全迁 · Turborepo monorepo · /stack-classify 分类清单 · Journal</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'PingFang SC', Helvetica, sans-serif;
+       color: #1f2328; }
+h1, h2, h3 { color: #1f2328; letter-spacing: -0.01em; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.subtitle { color: #6b7280; font-size: 13px; margin-bottom: 24px; }
+
+/* logs 时间线：每个 row 用 .tlz-card.tlz-card--row（玻璃风格）+ 自身 grid 布局 */
+.tlz-card.tlz-card--row {
+  display: grid;
+  grid-template-columns: 100px 140px 1fr 60px;
+  gap: 16px;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.tlz-card.tlz-card--row .date { color: #86868b; font-variant-numeric: tabular-nums; font-size: 12px; font-family: ui-monospace, monospace; }
+.tlz-card.tlz-card--row .proj { font-weight: 600; color: #1f2328; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlz-card.tlz-card--row .title { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlz-card.tlz-card--row .kind { font-size: 10px; text-transform: uppercase; color: #9ca3af; text-align: right; letter-spacing: 0.05em; }
+.timeline { display: flex; flex-direction: column; }
+@media (max-width: 640px) {
+  .tlz-card.tlz-card--row { grid-template-columns: 80px 1fr; }
+  .tlz-card.tlz-card--row .proj { display: none; }
+  .tlz-card.tlz-card--row .kind { display: none; }
+}
+
+.detail .md-out { font-size: 14px; line-height: 1.7; max-width: 900px; }
+.detail .md-out h1 { font-size: 22px; margin: 24px 0 12px; }
+.detail .md-out h2 { font-size: 18px; margin: 20px 0 10px; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 4px; }
+.detail .md-out h3 { font-size: 16px; margin: 16px 0 8px; }
+.detail .md-out p { margin: 8px 0; }
+.detail .md-out code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font: 13px ui-monospace, Menlo, monospace; }
+.detail .md-out pre { background: #0d1117; color: #e6edf3; padding: 12px 16px; border-radius: 8px; overflow-x: auto; font: 12px/1.6 ui-monospace, Menlo, monospace; }
+.detail .md-out pre code { background: transparent; padding: 0; color: inherit; }
+.detail .md-out ul, .detail .md-out ol { margin: 8px 0; padding-left: 22px; }
+.detail .md-out li { margin: 3px 0; }
+.detail .md-out a { color: #0071E3; text-decoration: none; }
+.detail .md-out a:hover { text-decoration: underline; }
+.detail .md-out blockquote { border-left: 3px solid #0071E3; padding-left: 12px; color: #6b7280; margin: 8px 0; }
+.detail .md-out table { border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.detail .md-out th, .detail .md-out td { border: 1px solid rgba(0,0,0,0.1); padding: 6px 10px; text-align: left; }
+.detail .md-out th { background: #f3f4f6; font-weight: 600; }
+
+.meta-bar { color: #6b7280; font-size: 12px; margin-bottom: 20px; padding: 10px 14px; background: #fff; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); }
+.meta-bar .path { font-family: ui-monospace, Menlo, monospace; }
+.back { display: inline-block; margin-bottom: 12px; color: #0071E3; text-decoration: none; font-size: 13px; }
+.back:hover { text-decoration: underline; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="detail">
+<style>
+  /* ============================================================
+     Mega Menu · HSBC-style unified light (R7.2)
+     - Brand bar 64px · 单色浅灰 panel 全 4 列等宽
+     - hover 触发 · 150ms 延迟关闭 · display:none 默认严格隐藏
+     - html/body overflow-x:hidden 防横滚兜底
+  ============================================================ */
+
+  :root {
+    --tlz-bg-panel:       #F5F5F5;
+    --tlz-text-primary:   #111111;
+    --tlz-text-secondary: #333333;
+    --tlz-border-subtle:  #E5E5E5;
+    --tlz-border-divider: #E0E0E0;
+    --tlz-badge-border:   #BFBFBF;
+    --tlz-badge-text:     #6B7177;
+    --tlz-accent:         #D40000;
+  }
+
+  html, body { overflow-x: hidden; }
+  body { padding-top: 64px !important; }
+
+  .tlz-nav-stack {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    font: 400 15px/1 -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  }
+
+  /* ===== Brand bar ===== */
+  .tlz-nav {
+    height: 64px;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--tlz-border-subtle);
+    display: flex; align-items: center;
+  }
+  .tlz-nav-inner {
+    max-width: 1280px; width: 100%; margin: 0 auto;
+    padding: 0 24px; display: flex; align-items: center;
+    min-width: 0;
+  }
+  .tlz-nav-brand {
+    font-weight: 500; font-size: 18px; color: #000;
+    text-decoration: none; transition: color 0.12s;
+    flex-shrink: 0;
+  }
+  .tlz-nav-brand:hover { color: var(--tlz-accent); }
+  .tlz-nav-sep { width: 1px; height: 32px; background: var(--tlz-border-subtle); margin: 0 24px; flex-shrink: 0; }
+
+  .tlz-nav-triggers { display: flex; align-items: center; gap: 32px; flex: 1; min-width: 0; }
+  .tlz-nav .mega-trigger {
+    background: transparent; border: 0;
+    font: inherit; font-size: 15px; font-weight: 400;
+    color: var(--tlz-text-secondary);
+    padding: 8px 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 4px;
+    transition: color 0.12s; white-space: nowrap;
+  }
+  .tlz-nav .mega-trigger::after {
+    content: "\25be"; font-size: 12px; opacity: 0.6;
+    transition: transform 0.18s ease-out;
+  }
+  .tlz-nav .mega-trigger:hover { color: #000; }
+  .tlz-nav .mega-trigger[aria-expanded="true"] { color: #000; font-weight: 500; }
+  .tlz-nav .mega-trigger[aria-expanded="true"]::after { transform: rotate(180deg); }
+  .tlz-nav .mega-trigger.current { color: #000; font-weight: 500; }
+
+  /* ===== Mega Panel · 默认完全隐藏 ===== */
+  .tlz-mega-panel {
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: var(--tlz-bg-panel);
+    display: none;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    box-shadow: 0 8px 16px -8px rgba(0,0,0,0.08);
+  }
+  .tlz-mega-panel[data-open="true"] { display: block; }
+
+  /* 内部 max-width 1280px 居中 · 4 列等宽 */
+  .tlz-mega-inner {
+    max-width: 1280px; width: 100%;
+    margin: 0 auto;
+    padding: 40px 48px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    min-height: 320px;
+  }
+
+  .tlz-mega-col {
+    padding: 0 24px;
+    border-right: 1px solid var(--tlz-border-divider);
+    min-width: 0;
+  }
+  .tlz-mega-col:first-child { padding-left: 0; }
+  .tlz-mega-col:last-child { border-right: 0; padding-right: 0; }
+
+  /* Group */
+  .tlz-mega-group { margin-bottom: 24px; }
+  .tlz-mega-group:last-child { margin-bottom: 0; }
+  .tlz-mega-group h3 {
+    font-size: 15px; font-weight: 600; color: var(--tlz-text-primary);
+    margin: 0 0 12px;
+  }
+  .tlz-mega-group ul { list-style: none; padding: 0; margin: 0; }
+  .tlz-mega-group a {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tlz-text-secondary); text-decoration: none;
+    font-size: 14px; font-weight: 400; line-height: 28px;
+    transition: color 0.12s;
+  }
+  .tlz-mega-group a:hover { color: var(--tlz-accent); }
+
+  /* CF badge（统一浅灰规格） */
+  .tlz-mega-group .cf-badge {
+    height: 18px; padding: 0 6px;
+    display: inline-flex; align-items: center;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.05em;
+    color: var(--tlz-badge-text);
+    background: transparent;
+    border: 1px solid var(--tlz-badge-border);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* Hamburger */
+  .tlz-nav-hamburger {
+    display: none; background: transparent; border: 0;
+    color: var(--tlz-text-secondary); padding: 8px; margin-left: auto;
+    cursor: pointer; font-size: 20px;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 1023px) {
+    .tlz-mega-inner {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 32px 24px;
+    }
+    .tlz-mega-col:nth-child(2n) { border-right: 0; padding-right: 0; }
+    .tlz-mega-col:nth-child(n+3) {
+      padding-top: 24px; margin-top: 24px;
+      border-top: 1px solid var(--tlz-border-divider);
+    }
+    .tlz-mega-col:nth-child(3) { padding-left: 0; }
+  }
+
+  @media (max-width: 768px) {
+    body { padding-top: 56px !important; }
+    .tlz-nav { height: 56px; }
+    .tlz-nav-inner { padding: 0 16px; }
+    .tlz-nav-sep { display: none; }
+    .tlz-nav-triggers { display: none; }
+    .tlz-nav-hamburger { display: inline-flex; }
+
+    .tlz-nav-stack[data-mobile-open="true"] .tlz-nav-triggers {
+      display: flex; flex-direction: column; align-items: stretch;
+      position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+      background: #FFFFFF;
+      padding: 0; gap: 0; overflow-y: auto; z-index: 10000;
+    }
+    .tlz-nav-stack[data-mobile-open="true"] .mega-trigger {
+      width: 100%; justify-content: space-between;
+      padding: 16px 20px; border-radius: 0;
+      border-bottom: 1px solid var(--tlz-border-subtle);
+      font-size: 16px;
+    }
+
+    .tlz-mega-panel {
+      top: 56px; max-height: calc(100vh - 56px);
+      position: static; box-shadow: none;
+    }
+    .tlz-mega-inner {
+      grid-template-columns: 1fr;
+      padding: 16px 20px;
+    }
+    .tlz-mega-col {
+      padding: 0 !important;
+      border-right: 0 !important;
+      border-top: 0 !important;
+      margin-top: 16px !important;
+    }
+    .tlz-mega-col:first-child { margin-top: 0 !important; }
+  }
+</style>
+<div class="tlz-nav-stack" data-mobile-open="false">
+<nav class="tlz-nav" aria-label="站群导航"><div class="tlz-nav-inner">
+  <a class="tlz-nav-brand" href="https://tianlizeng.cloud/" data-site="home">曾田力</a>
+  <div class="tlz-nav-sep" aria-hidden="true"></div>
+  <div class="tlz-nav-triggers" role="menubar">
+    <button class="mega-trigger" data-cat="home" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-home">🏠 主站</button>
+    <button class="mega-trigger" data-cat="hydro" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-hydro">💧 水利</button>
+    <button class="mega-trigger" data-cat="dev" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-dev">🛠 开发</button>
+    <button class="mega-trigger" data-cat="content" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-content">📚 内容</button>
+    <button class="mega-trigger" data-cat="infra" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="mega-panel-infra">⚙️ 基础设施</button>
+  </div>
+  <button class="tlz-nav-hamburger" aria-label="菜单" aria-expanded="false" data-toggle="mobile">☰</button>
+</div></nav>
+<div class="tlz-mega-panel" data-for="home" id="mega-panel-home" role="menu" aria-label="🏠 主站" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>关于</h3>
+        <ul>
+          <li><a href="https://tianlizeng.cloud/about" role="menuitem"><span>关于我</span></a></li>
+          <li><a href="https://tianlizeng.cloud/projects" role="menuitem"><span>作品</span></a></li>
+          <li><a href="https://tianlizeng.cloud/research" role="menuitem"><span>研究</span></a></li>
+          <li><a href="https://tianlizeng.cloud/blog" role="menuitem"><span>博客</span></a></li>
+          <li><a href="https://tianlizeng.cloud/life" role="menuitem"><span>生活</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>入口</h3>
+        <ul>
+          <li><a href="https://tianlizeng.cloud/services" role="menuitem"><span>服务总览</span></a></li>
+          <li><a href="https://stack.tianlizeng.cloud" role="menuitem"><span>Stack</span></a></li>
+          <li><a href="https://cmds.tianlizeng.cloud" role="menuitem"><span>CC Docs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://dashboard.tianlizeng.cloud" role="menuitem"><span>Dashboard</span></a></li>
+          <li><a href="https://dashboard.tianlizeng.cloud/auggie" role="menuitem"><span>Auggie</span></a></li>
+          <li><a href="https://tianlizeng.cloud/search" role="menuitem"><span>搜索</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="hydro" id="mega-panel-hydro" role="menu" aria-label="💧 水利" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>主平台</h3>
+        <ul>
+          <li><a href="https://hydro.tianlizeng.cloud" role="menuitem"><span>Hydro Toolkit</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>水资源/调度</h3>
+        <ul>
+          <li><a href="https://hydro-annual.tianlizeng.cloud" role="menuitem"><span>水资源年报</span></a></li>
+          <li><a href="https://hydro-reservoir.tianlizeng.cloud" role="menuitem"><span>水库群调度</span></a></li>
+          <li><a href="https://hydro-district.tianlizeng.cloud" role="menuitem"><span>河区调度</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>评估/编码</h3>
+        <ul>
+          <li><a href="https://hydro-efficiency.tianlizeng.cloud" role="menuitem"><span>水效评估</span></a></li>
+          <li><a href="https://hydro-geocode.tianlizeng.cloud" role="menuitem"><span>地理编码</span></a></li>
+          <li><a href="https://hydro-capacity.tianlizeng.cloud" role="menuitem"><span>纳污能力</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>风险/降雨</h3>
+        <ul>
+          <li><a href="https://hydro-risk.tianlizeng.cloud" role="menuitem"><span>风险图数据</span></a></li>
+          <li><a href="https://hydro-rainfall.tianlizeng.cloud" role="menuitem"><span>降雨径流</span></a></li>
+          <li><a href="https://hydro-irrigation.tianlizeng.cloud" role="menuitem"><span>灌溉需水</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="dev" id="mega-panel-dev" role="menu" aria-label="🛠 开发" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>子域服务</h3>
+        <ul>
+          <li><a href="https://dashboard.tianlizeng.cloud" role="menuitem"><span>Repo Dashboard</span></a></li>
+          <li><a href="https://cclog.tianlizeng.cloud" role="menuitem"><span>CC 会话日志</span></a></li>
+          <li><a href="https://logs.tianlizeng.cloud" role="menuitem"><span>Logs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://dockit.tianlizeng.cloud" role="menuitem"><span>Dockit</span></a></li>
+          <li><a href="https://stack.tianlizeng.cloud" role="menuitem"><span>Stack</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://cmds.tianlizeng.cloud" role="menuitem"><span>CC Docs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://playbooks.tianlizeng.cloud" role="menuitem"><span>Playbooks</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>工具库</h3>
+        <ul>
+          <li><a href="https://github.com/zengtianli/cc-configs" role="menuitem"><span>cc-configs</span></a></li>
+          <li><a href="https://github.com/zengtianli/devtools" role="menuitem"><span>devtools</span></a></li>
+          <li><a href="https://github.com/zengtianli/doctools" role="menuitem"><span>doctools</span></a></li>
+          <li><a href="https://github.com/zengtianli/mactools" role="menuitem"><span>mactools</span></a></li>
+          <li><a href="https://github.com/zengtianli/clashx" role="menuitem"><span>clashx</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>Raycast / 配置</h3>
+        <ul>
+          <li><a href="https://github.com/zengtianli/raycast" role="menuitem"><span>raycast</span></a></li>
+          <li><a href="https://github.com/zengtianli/configs" role="menuitem"><span>configs</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="content" id="mega-panel-content" role="menu" aria-label="📚 内容" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>日志 / 知识</h3>
+        <ul>
+          <li><a href="https://logs.tianlizeng.cloud" role="menuitem"><span>Logs</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://docs.tianlizeng.cloud" role="menuitem"><span>知识库</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://audiobook.tianlizeng.cloud" role="menuitem"><span>有声书</span></a></li>
+          <li><a href="https://cclog.tianlizeng.cloud" role="menuitem"><span>CC 会话</span></a></li>
+          <li><a href="https://playbooks.tianlizeng.cloud" role="menuitem"><span>Playbooks</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>投资</h3>
+        <ul>
+          <li><a href="https://assets.tianlizeng.cloud" role="menuitem"><span>理财笔记</span></a></li>
+          <li><a href="https://cc-options.tianlizeng.cloud" role="menuitem"><span>QQQ CC Dashboard</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+<div class="tlz-mega-panel" data-for="infra" id="mega-panel-infra" role="menu" aria-label="⚙️ 基础设施" data-open="false">
+  <div class="tlz-mega-inner">
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>监控 / 自动化</h3>
+        <ul>
+          <li><a href="https://status.tianlizeng.cloud" role="menuitem"><span>Uptime Kuma</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://n8n.tianlizeng.cloud" role="menuitem"><span>n8n</span><span class="cf-badge">CF</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>代理</h3>
+        <ul>
+          <li><a href="https://proxy.tianlizeng.cloud" role="menuitem"><span>OAuth Proxy</span><span class="cf-badge">CF</span></a></li>
+          <li><a href="https://panel.tianlizeng.cloud" role="menuitem"><span>Marzban</span></a></li>
+          <li><a href="https://sub.tianlizeng.cloud" role="menuitem"><span>Marzban 订阅</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+      <div class="tlz-mega-group">
+        <h3>WEBHOOK</h3>
+        <ul>
+          <li><a href="https://webhook.tianlizeng.cloud" role="menuitem"><span>Webhook</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tlz-mega-col">
+    </div>
+  </div>
+</div>
+</div>
+<script>(function(){
+  var stack=document.querySelector('.tlz-nav-stack');
+  if(!stack)return;
+  var triggers=stack.querySelectorAll('.mega-trigger');
+  var panels=stack.querySelectorAll('.tlz-mega-panel');
+  var hamburger=stack.querySelector('.tlz-nav-hamburger');
+  var activeKey=null,hideTimer=null;
+  function hideAll(){
+    panels.forEach(function(p){p.setAttribute('data-open','false');});
+    triggers.forEach(function(t){t.setAttribute('aria-expanded','false');});
+    activeKey=null;
+  }
+  function show(k){
+    if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}
+    if(activeKey===k)return;
+    hideAll();
+    var t=stack.querySelector('.mega-trigger[data-cat="'+k+'"]');
+    var p=stack.querySelector('.tlz-mega-panel[data-for="'+k+'"]');
+    if(!t||!p)return;
+    t.setAttribute('aria-expanded','true');
+    p.setAttribute('data-open','true');
+    activeKey=k;
+  }
+  function schedHide(){if(hideTimer)clearTimeout(hideTimer);hideTimer=setTimeout(hideAll,160);}
+  triggers.forEach(function(t){
+    var k=t.getAttribute('data-cat');
+    t.addEventListener('mouseenter',function(){show(k);});
+    t.addEventListener('click',function(e){e.preventDefault();if(activeKey===k)hideAll();else show(k);});
+    t.addEventListener('mouseleave',schedHide);
+  });
+  panels.forEach(function(p){
+    p.addEventListener('mouseenter',function(){if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}});
+    p.addEventListener('mouseleave',schedHide);
+  });
+  document.addEventListener('click',function(e){if(!stack.contains(e.target))hideAll();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')hideAll();});
+  if(hamburger){
+    hamburger.addEventListener('click',function(){
+      var open=stack.getAttribute('data-mobile-open')==='true';
+      stack.setAttribute('data-mobile-open',open?'false':'true');
+      hamburger.setAttribute('aria-expanded',open?'false':'true');
+      if(open)hideAll();
+    });
+  }
+  // current highlight
+  var host=location.hostname;
+  var noCur=["hammerspoon.tianlizeng.cloud", "audiobook.tianlizeng.cloud", "auggie.tianlizeng.cloud", "proxy.tianlizeng.cloud"];
+  var hostMap={"stack.tianlizeng.cloud": "home", "cmds.tianlizeng.cloud": "home", "dashboard.tianlizeng.cloud": "dev", "logs.tianlizeng.cloud": "content", "docs.tianlizeng.cloud": "content", "audiobook.tianlizeng.cloud": "content", "cclog.tianlizeng.cloud": "content", "playbooks.tianlizeng.cloud": "content", "cc-options.tianlizeng.cloud": "content", "assets.tianlizeng.cloud": "content", "status.tianlizeng.cloud": "infra", "n8n.tianlizeng.cloud": "infra", "panel.tianlizeng.cloud": "infra", "sub.tianlizeng.cloud": "infra", "webhook.tianlizeng.cloud": "infra"};
+  var curKey=null;
+  if(noCur.indexOf(host)===-1){
+    curKey=hostMap[host]||null;
+    if(!curKey && (host==='hydro.tianlizeng.cloud' || host.indexOf('hydro-')===0)) curKey='hydro';
+    if(!curKey && host==='tianlizeng.cloud') curKey='home';
+  }
+  if(curKey){
+    var t=stack.querySelector('.mega-trigger[data-cat="'+curKey+'"]');
+    if(t)t.classList.add('current');
+  }
+})();</script>
+
+<div class="wrap">
+  <a class="back" href="../index.html">← Journal</a>
+  <h1>Streamlit → Next.js 全迁 · Turborepo monorepo · /stack-classify 分类清单</h1>
+  <div class="meta-bar">
+    <span>PLAN</span> ·
+    <span>(plan)</span> ·
+    <span>2026-04-19 21:21</span> ·
+    <span class="path">~/.claude/plans/tidy-slash-shimmying-bengio.md</span>
+  </div>
+  <div class="md-src" style="display:none"># Streamlit → Next.js 全迁 · Turborepo monorepo · /stack-classify 分类清单
+
+## Context
+
+### 问题
+`~/Dev` 50+ 项目现状：
+- ~35 个 Streamlit 项目（hydro-* 9 个 + audiobook/logs/auggie-dashboard/dockit/cmds/stack/playbooks/assets/…）
+- 3 个 Next.js（website / ops-console / mindmap）
+- 其余工具与配置 repo
+
+Streamlit 视觉底座（`st.sidebar` / `st.dataframe` / 默认色系）无法对齐主站 `tianlizeng.cloud` 已定型的 **Apple 风亮色 + Tailwind HSL 变量 + shadcn/ui + 4 方向 accent 色**。造成：
+
+1. **视觉割裂**：mega navbar 通过 `~/Dev/configs/menus/navbar.yaml` SSOT 已统一，但进任一 hydro-* 子域立刻跌回 Streamlit 默认风。
+2. **复制成本**：9 个 hydro-* 各自维护 `deploy.sh` + `app.py` + `plugin.yaml`，任一交互细节改一次要改 9 遍。
+3. **前后端混写**：计算逻辑（AHP/TOPSIS/GeoJSON ETL/QGIS/edge-tts/Plotly）与展示层耦合在同一个 `.py` 文件里，既不利视觉统一，也挡住 API 复用。
+
+### 目标
+1. **视觉零差异**：35 个 Streamlit 全迁 Next.js，共享 `packages/tokens` + `packages/ui`，主站视觉规则跑满所有子域。
+2. **后端零重写**：Python 计算逻辑保留在原 repo 原封不动，每个 repo 套 ~30 行 FastAPI wrapper 暴露 JSON API。
+3. **批量可复制**：hydro-toolkit pilot 跑通 → 抽 `stack_migrate_hydro.py` → 剩下 9 个 hydro-* 走同一 pattern。
+4. **清单透明**：新建 `/stack-classify` command，一键产出 `~/Dev` 50+ 项目的技术栈 × 活跃度 × 部署 × 迁移目标清单，只读不动。
+
+### 已拍板决策（引用，不再议）
+- 视觉基准：website `tailwind.config.ts` + `app/globals.css`（HSL 变量 + 4 方向 accent + `forcedTheme=&quot;light&quot;`，**不启用暗色模式**）
+- 全迁：35 个 Streamlit 全改 Next.js 前端；Python 保留原 repo
+- 组织：新建 `~/Dev/web-stack/` Turborepo monorepo 承载所有 Next.js apps + 共享 packages
+- 通信：每个 Python repo 加 FastAPI wrapper；内网 127.0.0.1:port，外网 Nginx 8443 反代，不动 CF Tunnel
+- Pilot：audiobook + hydro-toolkit 并行
+- /tidy 不改，新建 `/stack-classify`（命名沿用 `stack.tianlizeng.cloud` 项目前缀）
+
+---
+
+## 1. Monorepo 骨架
+
+### 1.1 `~/Dev/web-stack/` 目录树
+
+```
+~/Dev/web-stack/
+├── apps/                                  # 每个子域一个 Next.js app
+│   ├── audiobook-web/                     # Pilot #1 — 媒体型
+│   ├── hydro-toolkit-web/                 # Pilot #2 — hydro 入口
+│   ├── ops-console/                       # 平迁 ~/Dev/ops-console
+│   ├── mindmap/                           # 平迁 ~/Dev/mindmap（已 Next.js）
+│   ├── hydro-annual-web/                  # 批量产出（复用 hydro-toolkit-web pattern）
+│   ├── hydro-capacity-web/
+│   ├── hydro-district-web/
+│   ├── hydro-efficiency-web/
+│   ├── hydro-geocode-web/
+│   ├── hydro-irrigation-web/
+│   ├── hydro-rainfall-web/
+│   ├── hydro-reservoir-web/
+│   ├── hydro-risk-web/
+│   ├── cc-options-web/                    # QQQ Covered Call
+│   ├── assets-web/                        # 理财笔记
+│   ├── dockit-web/
+│   ├── logs-web/
+│   ├── auggie-dashboard-web/
+│   └── ...                                # 后续批量产出
+├── packages/
+│   ├── tokens/                            # Design tokens SSOT
+│   │   ├── src/
+│   │   │   ├── colors.ts                  # 4 方向 accent HSL + 方向色背景
+│   │   │   ├── radius.ts
+│   │   │   ├── typography.ts              # Inter 刻度
+│   │   │   ├── spacing.ts
+│   │   │   ├── shadows.ts                 # liquid glass 阴影
+│   │   │   ├── animations.ts              # keyframes 时长
+│   │   │   └── index.ts
+│   │   ├── globals.css                    # :root + [data-track=&quot;*&quot;] CSS 变量（不写 .dark）
+│   │   ├── tailwind-preset.ts             # apps 通过 presets 继承
+│   │   └── package.json                   # @tlz/tokens
+│   ├── ui/                                # shadcn/ui + 共享组件
+│   │   ├── src/
+│   │   │   ├── shared/                    # SiteNav/SiteHeader/SiteFooter/ThemeProvider
+│   │   │   ├── primitives/                # shadcn 直装（Button/Card/Input/Select/Tabs/Table/Toast/Dialog/Spinner）
+│   │   │   └── patterns/                  # StatCard/DataTable/FileUpload/DownloadButton/SidebarLayout/ChartPlotly/ChartRecharts/FormAuto/ProgressSSE/MarkdownView/LiquidGlassCard
+│   │   └── package.json                   # @tlz/ui
+│   ├── api-clients/                       # Python 后端 typed fetch 封装
+│   │   ├── src/{base,audiobook,hydro-toolkit,hydro-*,logs,...}.ts
+│   │   └── package.json                   # @tlz/api-clients
+│   ├── menu-ssot/                         # 桥 ~/Dev/configs/menus/
+│   │   ├── src/{loader,types,generated}.ts
+│   │   ├── scripts/sync-menu.ts           # spawn python3 menus.py build-website-navbar
+│   │   └── package.json                   # @tlz/menu-ssot
+│   └── config/                            # tsconfig/eslint/postcss 共享
+│       └── package.json                   # @tlz/config
+├── infra/
+│   ├── nginx/                             # 每个子域的 location 片段模板
+│   ├── systemd/tlz-api@.service           # 统一 systemd 模板
+│   └── deploy/                            # rsync + systemctl 批量脚本
+├── turbo.json
+├── pnpm-workspace.yaml
+├── package.json
+├── .npmrc
+├── .gitignore
+├── README.md
+└── CLAUDE.md                              # 给 CC 的 monorepo 说明
+```
+
+### 1.2 pnpm / turbo / sync-menu
+
+`pnpm-workspace.yaml`：
+
+```yaml
+packages:
+  - apps/*
+  - packages/*
+```
+
+`turbo.json` 关键 pipeline：
+
+```jsonc
+{
+  &quot;pipeline&quot;: {
+    &quot;build&quot;:     { &quot;dependsOn&quot;: [&quot;^build&quot;], &quot;outputs&quot;: [&quot;.next/**&quot;, &quot;!.next/cache/**&quot;, &quot;dist/**&quot;] },
+    &quot;dev&quot;:       { &quot;cache&quot;: false, &quot;persistent&quot;: true },
+    &quot;lint&quot;:      { &quot;outputs&quot;: [] },
+    &quot;typecheck&quot;: { &quot;dependsOn&quot;: [&quot;^build&quot;], &quot;outputs&quot;: [] },
+    &quot;sync-menu&quot;: { &quot;cache&quot;: false, &quot;outputs&quot;: [&quot;packages/menu-ssot/src/generated.ts&quot;] }
+  }
+}
+```
+
+每个 app `package.json` 加 `&quot;predev&quot;: &quot;pnpm --filter @tlz/menu-ssot sync&quot;` 与 `&quot;prebuild&quot;: &quot;pnpm --filter @tlz/menu-ssot sync&quot;`，对齐现有 `~/Dev/website/scripts/sync-menu.py` 语义。
+
+### 1.3 与 `~/Dev/configs/menus/` SSOT 对接
+`packages/menu-ssot/scripts/sync-menu.ts` spawn `python3 ~/Dev/devtools/lib/tools/menus.py build-website-navbar` 输出 TS，写入 `packages/menu-ssot/src/generated.ts`。所有 apps 通过 `import { SHARED_BRAND, MEGA_CATEGORIES } from &quot;@tlz/menu-ssot&quot;` 消费。现有 `/menus-audit` + `/navbar-refresh` + `/site-refresh-all` 工作流不破坏，monorepo 只是新增一个消费者。
+
+### 1.4 先读哪些文件
+- `/Users/tianli/Dev/website/tailwind.config.ts`
+- `/Users/tianli/Dev/website/app/globals.css`
+- `/Users/tianli/Dev/website/package.json`
+- `/Users/tianli/Dev/website/scripts/sync-menu.py`
+- `/Users/tianli/Dev/ops-console/package.json`
+- `/Users/tianli/Dev/ops-console/tailwind.config.ts`
+- `/Users/tianli/Dev/ops-console/app/layout.tsx`
+- `/Users/tianli/Dev/configs/menus/navbar.yaml`
+- `/Users/tianli/Dev/devtools/lib/tools/menus.py`
+
+---
+
+## 2. Design Tokens（`@tlz/tokens`）
+
+### 2.1 命名约定
+- 沿用 website 现有命名，不引入新 prefix
+- 语义色变量：`--background --foreground --card --card-foreground --primary --secondary --muted --accent --destructive --border --input --ring`
+- 方向色 overrides：`[data-track=&quot;hydro|ai|devtools|indie&quot;]` → `--accent` + `--track-accent`
+- 圆角：`--radius: 1rem`
+- 字体：`--font-inter`
+- 方向背景（website CLAUDE.md 定义）：`hydro=#E3F0FF / ai=#F0E8FF / devtools=#DFFBE9 / indie=#FFF3D6`
+- **不写 `.dark` 变体** — website 是 `forcedTheme=&quot;light&quot;`
+
+### 2.2 Token 清单（抽自 website）
+
+| 类别 | Token | 值 |
+|---|---|---|
+| bg | `--background` | `0 0% 96%` |
+| fg | `--foreground` | `0 0% 9%` |
+| card | `--card` | `0 0% 100%` |
+| primary | `--primary` | `0 0% 9%` |
+| muted-fg | `--muted-foreground` | `0 0% 45%` |
+| destructive | `--destructive` | `0 84% 60%` |
+| accent hydro | `--accent` | `217 91% 68%` |
+| accent ai | `--accent` | `263 70% 76%` |
+| accent devtools | `--accent` | `160 64% 52%` |
+| accent indie | `--accent` | `45 93% 56%` |
+| radius | `--radius` | `1rem` |
+| font | `--font-inter` | Inter (next/font/google) |
+| bg hydro | `--track-bg` | `#E3F0FF` |
+| bg ai | `--track-bg` | `#F0E8FF` |
+| bg devtools | `--track-bg` | `#DFFBE9` |
+| bg indie | `--track-bg` | `#FFF3D6` |
+
+动画：`fade-in / fade-in-up / slide-down / accordion-down/up` + `animate-delay-{100..1000}`，从 `website/tailwind.config.ts` 平搬。
+
+### 2.3 Tailwind preset
+`packages/tokens/tailwind-preset.ts` 导出：
+
+```ts
+import type { Config } from &quot;tailwindcss&quot;
+import plugin from &quot;tailwindcss/plugin&quot;
+
+export const tlzPreset: Partial&lt;Config&gt; = {
+  darkMode: [],                          // 禁用暗色模式
+  theme: { extend: { /* colors/borderRadius/fontFamily/keyframes/animation */ } },
+  plugins: [
+    require(&quot;tailwindcss-animate&quot;),
+    plugin(({ addUtilities }) =&gt; { /* animate-delay-* */ }),
+  ],
+}
+```
+
+`apps/&lt;name&gt;/tailwind.config.ts`：
+
+```ts
+import { tlzPreset } from &quot;@tlz/tokens/tailwind-preset&quot;
+export default {
+  presets: [tlzPreset],
+  content: [&quot;./app/**/*.{ts,tsx}&quot;, &quot;./components/**/*.{ts,tsx}&quot;, &quot;../../packages/ui/src/**/*.{ts,tsx}&quot;],
+}
+```
+
+### 2.4 JSON 导出（非 React 场景）
+`packages/tokens/dist/tokens.json` build 时从 `src/*.ts` 常量生成，供：
+- `~/Dev/devtools/lib/templates/site-content.css` 生成器读取（保持 `/site-content-refresh` 不破坏）
+- 未来 Tauri/桌面 app 直接 `import tokens from &quot;@tlz/tokens/tokens.json&quot;`
+
+### 2.5 先读哪些文件
+- `/Users/tianli/Dev/website/tailwind.config.ts`（行 22-95）
+- `/Users/tianli/Dev/website/app/globals.css`（行 8-93）
+- `/Users/tianli/Dev/website/lib/design-system/tokens.ts`
+- `/Users/tianli/Dev/website/CLAUDE.md`（方向色背景 / liquid glass 规范）
+- `/Users/tianli/Dev/devtools/lib/templates/site-content.css`
+
+---
+
+## 3. 共享 UI 组件（`@tlz/ui`）
+
+### 3.1 清单
+
+| 组件 | 实现 | Streamlit 对照物 |
+|---|---|---|
+| SiteNav | 自建 · 复用 `ops-console/components/mega-navbar.tsx` + 读 `@tlz/menu-ssot` | — |
+| SiteHeader | 自建 · React 化 `~/Dev/devtools/lib/templates/site-header.html` | — |
+| SiteFooter | 自建 · 复用 `~/Dev/website/components/footer.tsx` | — |
+| ThemeProvider | 自建 · 包 `&lt;html data-track=&quot;...&quot;&gt;` | — |
+| Button | shadcn 直装 | `st.button` `st.download_button` |
+| Input | shadcn 直装 | `st.text_input` |
+| Textarea | shadcn 直装 | `st.text_area` |
+| Select | shadcn 直装 | `st.selectbox` `st.multiselect` |
+| Slider | shadcn 直装 | `st.slider` |
+| Checkbox/Switch | shadcn 直装 | `st.checkbox` `st.toggle` |
+| RadioGroup | shadcn 直装 | `st.radio` |
+| Tabs | shadcn 直装 | `st.tabs` |
+| Card | shadcn 直装 | `st.container` |
+| LiquidGlassCard | 扩展 Card · `bg-white/50 backdrop-blur-xl border border-white/60 shadow-sm rounded-2xl` | — |
+| StatCard | 扩展 Card | `st.metric` |
+| ListCard | 扩展 Card · ops-console 首页行表 | — |
+| DataTable | 扩展 shadcn table + `@tanstack/react-table` | `st.dataframe` `st.data_editor` |
+| FileUpload | 自建 · input[type=file] + drag-n-drop | `st.file_uploader` |
+| DownloadButton | 自建 · fetch blob + anchor download | `st.download_button` |
+| Spinner | 自建 · `lucide-react` Loader2 | `st.spinner` |
+| Toast | shadcn 直装 | `st.success/warning/error` |
+| Dialog | shadcn 直装 | `st.dialog` |
+| ProgressSSE | 自建 · `EventSource` + shadcn Progress | `st.progress` 轮询 |
+| ChartPlotly | 自建 · `react-plotly.js` + token 配色 | `st.plotly_chart` |
+| ChartRecharts | 自建 · `recharts`（website 已在用） | `st.line_chart` `st.bar_chart` |
+| MarkdownView | 自建 · 复用 `website/components/markdown-renderer.tsx` | `st.markdown` |
+| SidebarLayout | 自建 · 左 280px + 右主区（移动端折叠） | `st.sidebar` |
+| FormAuto | 自建 · `react-hook-form` + `zod` | — |
+
+### 3.2 先读哪些文件
+- `/Users/tianli/Dev/website/components/ui/{card,button,input,label,toast,toaster,badge,textarea}.tsx`
+- `/Users/tianli/Dev/ops-console/components/{mega-navbar,section-nav,site-header}.tsx`
+- `/Users/tianli/Dev/ops-console/app/page.tsx`（Metric/Row/Empty 抽模板）
+- `/Users/tianli/Dev/website/components/{footer,markdown-renderer}.tsx`
+
+---
+
+## 4. FastAPI Wrapper 模板
+
+**原则：不 import Streamlit，不改原 core 逻辑文件**，只在 repo 根加 `api.py` + `.service` + `deploy-api.sh` 三件套。
+
+### 4.1 `api.py` 模板（以 hydro-toolkit 为例）
+
+```python
+&quot;&quot;&quot;FastAPI wrapper — 暴露 hydro-toolkit 计算能力，不依赖 Streamlit。&quot;&quot;&quot;
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import Any, Dict, List
+
+# 复用原插件模块
+from plugins.hydro_efficiency.src.efficiency.ahp import ahp_weights
+from plugins.hydro_efficiency.src.efficiency.topsis import topsis_evaluate
+
+app = FastAPI(title=&quot;hydro-toolkit-api&quot;, version=&quot;1.0.0&quot;)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[&quot;http://localhost:3000&quot;, &quot;https://hydro.tianlizeng.cloud&quot;],
+    allow_methods=[&quot;GET&quot;, &quot;POST&quot;],
+    allow_headers=[&quot;*&quot;],
+)
+
+class AhpRequest(BaseModel):
+    matrix: List[List[float]]
+
+@app.get(&quot;/health&quot;)
+def health() -&gt; Dict[str, str]:
+    return {&quot;status&quot;: &quot;ok&quot;}
+
+@app.post(&quot;/api/efficiency/ahp&quot;)
+def calc_ahp(req: AhpRequest) -&gt; Dict[str, Any]:
+    w, cr = ahp_weights(req.matrix)
+    return {&quot;weights&quot;: w.tolist(), &quot;consistency_ratio&quot;: float(cr)}
+```
+
+### 4.2 `api.service`（systemd 模板，`~/Dev/web-stack/infra/systemd/tlz-api@.service`）
+
+```ini
+[Unit]
+Description=tlz-api %i (FastAPI)
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/%i
+ExecStart=/usr/bin/python3 -m uvicorn api:app --host 127.0.0.1 --port %E{PORT}
+EnvironmentFile=/var/www/%i/.env
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+启用：`systemctl enable --now tlz-api@hydro-toolkit.service`
+
+### 4.3 端口分配规则
+Python API 端口 = 原 Streamlit 端口 + 100：
+
+| repo | Streamlit | FastAPI | Next.js dev |
+|---|---|---|---|
+| audiobook | — | 9200（已存） | 3100 |
+| hydro-toolkit | 8510 | 8610 | 3110 |
+| hydro-annual | 8514 | 8614 | 3114 |
+| hydro-capacity | 8511 | 8611 | 3111 |
+| hydro-district | 8513 | 8613 | 3113 |
+| hydro-efficiency | 8512 | 8612 | 3112 |
+| hydro-geocode | 8515 | 8615 | 3115 |
+| hydro-irrigation | 8516 | 8616 | 3116 |
+| hydro-rainfall | 8517 | 8617 | 3117 |
+| hydro-reservoir | 8518 | 8618 | 3118 |
+| hydro-risk | 8519 | 8619 | 3119 |
+| ops-console | — | — | 3007（现有） |
+
+### 4.4 先读哪些文件
+- `/Users/tianli/Dev/audiobook/app/main.py`（FastAPI 起手式）
+- `/Users/tianli/Dev/audiobook/audiobook.service`
+- `/Users/tianli/Dev/audiobook/deploy.sh`
+- `/Users/tianli/Dev/hydro-toolkit/core/plugin_loader.py`
+- `/Users/tianli/Dev/hydro-toolkit/plugins/hydro-efficiency/src/efficiency/{ahp,topsis,critic,indicators}.py`
+
+---
+
+## 5. Pilot A · audiobook（媒体型）
+
+**特点**：后端已是 FastAPI（9 个 endpoint 齐全，见 `audiobook/CLAUDE.md`），无 Streamlit 存量。迁移任务 = 把 `routes/shelf.py` `routes/player.py` 的 Python f-string HTML 迁到 Next.js 前端。
+
+### 5.1 Phase 1 Scaffold
+- `apps/audiobook-web/` 用 `create-next-app --ts --tailwind --app --src-dir=false` 起骨架
+- 依赖 `@tlz/tokens @tlz/ui @tlz/api-clients @tlz/menu-ssot`
+- `app/layout.tsx` 套 SiteNav + SiteHeader
+- `predev` 跑 menu sync
+
+### 5.2 Phase 2 后端
+- `~/Dev/audiobook/app/main.py` 加 CORS middleware
+- 已有 endpoint 不动：
+  - `POST /api/books` · `GET /api/books` · `GET /api/books/{id}` · `GET /api/books/{id}/progress` · `GET /api/books/{id}/audio/{ch}` · `GET /api/books/{id}/sync/{ch}` · `DELETE /api/books/{id}`
+- `routes/shelf.py` / `routes/player.py` HTML 页**保留过渡期但不再维护**（Next.js 上线后删）
+
+### 5.3 Phase 3 前端
+- `app/page.tsx`：书架（对应 shelf）— 调 `@tlz/api-clients/audiobook.getBooks()`
+- `app/books/[id]/page.tsx`：播放器 — 使用 `ProgressSSE` 订阅 `/api/books/{id}/progress`；逐句高亮基于 `/api/books/{id}/sync/{ch}`
+- `app/upload/page.tsx` 或 dialog：上传 md（file/text/url 三模）
+
+### 5.4 Phase 4 部署
+- `apps/audiobook-web` 部署到 `audiobook.tianlizeng.cloud`
+- Nginx 同域双服务：
+  - `location /` → Next.js 3100
+  - `location /api/` → FastAPI 9200
+- CF 配置不动
+- 原 Python HTML 页面下线
+
+### 5.5 Phase 5 验证
+- 本地：`pnpm --filter audiobook-web dev` + `AUDIOBOOK_DATA=$HOME/audiobook_data uv run uvicorn app.main:app --port 9200 --reload`
+- 线上：上传 md → SSE 进度条 → 播放器逐句高亮全链路
+- 性能 diff：首屏 TTFB 对比 Python f-string 版本，Next.js SSR ≤ 1.5x
+
+### 5.6 先读哪些文件
+- `/Users/tianli/Dev/audiobook/app/{main,config,models,storage,tts,queue}.py`
+- `/Users/tianli/Dev/audiobook/app/routes/{books,shelf,player}.py`
+- `/Users/tianli/Dev/audiobook/audiobook.service`
+- `/Users/tianli/Dev/audiobook/deploy.sh`
+
+---
+
+## 6. Pilot B · hydro-toolkit（hydro 集群入口）
+
+**特点**：纯 Streamlit，插件式发现机制（`plugins.json` + 各 `plugin.yaml`）。首期只迁 host shell（home + manage），插件在各 hydro-* 独立 pilot 节奏。
+
+### 6.1 Phase 1 Scaffold
+- `apps/hydro-toolkit-web/` 同 5.1
+- `&lt;html data-track=&quot;hydro&quot;&gt;`，accent = `217 91% 68%`，bg = `#E3F0FF`
+
+### 6.2 Phase 2 后端
+- 新建 `~/Dev/hydro-toolkit/api.py`，~50 行
+- Endpoints：
+  - `GET /api/plugins` — 读 `plugins.json`
+  - `POST /api/plugins/install` — 包 `core/plugin_manager.py` 的 install 逻辑
+  - `DELETE /api/plugins/{name}` — 卸载
+- `.service` 用 `tlz-api@hydro-toolkit.service` 模板
+
+### 6.3 Phase 3 前端
+- `app/page.tsx` 翻译 `core/home.py` — 插件卡片网格（调 `/api/plugins`），卡片链接跳对应子域
+- `app/plugins/page.tsx` 翻译 `core/manage.py` — 安装/删除表格
+
+### 6.4 Phase 4 部署
+- `hydro.tianlizeng.cloud` Nginx path-based 灰度：
+  - `/` → Next.js 3110
+  - `/legacy/` → Streamlit 8510（保留 2-4 周）
+- 验收通过后删除 `/legacy/` 路径
+
+### 6.5 Phase 5 验证
+- 插件卡片链接跳转正确（跳 `hydro-*.tianlizeng.cloud`，新站一样）
+- `core/plugin_manager.py` 的 git clone / rm 路径通过 API 仍正常
+
+### 6.6 pattern 抽取 → `stack_migrate_hydro.py`
+
+hydro-toolkit 跑通后，抽成 `~/Dev/devtools/lib/tools/stack_migrate_hydro.py`：
+
+1. **输入**：`hydro-xxx` repo 路径
+2. **读** `plugin.yaml` 拿 `name / title / icon / description`
+3. **拷贝** `apps/hydro-toolkit-web/` → `apps/hydro-xxx-web/`，全局替换名字/accent/port
+4. **扫描** 原 `app.py`：抓 `st.sidebar.*` → SidebarLayout props；`st.file_uploader` → FileUpload + `/api/upload`；`st.plotly_chart` → ChartPlotly + `/api/compute`；`st.download_button` → DownloadButton + `/api/export`
+5. **生成** `api.py` 骨架，列出待手填 endpoint 签名（提示 CC 填）
+6. **生成** `README.md` 迁移进度 checklist
+
+剩余 9 个 hydro-* 走此脚本半自动化，每个估 0.5-1 天（视 `app.py` 复杂度）。
+
+### 6.7 特殊处理
+- **hydro-qgis**：含 QGIS 环境依赖，FastAPI wrapper 需要 qgis python bindings 在 VPS 可用；先验证环境再走 pattern
+- **hydro-apps**：是 Node monorepo（非 Streamlit），不参与本次迁移
+
+### 6.8 先读哪些文件
+- `/Users/tianli/Dev/hydro-toolkit/{app,plugins}.{py,json}`
+- `/Users/tianli/Dev/hydro-toolkit/core/{home,manage,plugin_loader,plugin_manager}.py`
+- `/Users/tianli/Dev/hydro-toolkit/plugins/hydro-efficiency/{app.py,plugin.yaml}`
+- `/Users/tianli/Dev/hydro-toolkit/plugins/hydro-efficiency/src/efficiency/{ahp,topsis,critic,indicators}.py`
+
+---
+
+## 7. /stack-classify — 分类清单 command
+
+### 7.1 命名决策
+**新建 `/stack-classify`，不改 `/tidy`。**
+
+理由：`/tidy` 当前语义是**对单个目录的破坏性文档清理**（见 `/Users/tianli/Dev/cc-configs/commands/tidy.md`），几十条工作流依赖这个语义。新需求是**全局只读技术栈扫描**，复用会污染语义。`/stack-*` 与 `stack.tianlizeng.cloud` / `~/Dev/stack/` 同前缀，搜索友好。
+
+### 7.2 `~/Dev/cc-configs/commands/stack-classify.md` 骨架
+
+```markdown
+扫描 ~/Dev 所有项目，产出技术栈 × 活跃度 × 部署 × 迁移目标清单。**只读，不动目录**。
+
+$ARGUMENTS：
+  --format md|json|table    默认 md
+  --filter &lt;regex&gt;          只输出匹配的路径
+  --target &lt;path&gt;           默认 ~/Dev
+
+## 调用
+python3 ~/Dev/devtools/lib/tools/classify.py \
+    --target $TARGET --format $FMT --filter $FILTER
+
+## 输出列
+path · tech_stack · deployed · active_30d · migration_target · notes
+```
+
+### 7.3 底层 `~/Dev/devtools/lib/tools/classify.py`
+
+**约束**：纯 stdlib（cc-configs 规范：`tools/` 下不依赖第三方包）。
+
+职责：
+1. 扫 `~/Dev/*/`（跳过 `_archived`、隐藏目录）
+2. **技术栈识别**（按优先级）：
+   - `next.config.{mjs,ts}` → nextjs
+   - `requirements.txt` 或 `pyproject.toml` 含 `streamlit` → streamlit
+   - 含 `fastapi` 且无 streamlit → fastapi
+   - 仅 `requirements.txt` / `pyproject.toml` → python-cli
+   - 有 `deploy.sh` 且 rsync 到 `/var/www/&lt;name&gt;/` → static 或 mixed
+   - 有 `.claude/commands/` → config
+   - 主要 `.md` → docs
+3. **部署状态**：读 `~/Dev/website/lib/services.ts`，subdomain 匹配 repo 名
+4. **活跃度**：`git -C &lt;path&gt; log --since=&#x27;30 days ago&#x27; --oneline | wc -l`
+5. **迁移目标**：
+   - streamlit → `apps/&lt;repo&gt;-web`
+   - fastapi 已存在 → 合并到 web 版（audiobook 已是此状态）
+   - python-cli → 保留
+   - config/docs → 保留
+   - 两年未提交 + 未部署 → 建议归档 `~/Dev/_archived/`
+6. **输出**：md 表格 / JSON / tabular（基于 `devtools/lib/display.py`）
+
+### 7.4 先读哪些文件
+- `/Users/tianli/Dev/cc-configs/commands/tidy.md`（确保不冲突）
+- `/Users/tianli/Dev/cc-configs/commands/{repo-map,audit}.md`
+- `/Users/tianli/Dev/cc-configs/CLAUDE.md`（纯 stdlib 约束）
+- `/Users/tianli/Dev/devtools/lib/display.py`
+- `/Users/tianli/Dev/devtools/lib/tools/{_services_ts,sites_health,health_check,menus}.py`
+- `/Users/tianli/Dev/website/lib/services.ts`
+
+---
+
+## 8. 执行路线
+
+### 8.1 时间线
+
+```
+[T0]              [T0+1w]          [T0+3w]           [T0+5w]          [T0+8w]          [T0+12w]
+基建             Pilot × 2        抽 pattern        批量迁             清单            清理 &amp; 下线
+─────────────────┬────────────────┬─────────────────┬────────────────┬────────────────┬────────────────
+·web-stack       │·audiobook-web  │·stack_migrate_  │·hydro-annual   │·stack-classify │·删 /legacy/
+ scaffold        │ (Pilot A)      │ hydro.py        │·hydro-capacity │ md/json/table  │·Streamlit 停服
+·@tlz/tokens     │·hydro-toolkit- │·模板化 app.py → │·hydro-district │·输出迁移进度   │·旧 port 释放
+·@tlz/ui         │ web (Pilot B)  │ api.py 提取     │·hydro-efficien │ PR             │·VPS 减配评估
+·@tlz/api-clients│·两站视觉 QA    │·3 个迁移 DoD    │·hydro-geocode  │                │
+·@tlz/menu-ssot  │·systemd 新服务 │ 对齐            │·hydro-irrigati │                │
+·ops-console     │                │                 │·hydro-rainfall │                │
+ 平迁            │                │                 │·hydro-reservoir│                │
+                 │                │                 │·hydro-risk     │                │
+                 │                │                 │·hydro-qgis(特) │                │
+  L              │  L             │  M              │  XL            │  M             │  M
+```
+
+### 8.2 工作量
+
+| 阶段 | 规模 | 说明 |
+|---|---|---|
+| 基建 · 4 packages + ops-console 平迁 | L | ~1 周 |
+| Pilot × 2 | L | ~2 周并行 |
+| pattern 脚本抽取 | M | ~3 天 |
+| 批量迁 9 hydro-* | XL | ~3-4 周 |
+| /stack-classify | M | ~3 天 |
+| 清理下线 | M | ~1 周灰度 |
+
+合计 ~12 周（单人）。
+
+---
+
+## 9. 风险与应对
+
+### 9.1 hydro-* 批量迁移回归风险
+- **风险**：QGIS 地理计算、pandas 大表、plotly 可视化、`hydro-risk` 15 个 `3.0x_*.py` 阶段脚本，迁前端时碰坏计算结果难察觉
+- **应对**：
+  1. Streamlit 保留并行 2-4 周（Nginx path-based `/` vs `/legacy/`）
+  2. 每个 `api.py` endpoint 写 pytest：输入样例数据对比 Streamlit 快照（`tests/snapshot/&lt;endpoint&gt;.json`）
+  3. `stack_migrate_hydro.py` 自动生成 DoD checklist，逐个勾选「计算结果一致」后才下线 `/legacy/`
+
+### 9.2 Streamlit session_state → Next.js 替代
+| Streamlit 场景 | Next.js 方案 |
+|---|---|
+| slider/selectbox/radio/checkbox 过滤器 | `useSearchParams` + `router.replace()`（URL 可分享、SSR 友好） |
+| form 提交 + 上传 + 触发计算 | Server Actions (Next 15) + `revalidatePath` |
+| 跨页面跨组件的短生命周期状态 | Zustand |
+| 后端 API 数据缓存 | SWR（简单）/ React Query（复杂） |
+
+不选 Jotai（粒度太细无必要）。
+
+### 9.3 FastAPI 长驻服务 VPS 资源
+- **风险**：11 Python 后端（10 hydro + audiobook）+ 多个 Next.js + 残余 Streamlit。每个 uvicorn ~80MB
+- **应对**：
+  1. 全部 `--workers 1`（个人项目无高并发）
+  2. 非频繁访问的 hydro-* 用 **systemd socket activation**（`ListenStream=127.0.0.1:86xx`，空闲无进程）
+  3. 统一 systemd 模板 `tlz-api@.service` + `%i` 占位，减少漂移
+  4. ops-console 首页（`/Users/tianli/Dev/ops-console/app/page.tsx`）加 &quot;API 健康&quot; 区块，批量轮询 `GET /health`
+
+### 9.4 Streamlit 子域过渡
+- **阶段 1**（迁移期 2-4 周）：同子域 Nginx path-based 并行 `/` ↔ `/legacy/`
+- **阶段 2**（验收后）：删 `/legacy/`、原 Streamlit systemd `disable` 但不 `rm`（保留 30 天兜底）
+- **不做 301 跳转**：同域名 path 切换，外链/书签都走 `/`
+
+### 9.5 Design tokens 改动传导
+- `packages/tokens/package.json` 声明 `&quot;outputs&quot;: [&quot;dist/**&quot;, &quot;tailwind-preset.js&quot;, &quot;globals.css&quot;]`
+- 每个 app `dependencies` 加 `&quot;@tlz/tokens&quot;: &quot;workspace:*&quot;`
+- 改 `packages/tokens/src/colors.ts` → turbo 检测 → 所有 app build 缓存失效
+- dev watch：`turbo dev` 并行 apps + tokens tsc --watch，改 token 瞬间 HMR
+
+---
+
+## 10. 验证
+
+### 10.1 本地三终端联调
+
+```bash
+# T1 monorepo
+cd ~/Dev/web-stack &amp;&amp; pnpm install &amp;&amp; pnpm dev
+# turbo 并行：audiobook-web@3100 · hydro-toolkit-web@3110 · ops-console@3007
+
+# T2 audiobook FastAPI（已有）
+cd ~/Dev/audiobook
+AUDIOBOOK_DATA=&quot;$HOME/audiobook_data&quot; uv run uvicorn app.main:app --port 9200 --reload
+
+# T3 hydro-toolkit FastAPI（新增）
+cd ~/Dev/hydro-toolkit &amp;&amp; uv run uvicorn api:app --port 8610 --reload
+```
+
+**Smoke**：
+- `http://localhost:3100` → 书架加载（证明 `@tlz/api-clients/audiobook` → 9200 通）
+- `http://localhost:3110` → 插件网格加载（证明 `/api/plugins` → 8610 通）
+- `http://localhost:3007` → ops-console 显示本地 VPS stub
+
+**API_BASE 路由**：
+- 开发：`.env.local` 里 `NEXT_PUBLIC_API_BASE_AUDIOBOOK=http://127.0.0.1:9200`
+- 线上：Nginx 同域 `/api/*` 反代，env 为空字符串走相对路径
+
+### 10.2 ops-console 显示 pilot 健康
+- `/Users/tianli/Dev/ops-console/app/api/pilots/route.ts` 新增，轮询 `/health`
+- 首页 `app/page.tsx` 加 `&lt;PilotStatusGrid /&gt;`（4 行：audiobook API / audiobook web / hydro-toolkit API / hydro-toolkit web）
+
+### 10.3 每个 app 的 DoD
+
+**视觉 diff**：
+- `playwright screenshot` 新站 vs 原 Streamlit 首屏
+- baseline 存 `apps/&lt;name&gt;-web/tests/visual/baseline.png`
+- pixelmatch 差异 &lt; 10%（accent 色必须完全一致）
+- `/menus-audit` 8/8 绿
+
+**功能 diff**：
+- Streamlit 版所有 interactive element 列清单，每个对应到新站组件
+- 端到端 flow 跑通（audiobook：上传 → 生成 → 播放；hydro-efficiency：选数据 → AHP → 下载 Excel）
+- 关键计算输出 bit-一致：JSON diff 空
+
+**性能 diff**：
+- 首屏 TTFB ≤ 原 Streamlit 1.5x
+- Lighthouse ≥ 85
+- API p95 不劣化（后端没改，理论一致）
+
+---
+
+## 11. 首批要触碰的文件（执行基建时读这些）
+
+### 11.1 基建
+- `/Users/tianli/Dev/website/tailwind.config.ts`
+- `/Users/tianli/Dev/website/app/globals.css`
+- `/Users/tianli/Dev/website/lib/design-system/tokens.ts`
+- `/Users/tianli/Dev/website/components/ui/{card,button,input,label,toast,toaster,badge,textarea}.tsx`
+- `/Users/tianli/Dev/website/components/{footer,markdown-renderer}.tsx`
+- `/Users/tianli/Dev/website/package.json`
+- `/Users/tianli/Dev/website/scripts/sync-menu.py`
+- `/Users/tianli/Dev/website/CLAUDE.md`
+- `/Users/tianli/Dev/ops-console/{package.json,tailwind.config.ts}`
+- `/Users/tianli/Dev/ops-console/app/{layout,page}.tsx`
+- `/Users/tianli/Dev/ops-console/components/{mega-navbar,section-nav,site-header}.tsx`
+- `/Users/tianli/Dev/ops-console/lib/vps.ts`
+- `/Users/tianli/Dev/configs/menus/navbar.yaml`
+- `/Users/tianli/Dev/devtools/lib/tools/menus.py`
+- `/Users/tianli/Dev/devtools/lib/tools/_services_ts.py`
+- `/Users/tianli/Dev/devtools/lib/templates/{site-navbar.html,site-content.css,site-header.html}`
+
+### 11.2 Pilot A
+- `/Users/tianli/Dev/audiobook/app/{main,config,models,storage,tts,queue}.py`
+- `/Users/tianli/Dev/audiobook/app/routes/{books,shelf,player}.py`
+- `/Users/tianli/Dev/audiobook/{audiobook.service,deploy.sh,CLAUDE.md}`
+
+### 11.3 Pilot B
+- `/Users/tianli/Dev/hydro-toolkit/{app,plugins}.{py,json}`
+- `/Users/tianli/Dev/hydro-toolkit/core/{home,manage,plugin_loader,plugin_manager}.py`
+- `/Users/tianli/Dev/hydro-toolkit/plugins/hydro-efficiency/{app.py,plugin.yaml}`
+- `/Users/tianli/Dev/hydro-toolkit/plugins/hydro-efficiency/src/efficiency/{ahp,topsis,critic,indicators}.py`
+- `/Users/tianli/Dev/hydro-toolkit/CLAUDE.md`
+
+### 11.4 /stack-classify
+- `/Users/tianli/Dev/cc-configs/commands/{tidy,repo-map,audit}.md`
+- `/Users/tianli/Dev/cc-configs/CLAUDE.md`
+- `/Users/tianli/Dev/devtools/lib/display.py`
+- `/Users/tianli/Dev/devtools/lib/tools/{_services_ts,sites_health,health_check,menus}.py`
+- `/Users/tianli/Dev/website/lib/services.ts`
+
+### 11.5 批量迁 hydro-*
+每个 repo 至少：`app.py` · `plugin.yaml` · `requirements.txt|pyproject.toml` · `src/` 入口模块。
+
+---
+
+## 12. 第一轮执行顺序（按 plan 批准后立刻做的事）
+
+1. `mkdir ~/Dev/web-stack &amp;&amp; cd ~/Dev/web-stack`
+2. `pnpm init` + `pnpm add -D -w turbo typescript`
+3. 写 `pnpm-workspace.yaml` + `turbo.json` + `package.json`（workspace scripts）
+4. 建 `packages/{tokens,ui,api-clients,menu-ssot,config}/` 骨架 + `package.json`
+5. 从 website 抽 tokens 到 `packages/tokens/src/*.ts` + `globals.css` + `tailwind-preset.ts`
+6. 从 shadcn 装 primitives 到 `packages/ui/src/primitives/`
+7. React 化 `site-header.html` + 复用 `ops-console/components/mega-navbar.tsx` 到 `packages/ui/src/shared/`
+8. 写 `packages/menu-ssot/scripts/sync-menu.ts`（spawn `menus.py build-website-navbar`）
+9. `create-next-app apps/audiobook-web`，接 preset + packages
+10. 一个空白首页 + SiteNav + SiteHeader → `pnpm --filter audiobook-web dev` 确认视觉跑通
+11. 继续进 Pilot A Phase 2-5
+
+（Pilot B 可与 Pilot A 并行，从步骤 9 派生 `apps/hydro-toolkit-web/`）
+
+---
+
+**结束。** 可扫读可执行；所有路径绝对；不列备选，只走已决策路径。
+</div><div class="md-out"></div>
+</div>
+<script>
+document.querySelectorAll('.md-src').forEach(src => {
+  const out = src.nextElementSibling;
+  out.innerHTML = marked.parse(src.textContent);
+});
+</script>
+</body></html>

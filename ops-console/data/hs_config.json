@@ -1,0 +1,41 @@
+{
+  "version": "2.0",
+  "exported_at": "2026-04-18T11:29:32Z",
+  "settings": {
+    "preferred_terminal": "Ghostty",
+    "preferred_ide": "Cursor",
+    "python_path": "/opt/homebrew/bin/python3"
+  },
+  "hotkeys": [
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": "t", "desc": "终端在此处打开", "module": "apps", "func": "open_terminal", "scope": "finder", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": "i", "desc": "Nvim 编辑文件", "module": "apps", "func": "open_nvim", "scope": "finder", "source": "hammerspoon"},
+    {"mods": "cmd+shift", "mods_display": "⌘⇧", "key": "n", "desc": "创建新文件夹", "module": "apps", "func": "create_folder", "scope": "finder", "source": "hammerspoon"},
+    {"mods": "cmd+alt", "mods_display": "⌘⌥", "key": "n", "desc": "在当前目录打开新 Finder 窗口", "module": "apps", "func": "open_finder_here", "scope": "finder", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": "s", "desc": "运行选中脚本", "module": "apps", "func": "run_script", "scope": "finder", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": "r", "desc": "并行运行脚本", "module": "apps", "func": "run_scripts_parallel", "scope": "finder", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": "n", "desc": "复制文件名", "module": "system", "func": "copy_filenames", "scope": "finder", "source": "hammerspoon"},
+    {"mods": "ctrl+alt", "mods_display": "⌃⌥", "key": "v", "desc": "粘贴到 Finder", "module": "system", "func": "paste_to_finder", "scope": "finder", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": ";", "desc": "播放/暂停", "module": "media", "func": "togglePlayback", "scope": "global", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": "'", "desc": "下一首", "module": "media", "func": "nextTrack", "scope": "global", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": "l", "desc": "上一首", "module": "media", "func": "previousTrack", "scope": "global", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": "p", "desc": "系统媒体播放/暂停", "module": "media", "func": "systemPlayPause", "scope": "global", "source": "hammerspoon"},
+    {"mods": "cmd+alt", "mods_display": "⌘⌥", "key": ",", "desc": "打开系统设置", "module": "system", "func": "openSettings", "scope": "global", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": "y", "desc": "重启 Yabai", "module": "window", "func": "restart_yabai", "scope": "global", "source": "hammerspoon"},
+    {"mods": "cmd", "mods_display": "⌘", "key": "h", "desc": "删除字符", "module": "keymap", "func": "delete_char", "scope": "global", "source": "hammerspoon"},
+    {"mods": "cmd+alt", "mods_display": "⌘⌥", "key": "h", "desc": "删除单词", "module": "keymap", "func": "delete_word", "scope": "global", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl", "mods_display": "⌘⌃", "key": "h", "desc": "删除到行首", "module": "keymap", "func": "delete_to_line_start", "scope": "global", "source": "hammerspoon"},
+    {"mods": "cmd+ctrl+shift", "mods_display": "⌘⌃⇧", "key": "h", "desc": "显示快捷键帮助", "module": "_hotkey_manager", "func": "show_help", "scope": "global", "source": "hammerspoon"}
+  ],
+  "modules": [
+    "apps",
+    "keymap",
+    "media",
+    "system",
+    "window"
+  ],
+  "passive_features": [
+    {"name": "Right Option → Hyper", "module": "keymap", "desc": "右 Option 映射为 Cmd+Ctrl+Shift"},
+    {"name": "Ctrl+HJKL Vim 导航", "module": "keymap", "desc": "终端外全局 Vim 方向键"},
+    {"name": "WeChat 智能启动", "module": "apps", "desc": "Ctrl+Alt+W 未运行时启动微信"}
+  ]
+}

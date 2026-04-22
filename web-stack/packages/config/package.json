@@ -1,0 +1,11 @@
+{
+  "name": "@tlz/config",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared tsconfig / eslint base configs",
+  "main": "./index.js",
+  "files": [
+    "tsconfig",
+    "eslint"
+  ]
+}

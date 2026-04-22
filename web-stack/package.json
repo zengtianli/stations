@@ -1,0 +1,24 @@
+{
+  "name": "tlz-web-stack",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Turborepo monorepo for tianlizeng.cloud Next.js apps — 承载所有从 Streamlit 迁移过来的前端 + 共享 design tokens / UI / api-clients / menu SSOT",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "sync-menu": "turbo run sync-menu",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.6.3",
+    "@types/node": "^22"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.33.0"
+}

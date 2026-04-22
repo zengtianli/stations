@@ -1,0 +1,35 @@
+__pycache__/
+*.pyc
+.DS_Store
+venv/
+.venv/
+*.xlsx
+*.csv
+*.geojson
+input/
+output/
+
+
+# Python
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# Cache
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Baseline (auto-added by /groom)
+*$py.class
+Thumbs.db
+*.swp

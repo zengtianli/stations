@@ -1,0 +1,18 @@
+node_modules/
+.next/
+.turbo/
+dist/
+*.log
+.DS_Store
+.env
+.env.local
+.env.*.local
+.vercel/
+coverage/
+playwright-report/
+tests/visual/*.diff.png
+*.tsbuildinfo
+next-env.d.ts
+
+# Local Claude Code per-project settings
+.claude/

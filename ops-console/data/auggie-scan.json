@@ -1,0 +1,551 @@
+[
+  {
+    "archived": false,
+    "description": "Claude Code context engineering: rules, standards, skills, agents, memory — organized in layers",
+    "html_url": "https://github.com/zengtianli/configs",
+    "language": "Shell",
+    "name": "configs",
+    "pushed_at": "2026-04-20T12:31:39Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "开发工具集 — Claude Code hooks, Git, LLM, repo management",
+    "html_url": "https://github.com/zengtianli/devtools",
+    "language": "Python",
+    "name": "devtools",
+    "pushed_at": "2026-04-20T12:31:29Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "Claude Code configuration quality auditor — 6-dimension harness scoring CLI",
+    "html_url": "https://github.com/zengtianli/cc-configs",
+    "language": "Python",
+    "name": "cc-configs",
+    "pushed_at": "2026-04-20T12:31:20Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/ops-console",
+    "language": "TypeScript",
+    "name": "ops-console",
+    "pushed_at": "2026-04-20T12:12:56Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/auggie-dashboard",
+    "language": "Python",
+    "name": "auggie-dashboard",
+    "pushed_at": "2026-04-20T12:12:34Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "国际资产配置知识库 — HSBC Premier / IBKR 换汇 / Robinhood / 旅行权益",
+    "html_url": "https://github.com/zengtianli/international-assets",
+    "language": null,
+    "name": "international-assets",
+    "pushed_at": "2026-04-20T11:38:46Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/stack",
+    "language": "HTML",
+    "name": "stack",
+    "pushed_at": "2026-04-20T09:20:53Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "Personal website",
+    "html_url": "https://github.com/zengtianli/web",
+    "language": "TypeScript",
+    "name": "web",
+    "pushed_at": "2026-04-20T09:20:47Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Markdown to audiobook web service — edge-tts with sentence-level sync highlighting",
+    "html_url": "https://github.com/zengtianli/audiobook",
+    "language": "Python",
+    "name": "audiobook",
+    "pushed_at": "2026-04-20T09:20:44Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "CLI for browsing, summarizing, and reviewing Claude Code sessions",
+    "html_url": "https://github.com/zengtianli/cclog",
+    "language": "Python",
+    "name": "cclog",
+    "pushed_at": "2026-04-20T09:20:42Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/cmds",
+    "language": "HTML",
+    "name": "cmds",
+    "pushed_at": "2026-04-20T09:20:39Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "Hammerspoon macOS automation config — window management, hotkeys, workflows",
+    "html_url": "https://github.com/zengtianli/hammerspoon",
+    "language": "Lua",
+    "name": "hammerspoon",
+    "pushed_at": "2026-04-20T08:59:21Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/llm-finetune",
+    "language": "Python",
+    "name": "llm-finetune",
+    "pushed_at": "2026-04-20T08:59:04Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/mindmap",
+    "language": "TypeScript",
+    "name": "mindmap",
+    "pushed_at": "2026-04-20T08:58:47Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/dotfiles",
+    "language": "Lua",
+    "name": "dotfiles",
+    "pushed_at": "2026-04-20T08:58:36Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "VPS setup guide — Nginx reverse proxy, Cloudflare integration, Marzban, and system optimization",
+    "html_url": "https://github.com/zengtianli/vps",
+    "language": "Python",
+    "name": "vps",
+    "pushed_at": "2026-04-20T08:52:18Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Water resource calculation toolkit — reservoir scheduling, pollution capacity, irrigation demand, and more.",
+    "html_url": "https://github.com/zengtianli/hydro-toolkit",
+    "language": "Python",
+    "name": "hydro-toolkit",
+    "pushed_at": "2026-04-20T08:52:10Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "ETL pipeline for hydrological risk mapping — GeoJSON to Excel risk assessment workbooks",
+    "html_url": "https://github.com/zengtianli/hydro-risk",
+    "language": "Python",
+    "name": "hydro-risk",
+    "pushed_at": "2026-04-20T08:51:54Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Cascade reservoir hydropower scheduling optimizer with Plotly visualizations",
+    "html_url": "https://github.com/zengtianli/hydro-reservoir",
+    "language": "Python",
+    "name": "hydro-reservoir",
+    "pushed_at": "2026-04-20T08:51:45Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Rainfall-runoff calculator for lake irrigation — 6-step pipeline across 228 lakes",
+    "html_url": "https://github.com/zengtianli/hydro-rainfall",
+    "language": "Python",
+    "name": "hydro-rainfall",
+    "pushed_at": "2026-04-20T08:51:38Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Daily water balance calculator for paddy and dryland crop irrigation demand",
+    "html_url": "https://github.com/zengtianli/hydro-irrigation",
+    "language": "Python",
+    "name": "hydro-irrigation",
+    "pushed_at": "2026-04-20T08:51:28Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Batch geocoder using Amap API — address↔coordinates conversion and POI search",
+    "html_url": "https://github.com/zengtianli/hydro-geocode",
+    "language": "Python",
+    "name": "hydro-geocode",
+    "pushed_at": "2026-04-20T08:51:20Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Industrial park water efficiency assessment using AHP+CRITIC+TOPSIS methodology",
+    "html_url": "https://github.com/zengtianli/hydro-efficiency",
+    "language": "Python",
+    "name": "hydro-efficiency",
+    "pushed_at": "2026-04-20T08:51:14Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Daily supply-demand scheduling for 19 river districts with reservoir/sluice management",
+    "html_url": "https://github.com/zengtianli/hydro-district",
+    "language": "Python",
+    "name": "hydro-district",
+    "pushed_at": "2026-04-20T08:51:07Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "River and reservoir pollution receiving capacity calculator with multi-scenario support",
+    "html_url": "https://github.com/zengtianli/hydro-capacity",
+    "language": "Python",
+    "name": "hydro-capacity",
+    "pushed_at": "2026-04-20T08:50:48Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Tauri desktop apps for the hydro toolkit — native builds of 9 water resource calculators",
+    "html_url": "https://github.com/zengtianli/hydro-apps",
+    "language": "Rust",
+    "name": "hydro-apps",
+    "pushed_at": "2026-04-20T08:50:42Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "Zhejiang Province water resources annual report query tool (2019–2024)",
+    "html_url": "https://github.com/zengtianli/hydro-annual",
+    "language": "Python",
+    "name": "hydro-annual",
+    "pushed_at": "2026-04-20T08:50:35Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Personal productivity dashboard — Tauri 2 desktop app",
+    "html_url": "https://github.com/zengtianli/cockpit",
+    "language": "TypeScript",
+    "name": "cockpit",
+    "pushed_at": "2026-04-20T08:50:12Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/logs",
+    "language": "HTML",
+    "name": "logs",
+    "pushed_at": "2026-04-20T08:05:31Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "Turborepo monorepo for tianlizeng.cloud Next.js apps (audiobook + 9 hydro-*)",
+    "html_url": "https://github.com/zengtianli/tlz-web-stack",
+    "language": "Python",
+    "name": "tlz-web-stack",
+    "pushed_at": "2026-04-20T07:54:59Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "文档处理与数据转换工具集",
+    "html_url": "https://github.com/zengtianli/doctools",
+    "language": "Python",
+    "name": "doctools",
+    "pushed_at": "2026-04-20T07:49:26Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "Personal knowledge base: sessions, knowledge, architecture docs",
+    "html_url": "https://github.com/zengtianli/docs",
+    "language": "Shell",
+    "name": "docs",
+    "pushed_at": "2026-04-19T23:57:51Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/zengtianli",
+    "language": null,
+    "name": "zengtianli",
+    "pushed_at": "2026-04-19T18:46:19Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "国际资产配置公开笔记 — 换汇 / 投资 / 香港银行 / 策略分析",
+    "html_url": "https://github.com/zengtianli/assets",
+    "language": "HTML",
+    "name": "assets",
+    "pushed_at": "2026-04-19T11:32:11Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/journal",
+    "language": "HTML",
+    "name": "journal",
+    "pushed_at": "2026-04-19T03:36:36Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "CC 自我进化系统变更日志",
+    "html_url": "https://github.com/zengtianli/cc-evolution",
+    "language": "Python",
+    "name": "cc-evolution",
+    "pushed_at": "2026-04-19T03:36:22Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/hs-dashboard",
+    "language": "Python",
+    "name": "hs-dashboard",
+    "pushed_at": "2026-04-17T12:12:38Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "Personal repo dashboard — Streamlit app monitoring 31 GitHub repos, VPS services, and Git activity",
+    "html_url": "https://github.com/zengtianli/repo-dashboard",
+    "language": "Python",
+    "name": "repo-dashboard",
+    "pushed_at": "2026-04-17T12:12:23Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "OAuth proxy platform — manage API keys, usage tracking, and rate limiting for Claude/OpenAI APIs",
+    "html_url": "https://github.com/zengtianli/oauth-proxy",
+    "language": "Python",
+    "name": "oauth-proxy",
+    "pushed_at": "2026-04-17T09:07:25Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "macOS 日常效率工具集",
+    "html_url": "https://github.com/zengtianli/mactools",
+    "language": "Python",
+    "name": "mactools",
+    "pushed_at": "2026-04-16T23:29:40Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "浙江省河湖生态流量核定与保障项目",
+    "html_url": "https://github.com/zengtianli/eco-flow",
+    "language": "Python",
+    "name": "eco-flow",
+    "pushed_at": "2026-04-16T14:26:59Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "ClashX 代理管理工具",
+    "html_url": "https://github.com/zengtianli/clashx",
+    "language": "Shell",
+    "name": "clashx",
+    "pushed_at": "2026-04-16T09:19:09Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "公司级共享资源：水库数据库、水资源公报、GIS底图",
+    "html_url": "https://github.com/zengtianli/resources",
+    "language": "TeX",
+    "name": "resources",
+    "pushed_at": "2026-04-16T00:21:55Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "macOS dotfiles — Zsh, Neovim, Tmux, Hammerspoon, Yabai, Karabiner, and more",
+    "html_url": "https://github.com/zengtianli/sync",
+    "language": "Shell",
+    "name": "sync",
+    "pushed_at": "2026-04-15T14:23:51Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "QGIS spatial processing pipeline for river cross-sections, dike clipping, and hydraulic GIS tasks",
+    "html_url": "https://github.com/zengtianli/hydro-qgis",
+    "language": "Python",
+    "name": "hydro-qgis",
+    "pushed_at": "2026-04-12T13:45:50Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "DocKit Raycast extension — fix formatting in Word, PowerPoint, and Excel files",
+    "html_url": "https://github.com/zengtianli/dockit-raycast",
+    "language": "TypeScript",
+    "name": "dockit-raycast",
+    "pushed_at": "2026-04-12T13:42:16Z",
+    "visibility": "public"
+  },
+  {
+    "archived": true,
+    "description": "Auto-organizer for your Downloads folder — sorts files by type with real-time watching",
+    "html_url": "https://github.com/zengtianli/downloads-organizer",
+    "language": "Python",
+    "name": "downloads-organizer",
+    "pushed_at": "2026-04-12T13:42:01Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Document processing toolkit for Word, PowerPoint, Excel, and CSV files. Bytes in, bytes out.",
+    "html_url": "https://github.com/zengtianli/dockit",
+    "language": "Python",
+    "name": "dockit",
+    "pushed_at": "2026-04-12T13:41:44Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": "Water resources company project workspace — docs, data catalogs, and deliverables",
+    "html_url": "https://github.com/zengtianli/zdwp",
+    "language": "Python",
+    "name": "zdwp",
+    "pushed_at": "2026-04-07T02:53:38Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "Water resources company internal reports and documents",
+    "html_url": "https://github.com/zengtianli/reports",
+    "language": "Python",
+    "name": "reports",
+    "pushed_at": "2026-04-07T02:53:03Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "Personal resume and CV — bilingual, auto-generated",
+    "html_url": "https://github.com/zengtianli/resume",
+    "language": null,
+    "name": "resume",
+    "pushed_at": "2026-04-07T02:52:27Z",
+    "visibility": "private"
+  },
+  {
+    "archived": true,
+    "description": "Personal essays and reflections",
+    "html_url": "https://github.com/zengtianli/essays",
+    "language": "HTML",
+    "name": "essays",
+    "pushed_at": "2026-04-07T02:50:30Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/bids",
+    "language": null,
+    "name": "bids",
+    "pushed_at": "2026-04-07T01:57:56Z",
+    "visibility": "private"
+  },
+  {
+    "archived": true,
+    "description": "AI engineering learning notes — Claude Code 6-layer architecture, LangChain, RAG, and hands-on projects",
+    "html_url": "https://github.com/zengtianli/learn",
+    "language": null,
+    "name": "learn",
+    "pushed_at": "2026-04-03T00:24:44Z",
+    "visibility": "public"
+  },
+  {
+    "archived": true,
+    "description": "Claude Code context engineering toolkit — token monitor, compact snapshot, session health",
+    "html_url": "https://github.com/zengtianli/cc-context",
+    "language": "Python",
+    "name": "cc-context",
+    "pushed_at": "2026-04-03T00:08:16Z",
+    "visibility": "public"
+  },
+  {
+    "archived": true,
+    "description": "70+ macOS utility scripts — document processing, data conversion, file management, system tools, and Raycast integration",
+    "html_url": "https://github.com/zengtianli/scripts",
+    "language": "Python",
+    "name": "scripts",
+    "pushed_at": "2026-04-02T01:47:50Z",
+    "visibility": "public"
+  },
+  {
+    "archived": true,
+    "description": null,
+    "html_url": "https://github.com/zengtianli/scripts-archive",
+    "language": "Python",
+    "name": "scripts-archive",
+    "pushed_at": "2026-04-02T01:21:19Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": "Everything you need to extend Raycast.",
+    "html_url": "https://github.com/zengtianli/extensions",
+    "language": null,
+    "name": "extensions",
+    "pushed_at": "2026-03-26T09:05:22Z",
+    "visibility": "public"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/zhoutengye/CIP_MPI",
+    "language": "Jupyter Notebook",
+    "name": "CIP_MPI",
+    "pushed_at": "2019-10-23T03:43:35Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/k-y-zhengzju/CIP_MPI",
+    "language": null,
+    "name": "CIP_MPI",
+    "pushed_at": "2019-08-05T19:07:47Z",
+    "visibility": "private"
+  },
+  {
+    "archived": false,
+    "description": null,
+    "html_url": "https://github.com/Mengyuli2018/CIP_MPI",
+    "language": "Fortran",
+    "name": "CIP_MPI",
+    "pushed_at": "2019-07-06T03:20:38Z",
+    "visibility": "private"
+  }
+]

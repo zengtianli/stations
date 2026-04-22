@@ -23,10 +23,8 @@ for _p in [Path.home() / "Dev/devtools/lib", Path("/var/www/devtools/lib")]:
         break
 from hydro_api_helpers import (  # noqa: E402
     build_json_response,
-    cors_origins,
     df_to_json_safe,
-    build_metadata,
-    read_version,
+    make_service_app,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -41,45 +39,17 @@ from src.annual.data_loader import (  # noqa: E402
     load_table,
 )
 
-app = FastAPI(title="hydro-annual-api", version=read_version(Path(__file__).parent))
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=cors_origins("hydro-annual", 3114),
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
+app = make_service_app(
+    service_id="hydro-annual",
+    name="annual", title="水资源年报", icon="📊",
+    description="浙江省水资源年报数据查询 (2019-2024)，按市/表/年度筛选",
+    web_port=3114, default_api_port=8614,
+    service_type="query",
+    compute_endpoint="/api/compute",
+    output_formats=['xlsx', 'csv'],
+    pyproject_dir=Path(__file__).parent,
 )
 
-
-@app.get("/api/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
-
-
-@app.get("/api/meta")
-def meta_info() -> dict:
-    return {
-        "name": "annual",
-        "title": "水资源年报",
-        "icon": "📊",
-        "description": "浙江省水资源年报数据查询 (2019-2024)，按市/表/年度筛选",
-        "version": "1.0.0",
-    }
-
-
-@app.get("/api/metadata")
-def metadata() -> dict:
-    return build_metadata(
-        Path(__file__).parent,
-        name="annual",
-        title="水资源年报",
-        icon="📊",
-        description="浙江省水资源年报数据查询 (2019-2024)，按市/表/年度筛选",
-        service_id="hydro-annual",
-        service_type="query",
-        default_port=8614,
-        output_formats=['xlsx', 'csv'],
-    )
 
 @app.get("/api/options")
 def options() -> dict:

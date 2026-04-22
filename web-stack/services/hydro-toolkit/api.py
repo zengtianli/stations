@@ -17,27 +17,16 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+import sys
+for _p in [Path.home() / "Dev/devtools/lib", Path("/var/www/devtools/lib")]:
+    if _p.exists(): sys.path.insert(0, str(_p)); break
+from hydro_api_helpers import read_version  # noqa: E402
+
 from core.plugin_loader import discover_plugins
 from core.plugin_manager import install_plugin, uninstall_plugin, update_plugin
 
 
-def _read_version() -> str:
-    try:
-        text = (Path(__file__).parent / "pyproject.toml").read_text()
-    except Exception:
-        return "0.0.0"
-    try:
-        import tomllib
-        return str(tomllib.loads(text).get("project", {}).get("version", "0.0.0"))
-    except ImportError:
-        import re as _re
-        m = _re.search(r'^\s*version\s*=\s*["\']([^"\']+)["\']', text, _re.MULTILINE)
-        return m.group(1) if m else "0.0.0"
-    except Exception:
-        return "0.0.0"
-
-
-app = FastAPI(title="hydro-toolkit-api", version=_read_version())
+app = FastAPI(title="hydro-toolkit-api", version=read_version(Path(__file__).parent))
 
 app.add_middleware(
     CORSMiddleware,

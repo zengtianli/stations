@@ -4,6 +4,16 @@
 
 ---
 
+## 2026-04-22 晚 · 合并为 Monorepo（补记）
+
+- 12 个独立 github repo → 单一 `github.com/zengtianli/stations`（fresh start，旧 repo 全 archived 只读）
+- 动机：让 auggie MCP 能把 stations 当单 workspace 做跨站语义检索
+- 脚手架：`.gitignore`（硬保护 `.env`）、`README.md`、`.claude/settings.local.json`、单 pre-commit hook（symlink 指向共享源）
+- 下次 commit+push 改走标准 `git add . && git commit && git push`，不再用 `/ship <a> <b> ...`
+- deploy.sh / pre-commit audit 逻辑无变化（VPS 端从未依赖 git pull；pre-commit 源文件未动）
+
+---
+
 ## 本次进展
 
 ### Phase A · 清理与 SoT 修正（已 ship）

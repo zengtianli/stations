@@ -1,6 +1,6 @@
 # Stations · CLAUDE.md
 
-`~/Dev/stations/` — 生产站群根目录（13 个子项目对应 13 个在线子域）。**本目录不是 git repo**；每个子目录是独立 repo。
+`~/Dev/stations/` — 生产站群根目录（13 个子项目对应 13 个在线子域）。**本目录是 monorepo** → `github.com/zengtianli/stations`（2026-04-22 从 12 个独立 repo 合并；旧 repo archived 只读）。
 
 > 父级规范见 `~/Dev/CLAUDE.md`（菜单 SSOT 整章在父级，不在此重复）。全局偏好见 `~/.claude/CLAUDE.md`。
 
@@ -19,7 +19,7 @@
 | `playbooks/` | playbooks.tianlizeng.cloud | 静态站 | 工作手册 |
 | `cclog/` | cclog.tianlizeng.cloud | FastAPI | CC 会话日志服务 |
 | `dockit/` | dockit.tianlizeng.cloud | Next.js | 文档工具 |
-| `cc-options/` | — | 本地（含金融 .env） | **非 git repo** |
+| `cc-options/` | — | 本地（含金融 .env） | `.env` 进 `.gitignore`，永不 track |
 | `docs/` | — | MD | 跨站归档/知识库（含本次 retro） |
 | `oauth-proxy/` | — | 基建 | CF Access 补充 |
 
@@ -39,7 +39,7 @@
 | navbar SSOT 推 6 个消费者 | `/navbar-refresh` |
 | 健康扫描 | `/sites-health` |
 | 批量 deploy | `/deploy <name>` 或 `/ship-site <name>` |
-| 批量 commit + push | `/ship <repo1> <repo2> ...` |
+| 提交 + push | `git add . && git commit && git push`（单 repo，不再需要 `/ship <a> <b> ...`） |
 | 会话收尾 | `/handoff` |
 
 ## 派生产物（AUTO-GENERATED，不手改）
@@ -54,10 +54,9 @@
 
 ## Pre-commit gate 覆盖
 
-本目录 4 个 repo 装了菜单 audit pre-commit hook：
-- `website/` `cmds/` `stack/` `ops-console/`
+本 monorepo 单 hook 在 `.git/hooks/pre-commit`（symlink → `~/Dev/tools/configs/menus/.pre-commit-hook.sh`），任何修改触发 menus audit。原先 4 子 repo 各装一份的旧模式已并成一份。
 
-（另 3 个在 `~/Dev/devtools` + `~/Dev/tools/configs` + `~/Dev/tools/cc-configs`）
+外部仓库的 gate 继续独立：`~/Dev/devtools` + `~/Dev/tools/configs` + `~/Dev/tools/cc-configs`。
 
 ## 当前待办（截至最近 HANDOFF）
 

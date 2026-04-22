@@ -266,15 +266,6 @@ groups:
         status: likely-stale
         notes: Phase 2 未部署
 
-      - name: oauth-proxy
-        path: ~/Dev/stations/oauth-proxy
-        purpose: Anthropic API 管理 & CF Access 认证代理
-        type: web-app
-        stack: [aiohttp, React, Vite]
-        domain: proxy.tianlizeng.cloud
-        port: 9100
-        status: active
-
       - name: auggie-dashboard
         path: ~/Dev/labs/auggie-dashboard
         purpose: Auggie 代码库扫描 + scan.json 数据源（被 ops-console /auggie 页消费）

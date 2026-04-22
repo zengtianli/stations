@@ -1,6 +1,15 @@
 [
   {
     "kind": "handoff",
+    "project": "stations",
+    "path": "/Users/tianli/Dev/stations/HANDOFF.md",
+    "mtime": "2026-04-22T14:29:55.346990",
+    "title": "Handoff · Stations Tier 2+3 全面重构完成 + 全部上线",
+    "summary": "2026-04-22 · **Tier 2 + Tier 3 + 小瑕疵 + 全部 VPS 部署 一次性完成。23 commits 跨 8 repo；audit 11→13 类；/api/metadata 11/11 服务全 v=0.1.0 HTTP 200；ops-console services-health 页面线上可用；/services-health 全景 skill 上线。nginx 推送跳过（VPS 已同步，naive rsync 会造 server_name ",
+    "slug": "stations-20260422-1429"
+  },
+  {
+    "kind": "handoff",
     "project": "ticket-reminder",
     "path": "/Users/tianli/Dev/ticket-reminder/HANDOFF.md",
     "mtime": "2026-04-21T10:31:11.005579",
@@ -236,6 +245,15 @@
   {
     "kind": "plan",
     "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/steady-meandering-church.md",
+    "mtime": "2026-04-22T11:46:22.086342",
+    "title": "Stations 全面重构 · Tier 2+3 Plan",
+    "summary": "",
+    "slug": "plan-steady-meandering-church"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/typed-floating-elephant.md",
     "mtime": "2026-03-30T10:11:18.596526",
     "title": "Downloads Organizer — GitHub 项目计划",
@@ -403,6 +421,15 @@
     "title": "Skills 合并清理计划：16 → 9",
     "summary": "",
     "slug": "plan-wise-wibbling-cascade-agent-aeeb295cf712f5403"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/functional-sleeping-dove.md",
+    "mtime": "2026-04-22T15:02:08.126642",
+    "title": "Stations Monorepo 激进重构方案",
+    "summary": "",
+    "slug": "plan-functional-sleeping-dove"
   },
   {
     "kind": "plan",

@@ -21,7 +21,6 @@
 | `dockit/` | dockit.tianlizeng.cloud | Next.js | 文档工具 |
 | `cc-options/` | — | 本地（含金融 .env） | `.env` 进 `.gitignore`，永不 track |
 | `docs/` | — | MD | 跨站归档/知识库（含本次 retro） |
-| `oauth-proxy/` | — | 基建 | CF Access 补充 |
 
 ## 入场 3 步（硬性）
 

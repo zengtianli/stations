@@ -12,6 +12,24 @@
 - 下次 commit+push 改走标准 `git add . && git commit && git push`，不再用 `/ship <a> <b> ...`
 - deploy.sh / pre-commit audit 逻辑无变化（VPS 端从未依赖 git pull；pre-commit 源文件未动）
 
+## 2026-04-22 深夜 · Phase 0+1 激进删除（plan: `functional-sleeping-dove.md`）
+
+- **Phase 0 删 oauth-proxy 整站**（用户明示 CF Access 接管不用）：`rm -rf stations/oauth-proxy/`（29 文件）+ 清 10 处外部 SSOT 引用：
+  - `tools/configs/menus/catalog.yaml`（`sub:proxy` 节点）
+  - `tools/configs/repo-map.json`（`oauth-proxy` 节点）
+  - `tools/configs/menus.py`（`"proxy": "oauth-proxy"` alias）
+  - `devtools/lib/tools/repo_map_gen.py`（infra 分类过滤规则）
+  - `devtools/lib/tools/gen_claude_md.py`（参考示例改到 audiobook）
+  - `devtools/lib/tools/services_to_nginx.py` / `web-stack/infra/nginx/README.md`（注释）
+  - `stations/stack/projects.yaml`（项目条目）
+  - `stations/README.md` / `stations/CLAUDE.md`（子项目表）
+- **Phase 1.1 删 9 份孤儿 st_utils.py** — 每份 67 行 Streamlit 残留，零 import，-603 行
+- **Phase 1.3 删 cc-options/_archive-streamlit/** — app.py 52KB + deploy.sh.streamlit 1.2KB
+- **Phase 1.2 取消** — 4 份 site-content.css 是派生产物（audit 强制要求存在），已从 SSOT 复制回 4 份；节省 0 行但方向调整
+- **净结果**：`git diff --shortstat` → 43 files changed, +43/-3,889，33 文件删除
+- **验证**：`/menus-audit` 13/13 绿 · `pnpm build` × website / ops-console / web-stack (20/20) 全过 · 3 静态站 regen 正常
+- **VPS 未动**：oauth-proxy systemd service / nginx vhost / CF Access 路由等清理在 deploy 阶段做（用户另行决定）
+
 ---
 
 ## 本次进展

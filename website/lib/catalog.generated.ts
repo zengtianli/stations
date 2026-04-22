@@ -25,7 +25,7 @@ export interface CatalogEntry {
 
 export const CATALOG = ({
   "meta": {
-    "generated_at": "2026-04-22T12:49:10",
+    "generated_at": "2026-04-22T15:08:37",
     "sources": [
       "~/Dev/stations/website/lib/services.ts",
       "~/Dev/tools/configs/menus/sites/*.yaml",
@@ -466,7 +466,7 @@ export const CATALOG = ({
     },
     {
       "id": "sub:proxy",
-      "type": "subdomain",
+      "type": "vps-only",
       "name": "OAuth Proxy",
       "subdomain": "proxy",
       "url": "https://proxy.tianlizeng.cloud",
@@ -474,9 +474,7 @@ export const CATALOG = ({
       "group": "基础设施",
       "group_id": "infra",
       "description": "Cloudflare Access 认证代理",
-      "port": 9100,
-      "source": "oauth-proxy",
-      "path": "~/Dev/oauth-proxy"
+      "port": 9100
     },
     {
       "id": "sub:webhook",

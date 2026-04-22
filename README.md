@@ -19,7 +19,6 @@
 | `playbooks/` | playbooks.tianlizeng.cloud | 静态站 | 工作手册 |
 | `cclog/` | cclog.tianlizeng.cloud | FastAPI | CC 会话日志 |
 | `dockit/` | dockit.tianlizeng.cloud | Next.js | 文档工具 |
-| `oauth-proxy/` | — | 基建 | CF Access 补充 |
 | `cc-options/` | — | 本地（含金融 .env） | 不对外 |
 | `docs/` | — | MD | 跨站归档/知识库 |
 

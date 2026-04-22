@@ -29,4 +29,4 @@ rsync'd to VPS `/etc/nginx/sites-enabled/`.
 
 Subdomains in group `infra` (n8n / panel / sub / proxy / status / webhook) are
 **excluded** because their VPS nginx vhosts are hand-written (different shapes:
-Uptime Kuma, Marzban, oauth-proxy, webhook receiver). Don't regenerate those.
+Uptime Kuma, Marzban, webhook receiver). Don't regenerate those.

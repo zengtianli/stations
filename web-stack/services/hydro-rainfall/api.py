@@ -27,11 +27,9 @@ for _p in [Path.home() / "Dev/devtools/lib", Path("/var/www/devtools/lib")]:
         break
 from hydro_api_helpers import (  # noqa: E402
     build_json_response,
-    cors_origins,
     df_to_json_safe,
     preview_zip_files,
-    build_metadata,
-    read_version,
+    make_service_app,
 )
 
 import pandas as pd  # noqa: E402
@@ -44,13 +42,16 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from comb0609 import Config, Processor  # noqa: E402
 
-app = FastAPI(title="hydro-rainfall-api", version=read_version(Path(__file__).parent))
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=cors_origins("hydro-rainfall", 3118),
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
+app = make_service_app(
+    service_id="hydro-rainfall",
+    name="rainfall", title="降雨径流计算", icon="🌧️",
+    description="概湖灌溉需水量计算（分区→面积→降雨系数→取水→扣减→合并）",
+    web_port=3118, default_api_port=8618,
+    service_type="compute",
+    compute_endpoint="/api/compute",
+    input_formats=['zip'],
+    output_formats=['zip', 'json'],
+    pyproject_dir=Path(__file__).parent,
 )
 
 SAMPLE_DIR = PROJECT_ROOT / "data" / "sample"
@@ -61,39 +62,6 @@ REQUIRED_INPUTS = {
     "input_YSH_GH.txt",
     "input_YSH.txt",
 }
-
-
-@app.get("/api/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
-
-
-@app.get("/api/meta")
-def meta_info() -> dict:
-    return {
-        "name": "rainfall",
-        "title": "降雨径流计算",
-        "icon": "🌧️",
-        "description": "概湖灌溉需水量计算（分区→面积→降雨系数→取水→扣减→合并）",
-        "version": "1.0.0",
-    }
-
-
-@app.get("/api/metadata")
-def metadata() -> dict:
-    return build_metadata(
-        Path(__file__).parent,
-        name="rainfall",
-        title="降雨径流计算",
-        icon="🌧️",
-        description="概湖灌溉需水量计算（分区→面积→降雨系数→取水→扣减→合并）",
-        service_id="hydro-rainfall",
-        service_type="compute",
-        default_port=8618,
-        compute_endpoint="/api/compute",
-        input_formats=['zip'],
-        output_formats=['zip', 'json'],
-    )
 
 def _extract_inputs(zip_bytes: bytes, workdir: Path) -> list[str]:
     """Extract zip into workdir flat (txt files only, strip any subpath)."""

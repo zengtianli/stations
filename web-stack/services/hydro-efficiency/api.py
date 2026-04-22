@@ -24,10 +24,8 @@ for _p in [Path.home() / "Dev/devtools/lib", Path("/var/www/devtools/lib")]:
         break
 from hydro_api_helpers import (  # noqa: E402
     cjk_header_safe,
-    cors_origins,
     df_to_json_safe,
-    build_metadata,
-    read_version,
+    make_service_app,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -51,13 +49,16 @@ from src.efficiency.sample_data import (  # noqa: E402
 )
 from src.efficiency.topsis import build_result_table, topsis_evaluate  # noqa: E402
 
-app = FastAPI(title="hydro-efficiency-api", version=read_version(Path(__file__).parent))
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=cors_origins("hydro-efficiency", 3113),
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
+app = make_service_app(
+    service_id="hydro-efficiency",
+    name="efficiency", title="水效评估", icon="💧",
+    description="工业园区水效评估 (AHP + CRITIC + TOPSIS)",
+    web_port=3113, default_api_port=8613,
+    service_type="compute",
+    compute_endpoint="/api/compute",
+    input_formats=['xlsx'],
+    output_formats=['xlsx', 'json'],
+    pyproject_dir=Path(__file__).parent,
 )
 
 
@@ -66,39 +67,6 @@ LAYER_GROUPS = {
     "小循环": ["C5", "C6"],
     "点循环": ["C7", "C8", "C9", "C10"],
 }
-
-
-@app.get("/api/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
-
-
-@app.get("/api/meta")
-def meta_info() -> dict:
-    return {
-        "name": "efficiency",
-        "title": "水效评估",
-        "icon": "💧",
-        "description": "工业园区水效评估 (AHP + CRITIC + TOPSIS)",
-        "version": "1.0.0",
-    }
-
-
-@app.get("/api/metadata")
-def metadata() -> dict:
-    return build_metadata(
-        Path(__file__).parent,
-        name="efficiency",
-        title="水效评估",
-        icon="💧",
-        description="工业园区水效评估 (AHP + CRITIC + TOPSIS)",
-        service_id="hydro-efficiency",
-        service_type="compute",
-        default_port=8613,
-        compute_endpoint="/api/compute",
-        input_formats=['xlsx'],
-        output_formats=['xlsx', 'json'],
-    )
 
 def _load_from_upload(xlsx_bytes: bytes):
     """Parse uploaded xlsx into (df_macro, df_meso, micro_dict, ahp_matrix_df)."""

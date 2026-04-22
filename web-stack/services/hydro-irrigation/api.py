@@ -30,11 +30,9 @@ for _p in [Path.home() / "Dev/devtools/lib", Path("/var/www/devtools/lib")]:
         break
 from hydro_api_helpers import (  # noqa: E402
     build_json_response,
-    cors_origins,
+    make_service_app,
     preview_zip_files,
     read_text_head,
-    build_metadata,
-    read_version,
 )
 
 # Project root on sys.path so `from src.irrigation...` resolves like Streamlit.
@@ -45,47 +43,17 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.irrigation.calculator import Calculator  # noqa: E402
 from src.irrigation.utils import combine_results  # noqa: E402
 
-app = FastAPI(title="hydro-irrigation-api", version=read_version(Path(__file__).parent))
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=cors_origins("hydro-irrigation", 3115),
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
+app = make_service_app(
+    service_id="hydro-irrigation",
+    name="irrigation", title="灌溉需水", icon="🌾",
+    description="水稻+旱地灌溉需水量水平衡计算",
+    web_port=3115, default_api_port=8615,
+    service_type="compute",
+    compute_endpoint="/api/compute",
+    input_formats=['xlsx'],
+    output_formats=['zip', 'json'],
+    pyproject_dir=Path(__file__).parent,
 )
-
-
-@app.get("/api/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
-
-
-@app.get("/api/meta")
-def meta_info() -> dict:
-    return {
-        "name": "irrigation",
-        "title": "灌溉需水",
-        "icon": "🌾",
-        "description": "水稻+旱地灌溉需水量水平衡计算",
-        "version": "1.0.0",
-    }
-
-
-@app.get("/api/metadata")
-def metadata() -> dict:
-    return build_metadata(
-        Path(__file__).parent,
-        name="irrigation",
-        title="灌溉需水",
-        icon="🌾",
-        description="水稻+旱地灌溉需水量水平衡计算",
-        service_id="hydro-irrigation",
-        service_type="compute",
-        default_port=8615,
-        compute_endpoint="/api/compute",
-        input_formats=['xlsx'],
-        output_formats=['zip', 'json'],
-    )
 
 # Output files we ship back to the client. `combine_results` writes
 # OUT_GGXS_TOTAL / OUT_PYCS_TOTAL into cwd/data/ for mode="both"; per-mode

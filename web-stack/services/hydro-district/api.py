@@ -24,11 +24,9 @@ for _p in [Path.home() / "Dev/devtools/lib", Path("/var/www/devtools/lib")]:
         break
 from hydro_api_helpers import (  # noqa: E402
     build_json_response,
-    cors_origins,
+    make_service_app,
     preview_zip_files,
     read_text_head,
-    build_metadata,
-    read_version,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -37,47 +35,17 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from src.district.scheduler import DistrictScheduler  # noqa: E402
 
-app = FastAPI(title="hydro-district-api", version=read_version(Path(__file__).parent))
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=cors_origins("hydro-district", 3116),
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
+app = make_service_app(
+    service_id="hydro-district",
+    name="district", title="河区调度", icon="🗺️",
+    description="19河区逐日水资源供需平衡调度",
+    web_port=3116, default_api_port=8616,
+    service_type="compute",
+    compute_endpoint="/api/compute",
+    input_formats=['zip'],
+    output_formats=['zip', 'json'],
+    pyproject_dir=Path(__file__).parent,
 )
-
-
-@app.get("/api/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
-
-
-@app.get("/api/meta")
-def meta_info() -> dict:
-    return {
-        "name": "district",
-        "title": "河区调度",
-        "icon": "🗺️",
-        "description": "19河区逐日水资源供需平衡调度",
-        "version": "1.0.0",
-    }
-
-
-@app.get("/api/metadata")
-def metadata() -> dict:
-    return build_metadata(
-        Path(__file__).parent,
-        name="district",
-        title="河区调度",
-        icon="🗺️",
-        description="19河区逐日水资源供需平衡调度",
-        service_id="hydro-district",
-        service_type="compute",
-        default_port=8616,
-        compute_endpoint="/api/compute",
-        input_formats=['zip'],
-        output_formats=['zip', 'json'],
-    )
 
 def _run_district_full(zip_bytes: bytes, with_previews: bool = True) -> dict:
     """Full pipeline that also exposes output-file previews and metadata.

@@ -12,6 +12,25 @@
 - 下次 commit+push 改走标准 `git add . && git commit && git push`，不再用 `/ship <a> <b> ...`
 - deploy.sh / pre-commit audit 逻辑无变化（VPS 端从未依赖 git pull；pre-commit 源文件未动）
 
+## 2026-04-22 深夜 · Phase 3+4 继续激进瘦身
+
+- **Phase 2.1 已 ship**（`775fe96`）：cc-options + hydro-toolkit 用 shared `read_version`，-22 行
+- **Phase 3.1 pilot**（`47f8166`）：hydro-annual 迁 `make_service_app` 试点，-30 行
+- **Phase 3.2 批量** (本 commit)：迁 7 hydro-* (capacity/district/efficiency/geocode/irrigation/rainfall/reservoir) 每站 -32 行 = **-224 行**
+- **Phase 3 跳过 3 站**：
+  - `hydro-risk` / `hydro-toolkit`：`/api/meta` 有动态 `phases`/plugins 字段，factory 不支持
+  - `cc-options`：proxy 类型自定义 metadata dict（deployed_at + SERVICE_PORT env），已完成 2.1 shared read_version 足够
+- **Phase 4 docs 大扫除**（本 commit 包含）：删 3 份 docs/knowledge/ 过时/重复 retro，-704 行
+  - openclaw-architecture.md（-312 行，项目退出）
+  - session-retro-20260421-taizhou-water-budget-recap.md（-139 行，recap 版与 -full 版重叠）
+  - session-retro-20260421-cc-options-migrate.md（-253 行，决策内容已在 -p1p2 retro）
+  - 另外磁盘删了 8 个 docs/_archive/ 文件（audit 建议的 -991 行，但 `_archive/` 在 .gitignore 里，不影响 git diff）
+- **devtools patch**（`3266532`）：audit_services 升级识别 `make_service_app(` 作为 /api/metadata 有效 marker
+- **累计 stations repo** (git diff)：-4,869 行（-7.3% of initial 66,858 tracked LOC）
+- **验证**：`/menus-audit` 13/13 绿 · `pnpm build × web-stack` 20/20 cached · 7 stations api-smoke health+meta ✓
+
+---
+
 ## 2026-04-22 深夜 · Phase 0+1 激进删除（plan: `functional-sleeping-dove.md`）
 
 - **Phase 0 删 oauth-proxy 整站**（用户明示 CF Access 接管不用）：`rm -rf stations/oauth-proxy/`（29 文件）+ 清 10 处外部 SSOT 引用：

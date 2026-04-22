@@ -26,10 +26,8 @@ for _p in [Path.home() / "Dev/devtools/lib", Path("/var/www/devtools/lib")]:
 from hydro_api_helpers import (  # noqa: E402
     build_json_response,
     cjk_header_safe,
-    cors_origins,
     df_to_json_safe,
-    build_metadata,
-    read_version,
+    make_service_app,
 )
 
 # Project root on sys.path so `from src.reservoir import ...` resolves
@@ -41,47 +39,17 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.reservoir import xlsx_bridge  # noqa: E402
 from src.reservoir.hydro_core import HydroElectricity, read_info_txt  # noqa: E402
 
-app = FastAPI(title="hydro-reservoir-api", version=read_version(Path(__file__).parent))
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=cors_origins("hydro-reservoir", 3112),
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
+app = make_service_app(
+    service_id="hydro-reservoir",
+    name="reservoir", title="水库群调度", icon="⚡",
+    description="梯级水库发电调度优化计算",
+    web_port=3112, default_api_port=8612,
+    service_type="compute",
+    compute_endpoint="/api/compute",
+    input_formats=['xlsx'],
+    output_formats=['xlsx', 'json'],
+    pyproject_dir=Path(__file__).parent,
 )
-
-
-@app.get("/api/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
-
-
-@app.get("/api/meta")
-def meta_info() -> dict:
-    return {
-        "name": "reservoir",
-        "title": "水库群调度",
-        "icon": "⚡",
-        "description": "梯级水库发电调度优化计算",
-        "version": "1.0.0",
-    }
-
-
-@app.get("/api/metadata")
-def metadata() -> dict:
-    return build_metadata(
-        Path(__file__).parent,
-        name="reservoir",
-        title="水库群调度",
-        icon="⚡",
-        description="梯级水库发电调度优化计算",
-        service_id="hydro-reservoir",
-        service_type="compute",
-        default_port=8612,
-        compute_endpoint="/api/compute",
-        input_formats=['xlsx'],
-        output_formats=['xlsx', 'json'],
-    )
 
 def _parse_input_preview(xlsx_bytes: bytes) -> dict:
     """Reproduce app.py's `parse_uploaded_xlsx` for Step 2 preview (no compute)."""

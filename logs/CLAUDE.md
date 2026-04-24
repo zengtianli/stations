@@ -18,7 +18,7 @@ This file provides guidance to Claude Code when working with the `logs` station.
 - `~/Dev/*/HANDOFF.md`                 — 每项目 handoff
 - `~/Work/*/HANDOFF.md` / `~/Work/bids/*/HANDOFF.md`
 - `~/.claude/plans/*.md`               — 每次会话的 plan
-- `~/Dev/cc-evolution/changes.yaml`    — CC 自演进（当前已归档，文件可能不存在）
+- `~/Dev/_archive/cc-evolution-20260419/changes.yaml`    — CC 自演进（当前已归档，文件可能不存在）
 
 渲染：
 - `site/index.html` — 密集时间线，带 filter chips（全部 / HANDOFF / Plan / CC 进化 + per-project）

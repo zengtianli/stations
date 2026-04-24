@@ -5,7 +5,7 @@
 | 项目 | 路径/值 |
 |------|---------|
 | 入口 | `api.py` (FastAPI，`tlz-api@hydro-toolkit.service` 拉起) |
-| 前端 | `~/Dev/web-stack/apps/hydro-toolkit-web/` (React + @tlz/ui) |
+| 前端 | `~/Dev/stations/web-stack/apps/hydro-toolkit-web/` (React + @tlz/ui) |
 | 插件目录 | `plugins/` (各 `hydro-xxx/` 子目录) |
 | 插件注册 | `plugins.json` + 每个插件的 `plugin.yaml` |
 | 插件加载 | `core/plugin_loader.py` |
@@ -16,7 +16,7 @@
 ## 常用命令
 
 ```bash
-cd /Users/tianli/Dev/hydro-toolkit
+cd /Users/tianli/Dev/stations/web-stack/services/hydro-toolkit
 
 # 本地起 FastAPI
 uv run uvicorn api:app --host 127.0.0.1 --port 8610

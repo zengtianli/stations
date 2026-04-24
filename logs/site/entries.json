@@ -3,10 +3,10 @@
     "kind": "handoff",
     "project": "stations",
     "path": "/Users/tianli/Dev/stations/HANDOFF.md",
-    "mtime": "2026-04-22T14:29:55.346990",
+    "mtime": "2026-04-22T15:30:03.598829",
     "title": "Handoff · Stations Tier 2+3 全面重构完成 + 全部上线",
     "summary": "2026-04-22 · **Tier 2 + Tier 3 + 小瑕疵 + 全部 VPS 部署 一次性完成。23 commits 跨 8 repo；audit 11→13 类；/api/metadata 11/11 服务全 v=0.1.0 HTTP 200；ops-console services-health 页面线上可用；/services-health 全景 skill 上线。nginx 推送跳过（VPS 已同步，naive rsync 会造 server_name ",
-    "slug": "stations-20260422-1429"
+    "slug": "stations-20260422-1530"
   },
   {
     "kind": "handoff",
@@ -434,6 +434,15 @@
   {
     "kind": "plan",
     "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/1-2-3-ok-1-sorted-whisper.md",
+    "mtime": "2026-04-22T17:21:24.536863",
+    "title": "站群清理 Phase 2 — 执行计划",
+    "summary": "",
+    "slug": "plan-1-2-3-ok-1-sorted-whisper"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/nested-zooming-church.md",
     "mtime": "2026-04-16T10:42:11.855812",
     "title": "知识蒸馏与能力内化计划",
@@ -634,7 +643,7 @@
     "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/generic-juggling-dove.md",
     "mtime": "2026-03-31T22:14:12.463645",
-    "title": "Plan: ~/Dev/scripts 整理清理",
+    "title": "Plan: ~/Dev/devtools/scripts 整理清理",
     "summary": "",
     "slug": "plan-generic-juggling-dove"
   },

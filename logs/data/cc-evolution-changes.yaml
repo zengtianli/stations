@@ -71,7 +71,7 @@ changes:
       全局只保留 3 个（context, plan-first, harness），
       12 个 domain skills 移到 domain-skills/ 目录，
       通过 harness sync 分发到各项目 .claude/skills/。
-      在 ~/Dev/website/ 工作时不再看到水利相关 triggers。
+      在 ~/Dev/stations/website/ 工作时不再看到水利相关 triggers。
     why: 减少上下文噪声，降低误触发概率
 
   - id: 3

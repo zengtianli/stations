@@ -36,7 +36,7 @@ docs/
 ## 常用命令
 
 ```bash
-cd ~/Dev/docs
+cd ~/Dev/stations/docs
 ./update-index.sh          # 重新生成索引
 tree -L 2 knowledge/       # 查看知识库结构
 ```

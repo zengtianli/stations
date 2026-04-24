@@ -25,7 +25,7 @@
 
 ```bash
 # 本地预览
-cd ~/Dev/assets && python3 generate.py && open site/index.html
+cd ~/Dev/stations/assets && python3 generate.py && open site/index.html
 
 # 部署
 bash deploy.sh
@@ -39,7 +39,7 @@ bash deploy.sh
 #    abstract: 一句话摘要（首页卡片显示）
 #    order: 10  # 可选，首页排序
 #    ---
-# 2. cd ~/Dev/assets && bash deploy.sh
+# 2. cd ~/Dev/stations/assets && bash deploy.sh
 ```
 
 ## 新增分组
@@ -50,4 +50,4 @@ bash deploy.sh
 
 - 分组 key（forex / invest / hk-bank / strategy）与首页分组标题在本 repo `generate.py` 定义
 - navbar 入口在 `~/Dev/tools/configs/menus/navbar.yaml` → content / 投资 section
-- 子域登记在 `~/Dev/website/lib/services.ts` → "内容" group
+- 子域登记在 `~/Dev/stations/website/lib/services.ts` → "内容" group

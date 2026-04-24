@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 /**
- * Mirror ~/Dev/website/lib/shared-navbar.generated.ts into
- * ~/Dev/web-stack/packages/menu-ssot/src/generated.ts.
+ * Mirror ~/Dev/stations/website/lib/shared-navbar.generated.ts into
+ * ~/Dev/stations/web-stack/packages/menu-ssot/src/generated.ts.
  *
  * Keeps `/menus-audit` and `/navbar-refresh` workflows intact — this script is
  * purely a *consumer* of the existing Python SSOT renderer, never a competing
@@ -15,7 +15,7 @@ import { fileURLToPath } from "node:url"
 
 const HOME = homedir()
 const MENUS_TOOL = resolve(HOME, "Dev/devtools/lib/tools/menus.py")
-// website may live at stations/website (promoted) or ~/Dev/website (incubation).
+// website may live at stations/website (promoted) or ~/Dev/stations/website (incubation).
 const WEBSITE_GENERATED_CANDIDATES = [
   resolve(HOME, "Dev/stations/website/lib/shared-navbar.generated.ts"),
   resolve(HOME, "Dev/website/lib/shared-navbar.generated.ts"),

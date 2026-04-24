@@ -9,7 +9,7 @@ Scans:
   ~/Work/*/HANDOFF.md
   ~/Work/bids/*/HANDOFF.md
   ~/.claude/plans/*.md
-  ~/Dev/cc-evolution/changes.yaml   (CC self-evolution changelog)
+  ~/Dev/_archive/cc-evolution-20260419/changes.yaml   (CC self-evolution changelog)
 
 Renders:
   site/index.html                   (dense timeline, default = all)
@@ -107,8 +107,8 @@ def _scan_evolution() -> list[Entry]:
 
     Source priority:
       1. data/cc-evolution-changes.yaml (snapshot inside this repo)
-      2. ~/Dev/cc-evolution/changes.yaml (active source, pre-merge)
-      3. ~/Dev/_archived/cc-evolution-*/changes.yaml (archived after merge)
+      2. ~/Dev/_archive/cc-evolution-20260419/changes.yaml (active source, pre-merge)
+      3. ~/Dev/_archive/cc-evolution-*/changes.yaml (archived after merge)
     """
     candidates = [
         ROOT / "data" / "cc-evolution-changes.yaml",

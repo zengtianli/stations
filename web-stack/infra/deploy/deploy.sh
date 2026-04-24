@@ -21,7 +21,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # web-stack root, derived from script location so this works whether the repo
-# lives at ~/Dev/web-stack or ~/Dev/stations/web-stack.
+# lives at ~/Dev/stations/web-stack or ~/Dev/stations/web-stack.
 WEB_STACK_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 # shellcheck source=ports.sh
 source "$SCRIPT_DIR/ports.sh"

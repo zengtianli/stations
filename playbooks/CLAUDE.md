@@ -18,7 +18,7 @@
 |------|------|
 | 内容有改 | 改 `~/Work/_playbooks/`，然后 `bash deploy.sh` |
 | 加新 playbook 文件 | 改 `~/Work/_playbooks/`，更新 mkdocs.yml `nav:` 节，`bash deploy.sh` |
-| 本地预览 | `cd ~/Dev/playbooks && ~/.local/bin/mkdocs serve` |
+| 本地预览 | `cd ~/Dev/tools/configs/playbooks && ~/.local/bin/mkdocs serve` |
 | 部署后验证 | `curl -sI https://playbooks.tianlizeng.cloud` 应返回 302 |
 | 加访问邮箱 | `/cf access add playbooks.tianlizeng.cloud --email X` |
 

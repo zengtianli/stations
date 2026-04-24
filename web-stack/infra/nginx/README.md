@@ -3,7 +3,7 @@
 The nginx vhost renderer (`render.py`) + template (`site.conf.tmpl`) + output (`out/`)
 were promoted to the central devtools location on **2026-04-22**, so all
 subdomains (not just web-stack's hydro-*) share one generator. The previous
-copy here hard-coded a stale `~/Dev/website/lib/services.ts` path (dead after
+copy here hard-coded a stale `~/Dev/stations/website/lib/services.ts` path (dead after
 the 2026-04-20 stations reorg).
 
 ## New locations

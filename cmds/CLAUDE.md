@@ -15,7 +15,7 @@ CC 命令 & 技能说明书站点：`cmds.tianlizeng.cloud`。
 ## 架构
 
 ```
-~/Dev/cmds/
+~/Dev/stations/cmds/
 ├── generate.py      # 扫 cc-configs → site/*.html
 ├── deploy.sh        # rsync 到 VPS
 └── site/            # 生成产物
@@ -41,7 +41,7 @@ bash deploy.sh            # 一键部署到 cmds.tianlizeng.cloud
 
 改了任何 command/skill 的 .md 后：
 ```bash
-cd ~/Dev/cmds && bash deploy.sh
+cd ~/Dev/stations/cmds && bash deploy.sh
 ```
 或直接 `/deploy`（有 deploy.sh 就触发）。
 

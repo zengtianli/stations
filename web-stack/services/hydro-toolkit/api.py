@@ -3,7 +3,7 @@
 Usage (dev):
     uv run uvicorn api:app --host 127.0.0.1 --port 8610 --reload
 
-Consumed by apps/hydro-toolkit-web in ~/Dev/web-stack/. Original Streamlit
+Consumed by apps/hydro-toolkit-web in ~/Dev/stations/web-stack/. Original Streamlit
 app.py stays untouched — this module re-uses `core.plugin_loader` and
 `core.plugin_manager` read-only.
 """

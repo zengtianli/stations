@@ -46,7 +46,7 @@ for arg in "$@"; do
 done
 [[ ${#SITES[@]} -eq 0 ]] && { echo "usage: deploy-batch.sh <site1> ... [--fast|--no-build|--force-build]" >&2; exit 1; }
 
-# Expand 'all' → list of migrated sites (must have ~/Dev/web-stack/apps/<name>-web).
+# Expand 'all' → list of migrated sites (must have ~/Dev/stations/web-stack/apps/<name>-web).
 if [[ "${SITES[0]}" == "all" ]]; then
   SITES=()
   while IFS= read -r sub; do

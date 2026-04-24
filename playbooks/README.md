@@ -6,7 +6,7 @@
 ## 架构
 
 ```
-~/Dev/playbooks/
+~/Dev/tools/configs/playbooks/
 ├── mkdocs.yml               # MkDocs 配置（Material theme + 中文）
 ├── docs/                    # 站点源文件（从 ~/Work/_playbooks/ 同步过来）
 │   ├── index.md             # 首页（手写，其他都是同步过来的）
@@ -26,7 +26,7 @@
 ## 更新流程
 
 ```bash
-bash ~/Dev/playbooks/deploy.sh
+bash ~/Dev/tools/configs/playbooks/deploy.sh
 ```
 
 三步：

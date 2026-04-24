@@ -5,7 +5,7 @@
 | 项目 | 路径/值 |
 |------|---------|
 | 入口 | `api.py` (FastAPI，`tlz-api@hydro-capacity.service` 拉起) |
-| 前端 | `~/Dev/web-stack/apps/hydro-capacity-web/` (React + @tlz/ui HydroComputePage) |
+| 前端 | `~/Dev/stations/web-stack/apps/hydro-capacity-web/` (React + @tlz/ui HydroComputePage) |
 | 核心逻辑 | `src/capacity/` |
 | 公共模块 | `src/common/` |
 | Excel 模板 | `templates/纳污能力计算模板.xlsx` |

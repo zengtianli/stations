@@ -5,7 +5,7 @@
   python3 scripts/sync-catalog.py
 
 数据流：
-  ~/Dev/website/lib/services.ts  ─┐
+  ~/Dev/stations/website/lib/services.ts  ─┐
   ~/Dev/tools/configs/menus/sites/*    ─┼─→ menus.py build-catalog
   ~/Dev/tools/configs/menus/navbar.yaml ┘             │
                                                 ▼

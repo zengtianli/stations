@@ -156,7 +156,7 @@ groups:
         status: active
 
       - name: dockit-raycast
-        path: ~/Dev/raycast/dockit-ext
+        path: ~/Dev/tools/raycast/dockit-ext
         purpose: dockit 的 Raycast 扩展
         type: cli
         stack: [TypeScript, Raycast]

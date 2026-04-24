@@ -228,7 +228,7 @@ RESTART_SERVICES = {
 
 ```bash
 # 在你的 Mac 上
-cd ~/Dev/website
+cd ~/Dev/stations/website
 
 # 1. 改代码、测试
 pnpm dev              # 本地开发

@@ -123,7 +123,7 @@ awards、patents、software-copyrights、academic-papers 使用纯 YAML frontmat
 
 ## 部署（硬规则）
 
-**唯一部署方式：`cd ~/Dev/website && bash deploy.sh`**
+**唯一部署方式：`cd ~/Dev/stations/website && bash deploy.sh`**
 
 - 绝对不能 SSH 到 VPS 上 build。VPS 的 `/var/www/web` 只是源码镜像，systemd 跑的是 `/opt/website`（standalone 产物）
 - deploy.sh 流程：rm -rf .next → pnpm build → rsync standalone+static+public 到 VPS → restart → 自动验证

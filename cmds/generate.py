@@ -725,7 +725,7 @@ description: 被动触发描述。当 <X> 时触发。
 本站点 `cmds.tianlizeng.cloud` 每次 push 到 cc-configs 仓库后自动从源文件更新。改 `.md` 后：
 
 ```bash
-cd ~/Dev/cmds && bash deploy.sh
+cd ~/Dev/stations/cmds && bash deploy.sh
 ```
 
 新命令几秒内在 `https://cmds.tianlizeng.cloud/<name>` 可见。

@@ -147,13 +147,13 @@ Plan mode + ExitPlanMode           # 先确认范围再动手（破坏性 = comm
 **本次怎么做**：加 7 条 migrations，然后 `rewrite-dead --dry-run` 预览 → 实跑。
 
 ```yaml
-- {from: /Users/tianli/Dev/cockpit, to: /Users/tianli/Dev/labs/cockpit}
-- {from: ~/Dev/cockpit,             to: ~/Dev/labs/cockpit}
-- {from: ~/Dev/essays,              to: ~/Dev/content/essays}
+- {from: /Users/tianli/Dev/labs/cockpit, to: /Users/tianli/Dev/labs/cockpit}
+- {from: ~/Dev/labs/cockpit,             to: ~/Dev/labs/cockpit}
+- {from: ~/Dev/content/essays,              to: ~/Dev/content/essays}
 # ...
 ```
 
-**本次发现的 regex bug**：rewrite-dead 原来的 lookahead 字符集 `[/\s'\"()\[\]|,;:.]` **漏了 backtick** `` ` `` 。Markdown 表格 / inline code 里的 `` `~/Dev/cockpit` `` 不会被 rewrite。补了一字符搞定：
+**本次发现的 regex bug**：rewrite-dead 原来的 lookahead 字符集 `[/\s'\"()\[\]|,;:.]` **漏了 backtick** `` ` `` 。Markdown 表格 / inline code 里的 `` `~/Dev/labs/cockpit` `` 不会被 rewrite。补了一字符搞定：
 
 ```diff
 - r"(?=[/\s'\"()\[\]|,;:.]|$)"
@@ -217,7 +217,7 @@ python3 ~/Dev/devtools/lib/tools/paths.py scan-dead 2>&1 | tail -3
 
 **本次怎么做**：7 个 repo 用同一 message 里的 7 个 `Bash(run_in_background=true)` 并行发。
 
-**一个踩坑**：`stations/playbooks/docs/bids/` 在 `playbooks/.gitignore` 里（MkDocs 的 sync 产物）。我的 `_commands-cheatsheet.md` 修改在那层，`git add` 被拒。改 SSOT 应该去 `~/Work/_playbooks/` 或 `~/Dev/tools/configs/playbooks/`，而不是直接改 stations 里的 docs/ 构建产物。
+**一个踩坑**：`stations/playbooks/docs/bids/` 在 `playbooks/.gitignore` 里（MkDocs 的 sync 产物）。我的 `_commands-cheatsheet.md` 修改在那层，`git add` 被拒。改 SSOT 应该去 `~/Dev/Work/_playbooks/` 或 `~/Dev/tools/configs/playbooks/`，而不是直接改 stations 里的 docs/ 构建产物。
 
 **正确姿势**：
 - `git add <specific files>` 而不是 `git add -A`（避免误提其他 pending 改动）
@@ -359,7 +359,7 @@ print(MENUS_SSOT)
 
 ## 剩余 21 条与下次会话
 
-详见 `~/Dev/_deadlinks-remaining.md`。按 8 类分布，全部属于 Pareto 尾部。
+详见 `~/Dev/_archive/deadlinks-reports/_deadlinks-remaining-2026-04-24.md`。按 8 类分布，全部属于 Pareto 尾部。
 
 可选 4 项优化（全做完可降 < 5 条）：
 1. scanner 增强：识别 `/images/*` / `/projects/*` 等 web 路由前缀

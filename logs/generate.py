@@ -6,8 +6,8 @@ Replaces the old journal.tianlizeng.cloud + changelog.tianlizeng.cloud sites.
 Scans:
   ~/Dev/HANDOFF.md                  (master latest session)
   ~/Dev/*/HANDOFF.md                (project-specific)
-  ~/Work/*/HANDOFF.md
-  ~/Work/bids/*/HANDOFF.md
+  ~/Dev/Work/*/HANDOFF.md
+  ~/Dev/Work/bids/*/HANDOFF.md
   ~/.claude/plans/*.md
   ~/Dev/_archive/cc-evolution-20260419/changes.yaml   (CC self-evolution changelog)
 

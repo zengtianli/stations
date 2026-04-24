@@ -8,20 +8,20 @@
 ```
 ~/Dev/tools/configs/playbooks/
 ├── mkdocs.yml               # MkDocs 配置（Material theme + 中文）
-├── docs/                    # 站点源文件（从 ~/Work/_playbooks/ 同步过来）
+├── docs/                    # 站点源文件（从 ~/Dev/Work/_playbooks/ 同步过来）
 │   ├── index.md             # 首页（手写，其他都是同步过来的）
 │   ├── bids/
 │   ├── eco-flow/
 │   └── reclaim/
 ├── site/                    # mkdocs build 产物（.gitignore）
-├── scripts/sync.sh          # ~/Work/_playbooks → docs/
+├── scripts/sync.sh          # ~/Dev/Work/_playbooks → docs/
 ├── deploy.sh                # 一键 sync + build + rsync
 └── README.md
 ```
 
 ## 事实源
 
-**写内容改 `~/Work/_playbooks/**/*.md`**，本项目只是渲染 + 部署。不要直接改 `docs/`。
+**写内容改 `~/Dev/Work/_playbooks/**/*.md`**，本项目只是渲染 + 部署。不要直接改 `docs/`。
 
 ## 更新流程
 
@@ -30,7 +30,7 @@ bash ~/Dev/tools/configs/playbooks/deploy.sh
 ```
 
 三步：
-1. `scripts/sync.sh` — 从 ~/Work/_playbooks/ rsync 到 docs/
+1. `scripts/sync.sh` — 从 ~/Dev/Work/_playbooks/ rsync 到 docs/
 2. `mkdocs build` — 生成 site/
 3. `rsync site/ → VPS:/var/www/playbooks/`
 

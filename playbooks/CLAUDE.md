@@ -2,11 +2,11 @@
 
 ## 定位
 
-把 `~/Work/_playbooks/` 渲染成可浏览的静态站点，部署到 https://playbooks.tianlizeng.cloud（CF Access 保护）。
+把 `~/Dev/Work/_playbooks/` 渲染成可浏览的静态站点，部署到 https://playbooks.tianlizeng.cloud（CF Access 保护）。
 
 ## 关键事实
 
-- **事实源**：`~/Work/_playbooks/`（不是 `docs/`）
+- **事实源**：`~/Dev/Work/_playbooks/`（不是 `docs/`）
 - **渲染器**：MkDocs + Material（pipx 装的，`~/.local/bin/mkdocs`）
 - **部署流**：`bash deploy.sh`（sync → build → rsync）
 - **子域名**：playbooks.tianlizeng.cloud
@@ -16,8 +16,8 @@
 
 | 场景 | 命令 |
 |------|------|
-| 内容有改 | 改 `~/Work/_playbooks/`，然后 `bash deploy.sh` |
-| 加新 playbook 文件 | 改 `~/Work/_playbooks/`，更新 mkdocs.yml `nav:` 节，`bash deploy.sh` |
+| 内容有改 | 改 `~/Dev/Work/_playbooks/`，然后 `bash deploy.sh` |
+| 加新 playbook 文件 | 改 `~/Dev/Work/_playbooks/`，更新 mkdocs.yml `nav:` 节，`bash deploy.sh` |
 | 本地预览 | `cd ~/Dev/tools/configs/playbooks && ~/.local/bin/mkdocs serve` |
 | 部署后验证 | `curl -sI https://playbooks.tianlizeng.cloud` 应返回 302 |
 | 加访问邮箱 | `/cf access add playbooks.tianlizeng.cloud --email X` |

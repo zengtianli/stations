@@ -18,7 +18,7 @@ Markdown 转有声书 Web 服务，edge-tts 语音合成 + 逐句高亮同步播
 
 ```bash
 # 本地开发
-cd ~/Dev/audiobook
+cd ~/Dev/stations/audiobook
 AUDIOBOOK_DATA="$HOME/audiobook_data" uv run uvicorn app.main:app --port 9200 --reload
 
 # 部署

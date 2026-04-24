@@ -504,7 +504,7 @@ def metadata() -> dict:
     }
 ```
 
-加对账脚本 `~/Dev/devtools/lib/tools/services_vs_live.py`：
+加对账脚本 `~/Dev/devtools/scripts/tools/services_vs_live.py`：
 
 ```python
 # 对每个 services.ts 里的 entry，请求 /api/metadata，对比字段

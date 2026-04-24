@@ -59,7 +59,7 @@ Vercel 监听 GitHub push 事件，自动完成：
 ```
 你的电脑                                              VPS (104.218.100.67)
 ┌──────────────┐                                     ┌──────────────────────────┐
-│ ~/Dev/website│                                     │                          │
+│ ~/Dev/stations/website │                                     │                          │
 │              │    bash deploy.sh                    │  /var/www/web/ (源码)    │
 │ 1. 写代码    │ ─────────────────────────▶          │    ↑ webhook git pull    │
 │ 2. pnpm build│    rsync 构建产物到 VPS              │    (对 website 没用)     │

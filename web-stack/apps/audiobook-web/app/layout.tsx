@@ -6,6 +6,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://audiobook.tianlizeng.cloud"),
   title: "Audiobook · 曾田力",
   description: "Markdown 转有声书 · 逐句高亮同步播放",
 }

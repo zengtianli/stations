@@ -6,6 +6,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://hydro.tianlizeng.cloud"),
   title: "Hydro Toolkit · 曾田力",
   description: "水利计算工具集 · 插件化架构",
 }

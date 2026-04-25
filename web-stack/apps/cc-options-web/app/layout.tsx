@@ -6,6 +6,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://cc-options.tianlizeng.cloud"),
   title: "QQQ CC Dashboard · 曾田力",
   description: "QQQ Covered Call 期权交易仪表盘",
 }

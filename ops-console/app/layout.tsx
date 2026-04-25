@@ -8,6 +8,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dashboard.tianlizeng.cloud"),
   title: "Dashboard · 曾田力",
   description: "VPS / Auggie / Hammerspoon 运维控制台",
 }

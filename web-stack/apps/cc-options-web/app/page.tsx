@@ -43,6 +43,16 @@ type Portfolio = {
   }>
 }
 
+function formatAsOf(portfolioTs: string | null, rows: EquityRow[] | null): string | null {
+  if (portfolioTs) {
+    // SnapTrade ts is local ISO "YYYY-MM-DDTHH:MM:SS" — show to the minute.
+    const m = portfolioTs.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/)
+    if (m) return `${m[1]} ${m[2]}`
+    return portfolioTs
+  }
+  return rows && rows.length > 0 ? rows[rows.length - 1]!.date : null
+}
+
 export default function HomePage() {
   return (
     <RangeProvider initial="YTD">
@@ -103,7 +113,7 @@ function HomeInner() {
   const account = portfolio?.accounts?.[0]
   const positions: Position[] = account?.positions ?? []
   const ccSharpe = perf?.strategies.find((s) => s.label === "CC 实盘")?.sharpe ?? null
-  const asOf = rows && rows.length > 0 ? rows[rows.length - 1]!.date : null
+  const asOf = formatAsOf(summary?.portfolio_ts ?? null, rows)
 
   return (
     <>

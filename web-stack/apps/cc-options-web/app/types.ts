@@ -112,6 +112,7 @@ export type RollSignalsResp = { count: number; signals: RollSignal[] }
 
 export type SummaryResp = {
   as_of: string
+  portfolio_ts: string | null
   nlv: number
   leverage: number
   prev_nlv: number | null

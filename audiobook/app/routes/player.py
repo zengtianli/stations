@@ -152,6 +152,10 @@ async def player_page(book_id: str):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{html_mod.escape(title)} - Audiobook</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='56'%3E🎧%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Ctext y='140' font-size='150'%3E🎧%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="{html_mod.escape(title)} · 有声书">
+<meta property="og:image" content="https://tianlizeng.cloud/images/og-image.svg">
 <style>
 :root {{
   --c-primary: #1a5276;

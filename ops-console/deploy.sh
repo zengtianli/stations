@@ -29,8 +29,8 @@ echo "📊 Sync data files (Auggie scan + hs_config)"
 # Prefer local dev copies (fresher than whatever's on VPS)
 for spec in \
   "$HOME/Dev/labs/auggie-dashboard/data/scan.json:auggie-scan.json" \
-  "$HOME/Dev/ops-console/data/hs_config.json:hs_config.json" \
-  "$HOME/Dev/ops-console/data/raycast_index.json:raycast_index.json" \
+  "$HOME/Dev/stations/ops-console/data/hs_config.json:hs_config.json" \
+  "$HOME/Dev/stations/ops-console/data/raycast_index.json:raycast_index.json" \
 ; do
   src="${spec%%:*}"
   name="${spec##*:}"

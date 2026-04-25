@@ -77,6 +77,10 @@ def _generate_index(sessions: list, stats: dict, output_dir: Path, api_mode: boo
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>cclog - Session Dashboard</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='56'%3E📼%3C/text%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Ctext y='140' font-size='150'%3E📼%3C/text%3E%3C/svg%3E">
+  <meta property="og:title" content="CC 会话日志 · 曾田力">
+  <meta property="og:image" content="https://tianlizeng.cloud/images/og-image.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -417,6 +421,9 @@ def _generate_session_pages(sessions: list, output_dir: Path):
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{_esc(s.project)} - {_esc(s.start_time.strftime('%Y-%m-%d %H:%M') if s.start_time else '')}</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='56'%3E📼%3C/text%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Ctext y='140' font-size='150'%3E📼%3C/text%3E%3C/svg%3E">
+  <meta property="og:image" content="https://tianlizeng.cloud/images/og-image.svg">
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -473,6 +480,10 @@ def _generate_digest_pages(indexer: Indexer, sessions: list, config: Config, out
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>cclog - Digests</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='56'%3E📼%3C/text%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Ctext y='140' font-size='150'%3E📼%3C/text%3E%3C/svg%3E">
+  <meta property="og:title" content="CC 会话 Digests">
+  <meta property="og:image" content="https://tianlizeng.cloud/images/og-image.svg">
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>

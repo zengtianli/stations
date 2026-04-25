@@ -228,6 +228,9 @@ def render_index(articles: list[dict]) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='56'%3E📈%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Ctext y='140' font-size='150'%3E📈%3C/text%3E%3C/svg%3E">
+<meta property="og:image" content="https://tianlizeng.cloud/images/og-image.svg">
 <title>理财笔记 — tianlizeng.cloud</title>
 <meta name="description" content="国际资产配置笔记 · 换汇 / 投资 / 香港银行 / 策略分析">
 <style>
@@ -256,6 +259,9 @@ def render_article(a: dict) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='56'%3E📈%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Ctext y='140' font-size='150'%3E📈%3C/text%3E%3C/svg%3E">
+<meta property="og:image" content="https://tianlizeng.cloud/images/og-image.svg">
 <title>{esc(a['title'])} — 理财笔记</title>
 <meta name="description" content="{esc(a['abstract'])}">
 <style>

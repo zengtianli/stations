@@ -57,10 +57,18 @@ plugins:
 
 nav:
   - 首页: index.md
-  - 标书 Bids:
-    - 速查手册: bids/_commands-cheatsheet.md
-    - Playbook · panan 雷同破除: bids/panan-雷同破除-2026-04-17.md
-  - 生态流量 Eco-flow:
-    - 速查手册: eco-flow/_commands-cheatsheet.md
-  - 再生水 Reclaim:
-    - 速查手册: reclaim/_commands-cheatsheet.md
+  - 业务流程:
+    - 标书 Bids:
+      - 速查手册: bids/_commands-cheatsheet.md
+      - Playbook · panan 雷同破除: bids/panan-雷同破除-2026-04-17.md
+    - 生态流量 Eco-flow:
+      - 速查手册: eco-flow/_commands-cheatsheet.md
+    - 再生水 Reclaim:
+      - 速查手册: reclaim/_commands-cheatsheet.md
+  - 跨域 / 站群:
+    - 总览 META: META.md
+    - 水利 Hydro: hydro.md
+    - 站群 Stations: stations.md
+    - Web 内容: web-content.md
+    - Web 脚手架: web-scaffold.md
+    - 批量迁移: mass-migration.md

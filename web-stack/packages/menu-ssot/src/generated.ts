@@ -61,27 +61,6 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
               "key": "services"
             },
             {
-              "label": "Stack",
-              "url": "https://stack.tianlizeng.cloud",
-              "key": "stack"
-            },
-            {
-              "label": "CC Docs",
-              "url": "https://cmds.tianlizeng.cloud",
-              "key": "cmds",
-              "access": "cf-access"
-            },
-            {
-              "label": "Dashboard",
-              "url": "https://dashboard.tianlizeng.cloud",
-              "key": "dashboard"
-            },
-            {
-              "label": "Auggie",
-              "url": "https://dashboard.tianlizeng.cloud/auggie",
-              "key": "auggie"
-            },
-            {
               "label": "搜索",
               "url": "https://tianlizeng.cloud/search",
               "key": "search"
@@ -196,12 +175,6 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
               "key": "cclog"
             },
             {
-              "label": "Logs",
-              "url": "https://logs.tianlizeng.cloud",
-              "key": "logs",
-              "access": "cf-access"
-            },
-            {
               "label": "Dockit",
               "url": "https://dockit.tianlizeng.cloud",
               "key": "dockit"
@@ -217,12 +190,6 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
               "url": "https://cmds.tianlizeng.cloud",
               "key": "cmds",
               "access": "cf-access"
-            },
-            {
-              "label": "Playbooks",
-              "url": "https://playbooks.tianlizeng.cloud",
-              "key": "playbooks",
-              "access": "cf-access"
             }
           ]
         }
@@ -237,11 +204,6 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
               "key": "cc-configs"
             },
             {
-              "label": "devtools",
-              "url": "https://github.com/zengtianli/devtools",
-              "key": "devtools"
-            },
-            {
               "label": "doctools",
               "url": "https://github.com/zengtianli/doctools",
               "key": "doctools"
@@ -250,32 +212,11 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
               "label": "mactools",
               "url": "https://github.com/zengtianli/mactools",
               "key": "mactools"
-            },
-            {
-              "label": "clashx",
-              "url": "https://github.com/zengtianli/clashx",
-              "key": "clashx"
             }
           ]
         }
       ],
-      [
-        {
-          "title": "Raycast / 配置",
-          "items": [
-            {
-              "label": "raycast",
-              "url": "https://github.com/zengtianli/raycast",
-              "key": "raycast"
-            },
-            {
-              "label": "configs",
-              "url": "https://github.com/zengtianli/configs",
-              "key": "configs"
-            }
-          ]
-        }
-      ],
+      [],
       []
     ]
   },
@@ -300,20 +241,22 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
               "access": "cf-access"
             },
             {
-              "label": "有声书",
-              "url": "https://audiobook.tianlizeng.cloud",
-              "key": "audiobook"
-            },
-            {
-              "label": "CC 会话",
-              "url": "https://cclog.tianlizeng.cloud",
-              "key": "cclog"
-            },
-            {
               "label": "Playbooks",
               "url": "https://playbooks.tianlizeng.cloud",
               "key": "playbooks",
               "access": "cf-access"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "title": "媒体",
+          "items": [
+            {
+              "label": "有声书",
+              "url": "https://audiobook.tianlizeng.cloud",
+              "key": "audiobook"
             }
           ]
         }
@@ -336,7 +279,6 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
           ]
         }
       ],
-      [],
       []
     ]
   },
@@ -368,20 +310,9 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
           "title": "代理",
           "items": [
             {
-              "label": "OAuth Proxy",
-              "url": "https://proxy.tianlizeng.cloud",
-              "key": "proxy",
-              "access": "cf-access"
-            },
-            {
               "label": "Marzban",
-              "url": "https://panel.tianlizeng.cloud",
+              "url": "https://panel.tianlizeng.cloud/dashboard/",
               "key": "panel"
-            },
-            {
-              "label": "Marzban 订阅",
-              "url": "https://sub.tianlizeng.cloud",
-              "key": "sub"
             }
           ]
         }
@@ -403,6 +334,6 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
   }
 ]
 
-export const SHARED_NO_CURRENT_HOSTS: string[] = ["hammerspoon.tianlizeng.cloud", "auggie.tianlizeng.cloud", "audiobook.tianlizeng.cloud", "proxy.tianlizeng.cloud"]
+export const SHARED_NO_CURRENT_HOSTS: string[] = ["hammerspoon.tianlizeng.cloud", "auggie.tianlizeng.cloud", "audiobook.tianlizeng.cloud"]
 
-export const SHARED_CURRENT_HOST_MAP: Record<string, string> = {"stack.tianlizeng.cloud": "home", "cmds.tianlizeng.cloud": "home", "dashboard.tianlizeng.cloud": "dev", "logs.tianlizeng.cloud": "content", "docs.tianlizeng.cloud": "content", "audiobook.tianlizeng.cloud": "content", "cclog.tianlizeng.cloud": "content", "playbooks.tianlizeng.cloud": "content", "cc-options.tianlizeng.cloud": "content", "assets.tianlizeng.cloud": "content", "status.tianlizeng.cloud": "infra", "n8n.tianlizeng.cloud": "infra", "panel.tianlizeng.cloud": "infra", "sub.tianlizeng.cloud": "infra", "webhook.tianlizeng.cloud": "infra"}
+export const SHARED_CURRENT_HOST_MAP: Record<string, string> = {"stack.tianlizeng.cloud": "dev", "cmds.tianlizeng.cloud": "dev", "dashboard.tianlizeng.cloud": "dev", "cclog.tianlizeng.cloud": "dev", "dockit.tianlizeng.cloud": "dev", "logs.tianlizeng.cloud": "content", "docs.tianlizeng.cloud": "content", "audiobook.tianlizeng.cloud": "content", "playbooks.tianlizeng.cloud": "content", "cc-options.tianlizeng.cloud": "content", "assets.tianlizeng.cloud": "content", "status.tianlizeng.cloud": "infra", "n8n.tianlizeng.cloud": "infra", "panel.tianlizeng.cloud": "infra", "webhook.tianlizeng.cloud": "infra"}

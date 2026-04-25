@@ -25,7 +25,7 @@ export interface CatalogEntry {
 
 export const CATALOG = ({
   "meta": {
-    "generated_at": "2026-04-22T15:08:37",
+    "generated_at": "2026-04-22T17:25:25",
     "sources": [
       "~/Dev/stations/website/lib/services.ts",
       "~/Dev/tools/configs/menus/sites/*.yaml",
@@ -241,8 +241,8 @@ export const CATALOG = ({
       "subdomain": "logs",
       "url": "https://logs.tianlizeng.cloud",
       "access_type": "cf-access",
-      "group": "开发与 AI",
-      "group_id": "dev-ai",
+      "group": "内容与媒体",
+      "group_id": "content-media",
       "description": "HANDOFF / 方案 / 复盘 / CC 进化 — 统一时间线",
       "source": "logs",
       "path": "~/Dev/logs"
@@ -358,8 +358,8 @@ export const CATALOG = ({
       "subdomain": "playbooks",
       "url": "https://playbooks.tianlizeng.cloud",
       "access_type": "cf-access",
-      "group": "开发与 AI",
-      "group_id": "dev-ai",
+      "group": "内容与媒体",
+      "group_id": "content-media",
       "description": "工作方法论 × 命令映射 — 标书/生态流量/再生水",
       "source": "playbooks",
       "path": "~/Dev/playbooks"
@@ -445,36 +445,12 @@ export const CATALOG = ({
       "type": "vps-only",
       "name": "Marzban",
       "subdomain": "panel",
-      "url": "https://panel.tianlizeng.cloud",
+      "url": "https://panel.tianlizeng.cloud/dashboard/",
       "access_type": "public",
       "group": "基础设施",
       "group_id": "infra",
-      "description": "代理面板管理",
+      "description": "代理面板管理（含订阅端点，sub 已并入此域）",
       "port": 8000
-    },
-    {
-      "id": "sub:sub",
-      "type": "vps-only",
-      "name": "Marzban 订阅",
-      "subdomain": "sub",
-      "url": "https://sub.tianlizeng.cloud",
-      "access_type": "public",
-      "group": "基础设施",
-      "group_id": "infra",
-      "description": "代理客户端订阅端点",
-      "port": 8000
-    },
-    {
-      "id": "sub:proxy",
-      "type": "vps-only",
-      "name": "OAuth Proxy",
-      "subdomain": "proxy",
-      "url": "https://proxy.tianlizeng.cloud",
-      "access_type": "cf-access",
-      "group": "基础设施",
-      "group_id": "infra",
-      "description": "Cloudflare Access 认证代理",
-      "port": 9100
     },
     {
       "id": "sub:webhook",
@@ -501,18 +477,6 @@ export const CATALOG = ({
       ]
     },
     {
-      "id": "local:devtools",
-      "type": "tool-lib",
-      "name": "devtools",
-      "path": "~/Dev/devtools",
-      "links": [
-        {
-          "label": "GitHub",
-          "url": "https://github.com/zengtianli/devtools"
-        }
-      ]
-    },
-    {
       "id": "local:doctools",
       "type": "tool-lib",
       "name": "doctools",
@@ -533,42 +497,6 @@ export const CATALOG = ({
         {
           "label": "GitHub",
           "url": "https://github.com/zengtianli/mactools"
-        }
-      ]
-    },
-    {
-      "id": "local:clashx",
-      "type": "tool-lib",
-      "name": "clashx",
-      "path": "~/Dev/clashx",
-      "links": [
-        {
-          "label": "GitHub",
-          "url": "https://github.com/zengtianli/clashx"
-        }
-      ]
-    },
-    {
-      "id": "local:raycast",
-      "type": "raycast-wrapper",
-      "name": "raycast",
-      "path": "~/Dev/raycast",
-      "links": [
-        {
-          "label": "GitHub",
-          "url": "https://github.com/zengtianli/raycast"
-        }
-      ]
-    },
-    {
-      "id": "local:configs",
-      "type": "config-repo",
-      "name": "configs",
-      "path": "~/Dev/configs",
-      "links": [
-        {
-          "label": "GitHub",
-          "url": "https://github.com/zengtianli/configs"
         }
       ]
     },

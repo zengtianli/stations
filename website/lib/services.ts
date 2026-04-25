@@ -53,11 +53,9 @@ export const SERVICE_GROUPS: ServiceGroupConfig[] = [
     services: [
       { name: "Repo Dashboard", subdomain: "dashboard", description: "项目控制台 — VPS 服务/任务/Git 提交总览", port: 8520 },
       { name: "CC 会话日志", subdomain: "cclog", description: "CC 会话历史仪表盘，按项目/日期/关键词筛选", port: 8898 },
-      { name: "Logs", subdomain: "logs", description: "HANDOFF / 方案 / 复盘 / CC 进化 — 统一时间线", accessType: "cf-access" },
       { name: "Dockit", subdomain: "dockit", description: "文档处理工具箱 — Word/PPT/Excel 多格式处理", port: 8503 },
       { name: "Stack", subdomain: "stack", description: "~/Dev 项目架构说明书", accessType: "cf-access" },
       { name: "CC Docs", subdomain: "cmds", description: "CC 命令 & 技能说明书", accessType: "cf-access" },
-      { name: "Playbooks", subdomain: "playbooks", description: "工作方法论 × 命令映射 — 标书/生态流量/再生水", accessType: "cf-access" },
     ],
   },
   {
@@ -74,6 +72,8 @@ export const SERVICE_GROUPS: ServiceGroupConfig[] = [
     icon: "book-open",
     color: "text-amber-600",
     services: [
+      { name: "Logs", subdomain: "logs", description: "HANDOFF / 方案 / 复盘 / CC 进化 — 统一时间线", accessType: "cf-access" },
+      { name: "Playbooks", subdomain: "playbooks", description: "工作方法论 × 命令映射 — 标书/生态流量/再生水", accessType: "cf-access" },
       { name: "知识库", subdomain: "docs", description: "Knowledge Dashboard — 文档/指南/知识检索", accessType: "cf-access" },
       { name: "有声书", subdomain: "audiobook", description: "Markdown 转有声书，多音色选择与句级同步", port: 9200 },
     ],
@@ -85,9 +85,7 @@ export const SERVICE_GROUPS: ServiceGroupConfig[] = [
     services: [
       { name: "Uptime Kuma", subdomain: "status", description: "服务可用性监控", port: 3001, accessType: "cf-access" },
       { name: "n8n", subdomain: "n8n", description: "工作流自动化引擎", port: 5678, accessType: "cf-access" },
-      { name: "Marzban", subdomain: "panel", description: "代理面板管理", port: 8000 },
-      { name: "Marzban 订阅", subdomain: "sub", description: "代理客户端订阅端点", port: 8000 },
-      { name: "OAuth Proxy", subdomain: "proxy", description: "Cloudflare Access 认证代理", port: 9100, accessType: "cf-access" },
+      { name: "Marzban", subdomain: "panel", description: "代理面板管理（含订阅端点，sub 已并入此域）", url: "https://panel.tianlizeng.cloud/dashboard/", port: 8000 },
       { name: "Webhook", subdomain: "webhook", description: "GitHub Webhook 接收器", port: 9000 },
     ],
   },

@@ -1,1 +1,0 @@
-/Users/tianli/.claude/standards/raycast-commands.md

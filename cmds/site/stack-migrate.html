@@ -724,7 +724,7 @@ python3 ~/Dev/devtools/lib/tools/stack_migrate_hydro.py $ARGUMENTS
 
 1. `cd ~/Dev/&lt;repo&gt; &amp;&amp; uv add python-multipart`（上传需要）
 2. `cd ~/Dev/&lt;repo&gt; &amp;&amp; uv sync`
-3. 把 `api.py::/api/compute` 的 501 占位替换成真实计算（参考 `~/Dev/hydro-reservoir/api.py::_run_reservoir()`）
+3. 把 `api.py::/api/compute` 的 501 占位替换成真实计算（参考 `~/Dev/stations/web-stack/services/hydro-reservoir/api.py::_run_reservoir()`）
 4. `cd ~/Dev/stations/web-stack &amp;&amp; pnpm install`
 5. 本地联调：`cd ~/Dev/&lt;repo&gt; &amp;&amp; uv run uvicorn api:app --port &lt;api_port&gt;` + `cd ~/Dev/stations/web-stack &amp;&amp; pnpm --filter &lt;repo&gt;-web dev`
 
@@ -751,7 +751,7 @@ python3 ~/Dev/devtools/lib/tools/stack_migrate_hydro.py $ARGUMENTS
 
 <section class="sidebar-block">
   <h3>引用的后端脚本</h3>
-  <div class="path-list"><div>~/Dev/devtools/lib/tools/stack_migrate_hydro.py</div><div>~/Dev/hydro-reservoir/api.py</div><div>~/Dev/stations/website/lib/services.ts</div></div>
+  <div class="path-list"><div>~/Dev/devtools/lib/tools/stack_migrate_hydro.py</div><div>~/Dev/stations/web-stack/services/hydro-reservoir/api.py</div><div>~/Dev/stations/website/lib/services.ts</div></div>
 </section>
 
 <section class="sidebar-block">
@@ -789,7 +789,7 @@ python3 ~/Dev/devtools/lib/tools/stack_migrate_hydro.py $ARGUMENTS
 
 1. `cd ~/Dev/&lt;repo&gt; &amp;&amp; uv add python-multipart`（上传需要）
 2. `cd ~/Dev/&lt;repo&gt; &amp;&amp; uv sync`
-3. 把 `api.py::/api/compute` 的 501 占位替换成真实计算（参考 `~/Dev/hydro-reservoir/api.py::_run_reservoir()`）
+3. 把 `api.py::/api/compute` 的 501 占位替换成真实计算（参考 `~/Dev/stations/web-stack/services/hydro-reservoir/api.py::_run_reservoir()`）
 4. `cd ~/Dev/stations/web-stack &amp;&amp; pnpm install`
 5. 本地联调：`cd ~/Dev/&lt;repo&gt; &amp;&amp; uv run uvicorn api:app --port &lt;api_port&gt;` + `cd ~/Dev/stations/web-stack &amp;&amp; pnpm --filter &lt;repo&gt;-web dev`
 

@@ -657,6 +657,7 @@ h1 { font-size: 22px; margin: 0 0 4px; }
     max-width: 1500px; margin: 0 auto; padding: 24px 20px 16px;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'PingFang SC', Helvetica, sans-serif;
+    position: relative;
   }
   .tlz-site-header .tlz-crumb {
     font-size: 12px; color: #86868b; margin-bottom: 6px;
@@ -673,16 +674,43 @@ h1 { font-size: 22px; margin: 0 0 4px; }
   .tlz-site-header .tlz-tagline {
     font-size: 13px; color: #6b7280; margin: 4px 0 0;
   }
+  .tlz-search-btn {
+    position: absolute; top: 24px; right: 20px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 8px; border-radius: 6px;
+    color: #6b7280; text-decoration: none;
+    font-size: 12px; transition: all 0.15s;
+  }
+  .tlz-search-btn:hover { background: rgba(0,0,0,0.05); color: #1d1d1f; }
+  .tlz-search-btn kbd {
+    border: 1px solid rgba(0,0,0,0.15); border-radius: 4px;
+    padding: 1px 4px; font-size: 10px; font-family: ui-monospace, monospace; color: #86868b;
+  }
+  @media (max-width: 600px) { .tlz-search-btn kbd { display: none; } }
 </style>
 <header class="tlz-site-header">
   <div class="tlz-crumb"><a href="https://tianlizeng.cloud/">tianlizeng.cloud</a> / <a href="https://tianlizeng.cloud/services">Services</a> / <span>Logs</span></div>
   <h1><span class="tlz-icon">📋</span>Logs</h1>
   <p class="tlz-tagline">HANDOFF · 方案 · 复盘 · CC 进化 — 统一时间线</p>
+  <a href="https://tianlizeng.cloud/search" class="tlz-search-btn" aria-label="搜索 (⌘K)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <kbd>⌘K</kbd>
+  </a>
 </header>
+<script>
+  (function(){
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        window.location.href = "https://tianlizeng.cloud/search";
+      }
+    });
+  })();
+</script>
 
 <div class="tlz-container">
   <header class="tlz-stats-bar">
-    <span><strong>115</strong> 条（按修改时间倒序）</span>
+    <span><strong>131</strong> 条（按修改时间倒序）</span>
   </header>
 
   <div class="tlz-filters">
@@ -692,12 +720,42 @@ h1 { font-size: 22px; margin: 0 0 4px; }
     <button class="tlz-btn" data-filter="kind:evolution">CC 进化</button>
   </div>
   <div class="tlz-filters">
-    <button class="tlz-btn" data-filter="proj:(cc-evolution)">(cc-evolution)</button><button class="tlz-btn" data-filter="proj:(plan)">(plan)</button><button class="tlz-btn" data-filter="proj:eco-flow">eco-flow</button><button class="tlz-btn" data-filter="proj:panan-rigid-2026">panan-rigid-2026</button><button class="tlz-btn" data-filter="proj:stations">stations</button><button class="tlz-btn" data-filter="proj:ticket-reminder">ticket-reminder</button>
+    <button class="tlz-btn" data-filter="proj:(cc-evolution)">(cc-evolution)</button><button class="tlz-btn" data-filter="proj:(plan)">(plan)</button><button class="tlz-btn" data-filter="proj:master">master</button><button class="tlz-btn" data-filter="proj:stations">stations</button>
   </div>
 
   <div class="timeline" id="timeline">
-    <a class="tlz-card tlz-card--row" href="d/plan-1-2-3-ok-1-sorted-whisper.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-22 17:21</span><span class="proj">(plan)</span><span class="title">站群清理 Phase 2 — 执行计划</span><span class="kind">plan</span></a>
-<a class="tlz-card tlz-card--row" href="d/stations-20260422-1530.html" data-kind="handoff" data-project="stations"><span class="date">2026-04-22 15:30</span><span class="proj">stations</span><span class="title">Handoff · Stations Tier 2+3 全面重构完成 + 全部上线</span><span class="kind">handoff</span></a>
+    <a class="tlz-card tlz-card--row" href="d/plan-site-overhaul-ia-search-home.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-27 10:42</span><span class="proj">(plan)</span><span class="title">Plan · 站群全面升级（IA + 搜索 + 主页）</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/stations-20260427-1012.html" data-kind="handoff" data-project="stations"><span class="date">2026-04-27 10:12</span><span class="proj">stations</span><span class="title">Handoff · Stations Tier 2+3 全面重构完成 + 全部上线</span><span class="kind">handoff</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-purrfect-nibbling-patterson.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-27 09:43</span><span class="proj">(plan)</span><span class="title">Plan · 全量收尾「没做完的事」</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-fluffy-stirring-lovelace.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-25 19:52</span><span class="proj">(plan)</span><span class="title">Plan · SSOT 盲区补救（v0.1 → v1.0 一次性合并）</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-silly-noodling-hamming.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-25 12:41</span><span class="proj">(plan)</span><span class="title">Plan · paths v1.1 收尾 + devtools 上岸</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-eager-prancing-naur.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-25 12:16</span><span class="proj">(plan)</span><span class="title">Auggie 优先策略落地</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-mac-mail-scalable-crane.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-25 12:05</span><span class="proj">(plan)</span><span class="title">终端 &quot;You have mail&quot; 抑制 + 计划任务路径漂移全面修复</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/master-20260425-0905.html" data-kind="handoff" data-project="master"><span class="date">2026-04-25 09:05</span><span class="proj">master</span><span class="title">HANDOFF · `~/Dev` 路径注册表（Path Registry）· v1.1</span><span class="kind">handoff</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-jaunty-mixing-prism.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-25 08:31</span><span class="proj">(plan)</span><span class="title">Drift 清零方案 · `paths.yaml audit --brief` 0 drift</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-ok-binary-frog.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-24 22:25</span><span class="proj">(plan)</span><span class="title">v0.7 A1 PoC · `repo_map_gen.py` 迁 `paths_const`</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-cockpit-sunny-kernighan.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-24 16:43</span><span class="proj">(plan)</span><span class="title">Plan · ~/Dev 深度重构 v0.4 · 根下漂移清剿 + 工具层落地</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-polymorphic-discovering-dove.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-24 15:38</span><span class="proj">(plan)</span><span class="title">Plan · 全省乡镇/街道行政区划主表</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-lovely-toasting-teacup.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-24 15:34</span><span class="proj">(plan)</span><span class="title">Plan · 清剩余死链 173 → 目标 &lt; 30</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-merry-hugging-axolotl.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-24 13:53</span><span class="proj">(plan)</span><span class="title">Plan · resources 项目 DATA-GAP 数据补录（吴兴区 2024/2025）</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-handoff-generic-cascade.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-24 10:26</span><span class="proj">(plan)</span><span class="title">Plan · 更新 `高新区水资源优化配置方案0424.docx` 过时数据（2023 → 2025）</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-001.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">LLM 反馈闭环</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-002.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">Skills 动态注入</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-003.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">统一知识 MCP</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-004.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">Commands 合并</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-005.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">Memory TTL &amp; Confidence</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-006.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">CLAUDE.md 瘦身</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-007.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">Hook 链并行化</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-008.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">Skill 自动毕业</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-009.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">会话质量评分</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-010.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">HANDOFF.md 自动生成</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/cc-evolution-011.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-24 10:12</span><span class="proj">(cc-evolution)</span><span class="title">Changelog 站点</span><span class="kind">evolution</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-floating-noodling-perlis.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-24 09:59</span><span class="proj">(plan)</span><span class="title">Plan: 激进深度 /tidy `~/Dev/Work`</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-witty-roaming-panda.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-24 09:47</span><span class="proj">(plan)</span><span class="title">Plan · ~/Dev 死链扫描 + 基于 paths map 的修复机制</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-frolicking-foraging-tiger.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-24 08:19</span><span class="proj">(plan)</span><span class="title">Plan · 立 `~/Dev/paths.yaml` 路径注册表（路线 A 薄壳）</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-swift-petting-wand.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-24 07:30</span><span class="proj">(plan)</span><span class="title">Slash Command 命名空间治理（builtin 优先策略）</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-swift-munching-sparrow.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-23 06:58</span><span class="proj">(plan)</span><span class="title">改进计划：基于 /insights 报告</span><span class="kind">plan</span></a>
+<a class="tlz-card tlz-card--row" href="d/plan-1-2-3-ok-1-sorted-whisper.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-22 17:21</span><span class="proj">(plan)</span><span class="title">站群清理 Phase 2 — 执行计划</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-functional-sleeping-dove.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-22 15:02</span><span class="proj">(plan)</span><span class="title">Stations Monorepo 激进重构方案</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-steady-meandering-church.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-22 11:46</span><span class="proj">(plan)</span><span class="title">Stations 全面重构 · Tier 2+3 Plan</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-splendid-jingling-starlight.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-22 10:31</span><span class="proj">(plan)</span><span class="title">Tier 1 重构 · #1 + #2 + #3 并发执行</span><span class="kind">plan</span></a>
@@ -705,7 +763,6 @@ h1 { font-size: 22px; margin: 0 0 4px; }
 <a class="tlz-card tlz-card--row" href="d/plan-cached-gathering-hejlsberg.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-21 21:46</span><span class="proj">(plan)</span><span class="title">cc-options P2 · Streamlit 要素照搬 + 数据管道扩展</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-dev-stations-docs-knowledge-session-ret-glittery-lerdorf.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-21 16:23</span><span class="proj">(plan)</span><span class="title">Plan: cc-options MVP 收尾（Phase 6-7）</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-1-2-rippling-donut.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-21 10:33</span><span class="proj">(plan)</span><span class="title">Stations 站群深度体检 · 诊断报告</span><span class="kind">plan</span></a>
-<a class="tlz-card tlz-card--row" href="d/ticket-reminder-20260421-1031.html" data-kind="handoff" data-project="ticket-reminder"><span class="date">2026-04-21 10:31</span><span class="proj">ticket-reminder</span><span class="title">ticket-reminder HANDOFF</span><span class="kind">handoff</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-jaunty-swimming-petal.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-20 20:49</span><span class="proj">(plan)</span><span class="title">Auggie Dashboard 大幅简化</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-piped-tinkering-nest.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-20 20:21</span><span class="proj">(plan)</span><span class="title">Plan · HANDOFF 按项目落地 + /handoff 智能判主项目</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-fizzy-hatching-porcupine-agent-a26516ed8800997f3.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-20 16:57</span><span class="proj">(plan)</span><span class="title">6 Repo 批量推送计划</span><span class="kind">plan</span></a>
@@ -714,17 +771,6 @@ h1 { font-size: 22px; margin: 0 0 4px; }
 <a class="tlz-card tlz-card--row" href="d/plan-tidy-slash-shimmying-bengio.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-19 21:21</span><span class="proj">(plan)</span><span class="title">Streamlit → Next.js 全迁 · Turborepo monorepo · /stack-classify 分类清单</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-ibkr-twinkly-bachman.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-19 20:08</span><span class="proj">(plan)</span><span class="title">站群治理 Skill 补全 · web-scaffold playbook 立项 · slash 生态整顿</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-handoff-md-floofy-charm.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-19 19:02</span><span class="proj">(plan)</span><span class="title">收官规划 · Playbook OS · 把工程化思维刻进全局</span><span class="kind">plan</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-001.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">LLM 反馈闭环</span><span class="kind">evolution</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-002.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Skills 动态注入</span><span class="kind">evolution</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-003.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">统一知识 MCP</span><span class="kind">evolution</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-004.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Commands 合并</span><span class="kind">evolution</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-005.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Memory TTL &amp; Confidence</span><span class="kind">evolution</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-006.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">CLAUDE.md 瘦身</span><span class="kind">evolution</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-007.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Hook 链并行化</span><span class="kind">evolution</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-008.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Skill 自动毕业</span><span class="kind">evolution</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-009.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">会话质量评分</span><span class="kind">evolution</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-010.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">HANDOFF.md 自动生成</span><span class="kind">evolution</span></a>
-<a class="tlz-card tlz-card--row" href="d/cc-evolution-011.html" data-kind="evolution" data-project="(cc-evolution)"><span class="date">2026-04-19 12:04</span><span class="proj">(cc-evolution)</span><span class="title">Changelog 站点</span><span class="kind">evolution</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-vast-coalescing-sky.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-19 11:57</span><span class="proj">(plan)</span><span class="title">第 6 轮：站内结构统一到 services 视觉 + 归档 journal/changelog</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-ibkr-twinkly-bachman-agent-ab2771145fe0c6ebf.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-18 19:41</span><span class="proj">(plan)</span><span class="title">香港银行 USD→CNH 换汇 spread 调研报告（2025-2026）</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-hammerspoon-elegant-garden.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-18 19:02</span><span class="proj">(plan)</span><span class="title">HS 收尾：修 bug + 简化 HUD + 清除 ClashX 模块</span><span class="kind">plan</span></a>
@@ -762,7 +808,6 @@ h1 { font-size: 22px; margin: 0 0 4px; }
 <a class="tlz-card tlz-card--row" href="d/plan-serialized-singing-cascade.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-11 11:11</span><span class="proj">(plan)</span><span class="title">Plan: Dashboard 指标重构 — 落实 strategy-roll.md 到代码和页面</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-vast-squishing-volcano.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-11 08:38</span><span class="proj">(plan)</span><span class="title">Plan: 按 strategy-roll.md 重写 Roll 信号逻辑</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-lazy-forging-biscuit.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-10 22:23</span><span class="proj">(plan)</span><span class="title">计划：重装 Claude Code（npm → Homebrew）修复 computer-use MCP</span><span class="kind">plan</span></a>
-<a class="tlz-card tlz-card--row" href="d/panan-rigid-2026-20260409-1633.html" data-kind="handoff" data-project="panan-rigid-2026"><span class="date">2026-04-09 16:33</span><span class="proj">panan-rigid-2026</span><span class="title">Handoff · panan-rigid-2026</span><span class="kind">handoff</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-sparkling-drifting-boole.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-08 11:13</span><span class="proj">(plan)</span><span class="title">论文审稿意见修改计划</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-goofy-dreaming-turtle.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-08 10:32</span><span class="proj">(plan)</span><span class="title">论文审稿意见修改计划</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-glowing-honking-truffle.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-08 10:31</span><span class="proj">(plan)</span><span class="title">论文审稿意见修改计划</span><span class="kind">plan</span></a>
@@ -770,7 +815,6 @@ h1 { font-size: 22px; margin: 0 0 4px; }
 <a class="tlz-card tlz-card--row" href="d/plan-eager-bouncing-lightning.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-06 17:28</span><span class="proj">(plan)</span><span class="title">计划：重写 app.py — 完整单页 Dashboard</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-robust-yawning-naur.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-06 15:48</span><span class="proj">(plan)</span><span class="title">Plan: Streamlit Robinhood CC Dashboard</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-snoopy-nibbling-book.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-06 08:50</span><span class="proj">(plan)</span><span class="title">论文审稿意见修改计划</span><span class="kind">plan</span></a>
-<a class="tlz-card tlz-card--row" href="d/eco-flow-20260405-1556.html" data-kind="handoff" data-project="eco-flow"><span class="date">2026-04-05 15:56</span><span class="proj">eco-flow</span><span class="title">HANDOFF: eco-flow 天台县报告推进</span><span class="kind">handoff</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-effervescent-petting-abelson.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-05 09:47</span><span class="proj">(plan)</span><span class="title">Plan: cc-harness → cc-configs 重构</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-generic-imagining-valiant.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-04 20:07</span><span class="proj">(plan)</span><span class="title">Datasette 可视化计划</span><span class="kind">plan</span></a>
 <a class="tlz-card tlz-card--row" href="d/plan-radiant-sparking-karp.html" data-kind="plan" data-project="(plan)"><span class="date">2026-04-04 19:01</span><span class="proj">(plan)</span><span class="title">Resources 数据仓库清理方案</span><span class="kind">plan</span></a>

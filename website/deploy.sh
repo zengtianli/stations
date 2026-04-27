@@ -23,6 +23,9 @@ rsync -avz --delete .next/static/ "$VPS:$REMOTE_DIR/.next/static/" || true
 rsync -avz --delete public/ "$VPS:$REMOTE_DIR/public/" || true
 rsync -avz data/ "$VPS:$REMOTE_DIR/data/" || true
 
+echo "🔧 Rebuilding native deps on VPS (better-sqlite3 across-arch fix)..."
+ssh "$VPS" "cd $REMOTE_DIR && npm rebuild better-sqlite3 2>&1 | tail -3" || echo "⚠️  npm rebuild failed, search may break"
+
 echo "🔄 Restarting service..."
 ssh "$VPS" "systemctl restart website"
 

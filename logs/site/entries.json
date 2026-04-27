@@ -1,39 +1,21 @@
 [
   {
     "kind": "handoff",
+    "project": "master",
+    "path": "/Users/tianli/Dev/HANDOFF.md",
+    "mtime": "2026-04-25T09:05:29.454840",
+    "title": "HANDOFF · `~/Dev` 路径注册表（Path Registry）· v1.1",
+    "summary": "**终极目标**：**重构不死链** **Meta repo**：`zengtianli/dev-meta` · Tag `paths-v1.0` 已打（dev-meta + devtools 双 repo） **最后更新**：2026-04-25 ---",
+    "slug": "master-20260425-0905"
+  },
+  {
+    "kind": "handoff",
     "project": "stations",
     "path": "/Users/tianli/Dev/stations/HANDOFF.md",
-    "mtime": "2026-04-22T15:30:03.598829",
+    "mtime": "2026-04-27T10:12:19.191359",
     "title": "Handoff · Stations Tier 2+3 全面重构完成 + 全部上线",
     "summary": "2026-04-22 · **Tier 2 + Tier 3 + 小瑕疵 + 全部 VPS 部署 一次性完成。23 commits 跨 8 repo；audit 11→13 类；/api/metadata 11/11 服务全 v=0.1.0 HTTP 200；ops-console services-health 页面线上可用；/services-health 全景 skill 上线。nginx 推送跳过（VPS 已同步，naive rsync 会造 server_name ",
-    "slug": "stations-20260422-1530"
-  },
-  {
-    "kind": "handoff",
-    "project": "ticket-reminder",
-    "path": "/Users/tianli/Dev/ticket-reminder/HANDOFF.md",
-    "mtime": "2026-04-21T10:31:11.005579",
-    "title": "ticket-reminder HANDOFF",
-    "summary": "**状态**：🚧 设计阶段，未开写代码 **日期**：2026-04-21 **目录**：`/Users/tianli/Dev/ticket-reminder/`（孵化位，稳定后 `/station-promote`）",
-    "slug": "ticket-reminder-20260421-1031"
-  },
-  {
-    "kind": "handoff",
-    "project": "eco-flow",
-    "path": "/Users/tianli/Work/eco-flow/HANDOFF.md",
-    "mtime": "2026-04-05T15:56:05.438905",
-    "title": "HANDOFF: eco-flow 天台县报告推进",
-    "summary": "更新: 2026-04-05 上一会话: branch of `099fb366` ---",
-    "slug": "eco-flow-20260405-1556"
-  },
-  {
-    "kind": "handoff",
-    "project": "panan-rigid-2026",
-    "path": "/Users/tianli/Work/bids/panan-rigid-2026/HANDOFF.md",
-    "mtime": "2026-04-09T16:33:27.893093",
-    "title": "Handoff · panan-rigid-2026",
-    "summary": "2026-04-09 · 3.5/3.6/4.1.4-6/第5章修改稿已生成，第6-7章未开始",
-    "slug": "panan-rigid-2026-20260409-1633"
+    "slug": "stations-20260427-1012"
   },
   {
     "kind": "plan",
@@ -79,6 +61,15 @@
     "title": "Plan: zdwp 最终瘦身 — resources 独立 + 根目录清理",
     "summary": "",
     "slug": "plan-typed-crafting-hopcroft"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/lovely-toasting-teacup.md",
+    "mtime": "2026-04-24T15:34:50.836014",
+    "title": "Plan · 清剩余死链 173 → 目标 < 30",
+    "summary": "",
+    "slug": "plan-lovely-toasting-teacup"
   },
   {
     "kind": "plan",
@@ -151,6 +142,15 @@
     "title": "Tier 1 重构 · #1 + #2 + #3 并发执行",
     "summary": "",
     "slug": "plan-splendid-jingling-starlight"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/swift-petting-wand.md",
+    "mtime": "2026-04-24T07:30:22.104809",
+    "title": "Slash Command 命名空间治理（builtin 优先策略）",
+    "summary": "",
+    "slug": "plan-swift-petting-wand"
   },
   {
     "kind": "plan",
@@ -290,6 +290,15 @@
   {
     "kind": "plan",
     "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/silly-noodling-hamming.md",
+    "mtime": "2026-04-25T12:41:26.400522",
+    "title": "Plan · paths v1.1 收尾 + devtools 上岸",
+    "summary": "",
+    "slug": "plan-silly-noodling-hamming"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/functional-tumbling-sloth.md",
     "mtime": "2026-04-02T08:54:41.042355",
     "title": "Scripts 目录整理计划",
@@ -389,6 +398,15 @@
   {
     "kind": "plan",
     "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/site-overhaul-ia-search-home.md",
+    "mtime": "2026-04-27T10:42:41.538300",
+    "title": "Plan · 站群全面升级（IA + 搜索 + 主页）",
+    "summary": "",
+    "slug": "plan-site-overhaul-ia-search-home"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/hashed-snuggling-galaxy.md",
     "mtime": "2026-04-14T09:18:37.009489",
     "title": "全站重构计划：Apple 风格 + 总览入口架构",
@@ -434,6 +452,24 @@
   {
     "kind": "plan",
     "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/merry-hugging-axolotl.md",
+    "mtime": "2026-04-24T13:53:27.380216",
+    "title": "Plan · resources 项目 DATA-GAP 数据补录（吴兴区 2024/2025）",
+    "summary": "",
+    "slug": "plan-merry-hugging-axolotl"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/swift-munching-sparrow.md",
+    "mtime": "2026-04-23T06:58:52.296413",
+    "title": "改进计划：基于 /insights 报告",
+    "summary": "**来源**：/insights 报告分析 + 本次会话讨论 **审查状态**：待用户拍板，按编号独立可选 ---",
+    "slug": "plan-swift-munching-sparrow"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/1-2-3-ok-1-sorted-whisper.md",
     "mtime": "2026-04-22T17:21:24.536863",
     "title": "站群清理 Phase 2 — 执行计划",
@@ -448,6 +484,15 @@
     "title": "知识蒸馏与能力内化计划",
     "summary": "",
     "slug": "plan-nested-zooming-church"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/eager-prancing-naur.md",
+    "mtime": "2026-04-25T12:16:19.623410",
+    "title": "Auggie 优先策略落地",
+    "summary": "",
+    "slug": "plan-eager-prancing-naur"
   },
   {
     "kind": "plan",
@@ -475,6 +520,15 @@
     "title": "计划：重写 app.py — 完整单页 Dashboard",
     "summary": "",
     "slug": "plan-eager-bouncing-lightning"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/polymorphic-discovering-dove.md",
+    "mtime": "2026-04-24T15:38:22.709635",
+    "title": "Plan · 全省乡镇/街道行政区划主表",
+    "summary": "",
+    "slug": "plan-polymorphic-discovering-dove"
   },
   {
     "kind": "plan",
@@ -542,11 +596,29 @@
   {
     "kind": "plan",
     "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/cockpit-sunny-kernighan.md",
+    "mtime": "2026-04-24T16:43:07.649378",
+    "title": "Plan · ~/Dev 深度重构 v0.4 · 根下漂移清剿 + 工具层落地",
+    "summary": "",
+    "slug": "plan-cockpit-sunny-kernighan"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/lazy-forging-biscuit.md",
     "mtime": "2026-04-10T22:23:28.021806",
     "title": "计划：重装 Claude Code（npm → Homebrew）修复 computer-use MCP",
     "summary": "",
     "slug": "plan-lazy-forging-biscuit"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/floating-noodling-perlis.md",
+    "mtime": "2026-04-24T09:59:01.610818",
+    "title": "Plan: 激进深度 /tidy `~/Dev/Work`",
+    "summary": "",
+    "slug": "plan-floating-noodling-perlis"
   },
   {
     "kind": "plan",
@@ -596,6 +668,24 @@
   {
     "kind": "plan",
     "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/purrfect-nibbling-patterson.md",
+    "mtime": "2026-04-27T09:43:29.225067",
+    "title": "Plan · 全量收尾「没做完的事」",
+    "summary": "",
+    "slug": "plan-purrfect-nibbling-patterson"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/ok-binary-frog.md",
+    "mtime": "2026-04-24T22:25:22.980390",
+    "title": "v0.7 A1 PoC · `repo_map_gen.py` 迁 `paths_const`",
+    "summary": "状态：ready for execution Branch：直接在 `~/Dev/devtools` main 上改（改动范围 ≤ 1 文件） 目标 repo：`zengtianli/devtools`",
+    "slug": "plan-ok-binary-frog"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/distributed-wibbling-aurora.md",
     "mtime": "2026-04-14T15:30:43.736881",
     "title": "Plan: 关于我页面优化 — 技能精简 + 展望文案修复",
@@ -632,6 +722,15 @@
   {
     "kind": "plan",
     "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/handoff-generic-cascade.md",
+    "mtime": "2026-04-24T10:26:41.888490",
+    "title": "Plan · 更新 `高新区水资源优化配置方案0424.docx` 过时数据（2023 → 2025）",
+    "summary": "",
+    "slug": "plan-handoff-generic-cascade"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/vivid-growing-cherny.md",
     "mtime": "2026-04-02T22:30:09.977762",
     "title": "Plan: /groom 命令 + repo 标准体系",
@@ -643,7 +742,7 @@
     "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/generic-juggling-dove.md",
     "mtime": "2026-03-31T22:14:12.463645",
-    "title": "Plan: ~/Dev/devtools/scripts 整理清理",
+    "title": "Plan: ~/Dev/scripts 整理清理",
     "summary": "",
     "slug": "plan-generic-juggling-dove"
   },
@@ -664,6 +763,15 @@
     "title": "cc-options 微调批次 · 2026-04-21",
     "summary": "",
     "slug": "plan-1-2-image-1-staged-eagle"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/jaunty-mixing-prism.md",
+    "mtime": "2026-04-25T08:31:31.887552",
+    "title": "Drift 清零方案 · `paths.yaml audit --brief` 0 drift",
+    "summary": "",
+    "slug": "plan-jaunty-mixing-prism"
   },
   {
     "kind": "plan",
@@ -749,6 +857,24 @@
   {
     "kind": "plan",
     "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/witty-roaming-panda.md",
+    "mtime": "2026-04-24T09:47:42.763023",
+    "title": "Plan · ~/Dev 死链扫描 + 基于 paths map 的修复机制",
+    "summary": "",
+    "slug": "plan-witty-roaming-panda"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/fluffy-stirring-lovelace.md",
+    "mtime": "2026-04-25T19:52:06.125782",
+    "title": "Plan · SSOT 盲区补救（v0.1 → v1.0 一次性合并）",
+    "summary": "",
+    "slug": "plan-fluffy-stirring-lovelace"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/jolly-riding-kahan.md",
     "mtime": "2026-03-31T11:35:50.955388",
     "title": "~/Dev 项目展示标准统一计划",
@@ -808,6 +934,15 @@
     "title": "Plan · HANDOFF 按项目落地 + /handoff 智能判主项目",
     "summary": "用户决定：HANDOFF 越细节越好、按主项目智能判定、不 symlink；/warmup 扫多位置 + 旧 ~/Dev/HANDOFF.md 归档 stations/docs/handoffs/。",
     "slug": "plan-piped-tinkering-nest"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/frolicking-foraging-tiger.md",
+    "mtime": "2026-04-24T08:19:37.489785",
+    "title": "Plan · 立 `~/Dev/paths.yaml` 路径注册表（路线 A 薄壳）",
+    "summary": "",
+    "slug": "plan-frolicking-foraging-tiger"
   },
   {
     "kind": "plan",
@@ -902,6 +1037,15 @@
   {
     "kind": "plan",
     "project": "(plan)",
+    "path": "/Users/tianli/.claude/plans/mac-mail-scalable-crane.md",
+    "mtime": "2026-04-25T12:05:25.004361",
+    "title": "终端 \"You have mail\" 抑制 + 计划任务路径漂移全面修复",
+    "summary": "",
+    "slug": "plan-mac-mail-scalable-crane"
+  },
+  {
+    "kind": "plan",
+    "project": "(plan)",
     "path": "/Users/tianli/.claude/plans/valiant-floating-piglet.md",
     "mtime": "2026-04-13T17:12:44.939474",
     "title": "Multi-Track 个人站实现计划",
@@ -939,7 +1083,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "LLM 反馈闭环",
     "summary": "核心引擎 · done · session_reflect.py 用正则（\"不要|别|错了\"）检测反馈信号，",
     "slug": "cc-evolution-001"
@@ -948,7 +1092,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "Skills 动态注入",
     "summary": "分发层 · done · 16 个 skills 全部在 ~/.claude/skills/ 全局 symlink，",
     "slug": "cc-evolution-002"
@@ -957,7 +1101,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "统一知识 MCP",
     "summary": "扩展层 · done · 知识分布在 5 个独立存储：cclog DB, memory/*.md,",
     "slug": "cc-evolution-003"
@@ -966,7 +1110,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "Commands 合并",
     "summary": "分发层 · done · 50 个 commands（39 active + 12 archived），",
     "slug": "cc-evolution-004"
@@ -975,7 +1119,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "Memory TTL & Confidence",
     "summary": "数据层 · done · 32 个 memory 文件，frontmatter 只有 name/description/type。",
     "slug": "cc-evolution-005"
@@ -984,7 +1128,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "CLAUDE.md 瘦身",
     "summary": "数据层 · done · ~/Dev/CLAUDE.md 约 152 行，包含 VPS 详情、",
     "slug": "cc-evolution-006"
@@ -993,7 +1137,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "Hook 链并行化",
     "summary": "核心引擎 · done · SessionEnd hook 串行执行：",
     "slug": "cc-evolution-007"
@@ -1002,7 +1146,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "Skill 自动毕业",
     "summary": "扩展层 · done · skill-candidates.md 追踪模式出现次数。",
     "slug": "cc-evolution-008"
@@ -1011,7 +1155,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "会话质量评分",
     "summary": "扩展层 · done · task_analyzer 用 Haiku 判断 done/in-progress/stale，",
     "slug": "cc-evolution-009"
@@ -1020,7 +1164,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "HANDOFF.md 自动生成",
     "summary": "自动化层 · done · HANDOFF.md 由 /handoff 命令手动生成。",
     "slug": "cc-evolution-010"
@@ -1029,7 +1173,7 @@
     "kind": "evolution",
     "project": "(cc-evolution)",
     "path": "/Users/tianli/Dev/stations/logs/data/cc-evolution-changes.yaml",
-    "mtime": "2026-04-19T12:04:58.184859",
+    "mtime": "2026-04-24T10:12:00.243613",
     "title": "Changelog 站点",
     "summary": "Changelog 站点 · done · 配置变更只记录在 git log 和本地文档里，",
     "slug": "cc-evolution-011"

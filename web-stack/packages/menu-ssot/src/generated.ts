@@ -157,8 +157,8 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
     ]
   },
   {
-    "key": "dev",
-    "label": "🛠 开发",
+    "key": "dev-tools",
+    "label": "🛠 开发工具",
     "columns": [
       [
         {
@@ -178,18 +178,6 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
               "label": "Dockit",
               "url": "https://dockit.tianlizeng.cloud",
               "key": "dockit"
-            },
-            {
-              "label": "Stack",
-              "url": "https://stack.tianlizeng.cloud",
-              "key": "stack",
-              "access": "cf-access"
-            },
-            {
-              "label": "CC Docs",
-              "url": "https://cmds.tianlizeng.cloud",
-              "key": "cmds",
-              "access": "cf-access"
             }
           ]
         }
@@ -221,19 +209,32 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
     ]
   },
   {
-    "key": "content",
-    "label": "📚 内容",
+    "key": "docs",
+    "label": "📚 文档与知识",
     "columns": [
       [
         {
-          "title": "日志 / 知识",
+          "title": "命令 / 架构",
           "items": [
             {
-              "label": "Logs",
-              "url": "https://logs.tianlizeng.cloud",
-              "key": "logs",
+              "label": "CC Docs",
+              "url": "https://cmds.tianlizeng.cloud",
+              "key": "cmds",
               "access": "cf-access"
             },
+            {
+              "label": "Stack",
+              "url": "https://stack.tianlizeng.cloud",
+              "key": "stack",
+              "access": "cf-access"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "title": "知识 / 工作手册",
+          "items": [
             {
               "label": "知识库",
               "url": "https://docs.tianlizeng.cloud",
@@ -251,19 +252,27 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
       ],
       [
         {
-          "title": "媒体",
+          "title": "工程日志",
           "items": [
             {
-              "label": "有声书",
-              "url": "https://audiobook.tianlizeng.cloud",
-              "key": "audiobook"
+              "label": "Logs",
+              "url": "https://logs.tianlizeng.cloud",
+              "key": "logs",
+              "access": "cf-access"
             }
           ]
         }
       ],
+      []
+    ]
+  },
+  {
+    "key": "invest",
+    "label": "💰 投资",
+    "columns": [
       [
         {
-          "title": "投资",
+          "title": "资产管理",
           "items": [
             {
               "label": "理财笔记",
@@ -279,6 +288,29 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
           ]
         }
       ],
+      [],
+      [],
+      []
+    ]
+  },
+  {
+    "key": "content",
+    "label": "📺 媒体",
+    "columns": [
+      [
+        {
+          "title": "有声书",
+          "items": [
+            {
+              "label": "有声书",
+              "url": "https://audiobook.tianlizeng.cloud",
+              "key": "audiobook"
+            }
+          ]
+        }
+      ],
+      [],
+      [],
       []
     ]
   },
@@ -336,4 +368,4 @@ export const MEGA_CATEGORIES: MegaCategory[] = [
 
 export const SHARED_NO_CURRENT_HOSTS: string[] = ["hammerspoon.tianlizeng.cloud", "auggie.tianlizeng.cloud", "audiobook.tianlizeng.cloud"]
 
-export const SHARED_CURRENT_HOST_MAP: Record<string, string> = {"stack.tianlizeng.cloud": "dev", "cmds.tianlizeng.cloud": "dev", "dashboard.tianlizeng.cloud": "dev", "cclog.tianlizeng.cloud": "dev", "dockit.tianlizeng.cloud": "dev", "logs.tianlizeng.cloud": "content", "docs.tianlizeng.cloud": "content", "audiobook.tianlizeng.cloud": "content", "playbooks.tianlizeng.cloud": "content", "cc-options.tianlizeng.cloud": "content", "assets.tianlizeng.cloud": "content", "status.tianlizeng.cloud": "infra", "n8n.tianlizeng.cloud": "infra", "panel.tianlizeng.cloud": "infra", "webhook.tianlizeng.cloud": "infra"}
+export const SHARED_CURRENT_HOST_MAP: Record<string, string> = {"dashboard.tianlizeng.cloud": "dev-tools", "cclog.tianlizeng.cloud": "dev-tools", "dockit.tianlizeng.cloud": "dev-tools", "stack.tianlizeng.cloud": "docs", "cmds.tianlizeng.cloud": "docs", "docs.tianlizeng.cloud": "docs", "logs.tianlizeng.cloud": "docs", "playbooks.tianlizeng.cloud": "docs", "assets.tianlizeng.cloud": "invest", "cc-options.tianlizeng.cloud": "invest", "audiobook.tianlizeng.cloud": "content", "status.tianlizeng.cloud": "infra", "n8n.tianlizeng.cloud": "infra", "panel.tianlizeng.cloud": "infra", "webhook.tianlizeng.cloud": "infra"}

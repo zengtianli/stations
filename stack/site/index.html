@@ -873,6 +873,7 @@ body.tlz-page {
     max-width: 1500px; margin: 0 auto; padding: 24px 20px 16px;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'PingFang SC', Helvetica, sans-serif;
+    position: relative;
   }
   .tlz-site-header .tlz-crumb {
     font-size: 12px; color: #86868b; margin-bottom: 6px;
@@ -889,12 +890,39 @@ body.tlz-page {
   .tlz-site-header .tlz-tagline {
     font-size: 13px; color: #6b7280; margin: 4px 0 0;
   }
+  .tlz-search-btn {
+    position: absolute; top: 24px; right: 20px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 8px; border-radius: 6px;
+    color: #6b7280; text-decoration: none;
+    font-size: 12px; transition: all 0.15s;
+  }
+  .tlz-search-btn:hover { background: rgba(0,0,0,0.05); color: #1d1d1f; }
+  .tlz-search-btn kbd {
+    border: 1px solid rgba(0,0,0,0.15); border-radius: 4px;
+    padding: 1px 4px; font-size: 10px; font-family: ui-monospace, monospace; color: #86868b;
+  }
+  @media (max-width: 600px) { .tlz-search-btn kbd { display: none; } }
 </style>
 <header class="tlz-site-header">
   <div class="tlz-crumb"><a href="https://tianlizeng.cloud/">tianlizeng.cloud</a> / <a href="https://tianlizeng.cloud/services">Services</a> / <span>Stack</span></div>
   <h1><span class="tlz-icon">🗂</span>Stack</h1>
   <p class="tlz-tagline">~/Dev 项目架构地图</p>
+  <a href="https://tianlizeng.cloud/search" class="tlz-search-btn" aria-label="搜索 (⌘K)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <kbd>⌘K</kbd>
+  </a>
 </header>
+<script>
+  (function(){
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        window.location.href = "https://tianlizeng.cloud/search";
+      }
+    });
+  })();
+</script>
 
 <div class="tlz-container">
 <header class="tlz-stats-bar">
@@ -1209,7 +1237,7 @@ body.tlz-page {
     
   </div>
 </div>
-<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="dockit-raycast dockit 的 raycast 扩展 ~/dev/raycast/dockit-ext   cli  typescript raycast">
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="dockit-raycast dockit 的 raycast 扩展 ~/dev/tools/raycast/dockit-ext   cli  typescript raycast">
   <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
   <div class="tlz-card-body">
     <div class="tlz-card-header">
@@ -1222,7 +1250,7 @@ body.tlz-page {
       <span class="stack-tags"><span class="tag">TypeScript</span><span class="tag">Raycast</span></span>
     </div>
     <div class="stack-card-path">
-      <code>~/Dev/raycast/dockit-ext</code>
+      <code>~/Dev/tools/raycast/dockit-ext</code>
     </div>
     
   </div>
@@ -1245,7 +1273,7 @@ body.tlz-page {
     
   </div>
 </div>
-<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="clashx clashx 代理管理工具（6 raycast commands） ~/dev/tools/clashx   cli  shell raycast">
+<div class="tlz-card stack-card" data-status="active" data-kind="project" data-search="clashx clashx 代理管理工具（6 raycast commands） ~/dev/_archive/clashx-2026-04-27   cli  shell raycast">
   <span class="tlz-dot tlz-dot--ok" title="运行中"></span>
   <div class="tlz-card-body">
     <div class="tlz-card-header">
@@ -1258,7 +1286,7 @@ body.tlz-page {
       <span class="stack-tags"><span class="tag">Shell</span><span class="tag">Raycast</span></span>
     </div>
     <div class="stack-card-path">
-      <code>~/Dev/tools/clashx</code>
+      <code>~/Dev/_archive/clashx-2026-04-27</code>
     </div>
     
   </div>
@@ -1907,7 +1935,7 @@ body.tlz-page {
 </main>
 
 <footer class="tlz-footer">
-  Generated 2026-04-22 17:28 · <a href="https://github.com/zengtianli/stack">stack</a>
+  Generated 2026-04-27 11:21 · <a href="https://github.com/zengtianli/stack">stack</a>
 </footer>
 </div>
 

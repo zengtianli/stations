@@ -1,13 +1,29 @@
 #!/opt/homebrew/bin/python3
-"""Build FTS5 search index from content/ markdown files."""
+"""Build FTS5 search index from:
+- content/ markdown files (本站 blog/projects/research/about/...)
+- catalog.yaml (跨站子域 + sub_pages metadata, 32+ entries)
+- stack/projects.yaml (项目清单, 几十个项目)
+
+每行加 `site` 字段标识来源（website / hydro-toolkit / cc-options / stack 等），
+前端可在结果列表显示「来自 hydro-toolkit」。
+"""
 
 import os
 import re
 import sqlite3
+import sys
 from pathlib import Path
+
+try:
+    import yaml
+except ImportError:
+    print("ERROR: pyyaml required. pip install pyyaml", file=sys.stderr)
+    sys.exit(1)
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "content"
 DB_PATH = Path(__file__).resolve().parent.parent / "data" / "search.db"
+CATALOG_YAML = Path.home() / "Dev/tools/configs/menus/catalog.yaml"
+STACK_YAML = Path.home() / "Dev/stations/stack/projects.yaml"
 
 CATEGORY_MAP = {
     "blog": "博客",
@@ -130,32 +146,18 @@ def build_url(category: str, slug: str, filepath: Path) -> str:
     return base
 
 
-def main():
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-    db = sqlite3.connect(str(DB_PATH))
-    db.execute("DROP TABLE IF EXISTS search_index")
-    db.execute("""
-        CREATE VIRTUAL TABLE IF NOT EXISTS search_index USING fts5(
-            slug, url, title, description, category, tags, content,
-            tokenize='unicode61'
-        )
-    """)
-
+def index_website_content(db: sqlite3.Connection) -> int:
+    """Index website's own content/ markdown files. Returns count."""
     count = 0
     for md_file in sorted(CONTENT_DIR.rglob("*.md")):
-        # Skip non-content directories
         category = get_category(md_file)
         if category is None:
             continue
-
-        # Skip home and global content
         if category in ("home", "global", "contact", "project-source", "resume-source"):
             continue
 
         raw = md_file.read_text(encoding="utf-8")
         meta, body = parse_frontmatter(raw)
-
         title = meta.get("title", "")
         description = meta.get("description", meta.get("excerpt", meta.get("brief", "")))
         tags = meta.get("tags", "")
@@ -164,19 +166,102 @@ def main():
         category_label = CATEGORY_MAP.get(category, category)
         content = strip_markdown(body)
 
-        # Skip if no meaningful content
         if not title and not content:
             continue
 
         db.execute(
-            "INSERT INTO search_index (slug, url, title, description, category, tags, content) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (slug, url, title, description, category_label, tags, content),
+            "INSERT INTO search_index (slug, url, title, description, category, tags, content, site) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (slug, url, title, description, category_label, tags, content, "tianlizeng.cloud"),
         )
         count += 1
+    return count
+
+
+def index_catalog(db: sqlite3.Connection) -> int:
+    """Index catalog.yaml — 全部子域 + sub_pages 入口（跨站 metadata）."""
+    if not CATALOG_YAML.exists():
+        print(f"WARN: {CATALOG_YAML} not found, skip catalog indexing")
+        return 0
+    data = yaml.safe_load(CATALOG_YAML.read_text(encoding="utf-8"))
+    count = 0
+    for entry in data.get("entries", []):
+        sid = entry.get("id", "")
+        name = entry.get("name", "")
+        desc = entry.get("description", "")
+        url = entry.get("url", "")
+        group = entry.get("group", "")
+        if not name or not url:
+            continue
+        # 主条目：子域本身
+        db.execute(
+            "INSERT INTO search_index (slug, url, title, description, category, tags, content, site) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (sid, url, name, desc, group, "", desc, entry.get("subdomain", "") or "tianlizeng.cloud"),
+        )
+        count += 1
+        # sub_pages：子页（如「关于我」、「作品」等）
+        for sub in entry.get("sub_pages", []) or []:
+            sub_label = sub.get("label", "")
+            sub_path = sub.get("path", "")
+            if not sub_label or not sub_path:
+                continue
+            sub_url = url.rstrip("/") + sub_path if sub_path.startswith("/") else f"{url}/{sub_path}"
+            db.execute(
+                "INSERT INTO search_index (slug, url, title, description, category, tags, content, site) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (f"{sid}-{sub_label}", sub_url, f"{name} · {sub_label}", desc, group, "", "", entry.get("subdomain", "") or "tianlizeng.cloud"),
+            )
+            count += 1
+    return count
+
+
+def index_stack_projects(db: sqlite3.Connection) -> int:
+    """Index stack/projects.yaml — 项目清单（含 path/purpose/stack/status）."""
+    if not STACK_YAML.exists():
+        print(f"WARN: {STACK_YAML} not found, skip stack indexing")
+        return 0
+    data = yaml.safe_load(STACK_YAML.read_text(encoding="utf-8"))
+    count = 0
+    for grp in data.get("groups", []):
+        group_name = grp.get("name", "")
+        for proj in grp.get("projects", []):
+            name = proj.get("name", "")
+            purpose = proj.get("purpose", "")
+            stack = ", ".join(proj.get("stack", []) or [])
+            status = proj.get("status", "")
+            domain = proj.get("domain", "")
+            url = f"https://{domain}" if domain else "https://stack.tianlizeng.cloud"
+            if not name:
+                continue
+            db.execute(
+                "INSERT INTO search_index (slug, url, title, description, category, tags, content, site) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (f"stack-{name}", url, name, purpose, f"项目·{group_name}", stack, f"{purpose} {stack} {status}", "stack.tianlizeng.cloud"),
+            )
+            count += 1
+    return count
+
+
+def main():
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    db = sqlite3.connect(str(DB_PATH))
+    db.execute("DROP TABLE IF EXISTS search_index")
+    db.execute("""
+        CREATE VIRTUAL TABLE IF NOT EXISTS search_index USING fts5(
+            slug, url, title, description, category, tags, content, site,
+            tokenize='unicode61'
+        )
+    """)
+
+    n_website = index_website_content(db)
+    n_catalog = index_catalog(db)
+    n_stack = index_stack_projects(db)
+    total = n_website + n_catalog + n_stack
 
     db.commit()
     db.close()
-    print(f"Indexed {count} documents into {DB_PATH}")
+    print(f"Indexed {total} documents into {DB_PATH}")
+    print(f"  website content : {n_website}")
+    print(f"  catalog entries : {n_catalog}")
+    print(f"  stack projects  : {n_stack}")
 
 
 if __name__ == "__main__":

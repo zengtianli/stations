@@ -852,6 +852,7 @@ body.tlz-page {
     max-width: 1500px; margin: 0 auto; padding: 24px 20px 16px;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, 'PingFang SC', Helvetica, sans-serif;
+    position: relative;
   }
   .tlz-site-header .tlz-crumb {
     font-size: 12px; color: #86868b; margin-bottom: 6px;
@@ -868,17 +869,44 @@ body.tlz-page {
   .tlz-site-header .tlz-tagline {
     font-size: 13px; color: #6b7280; margin: 4px 0 0;
   }
+  .tlz-search-btn {
+    position: absolute; top: 24px; right: 20px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 8px; border-radius: 6px;
+    color: #6b7280; text-decoration: none;
+    font-size: 12px; transition: all 0.15s;
+  }
+  .tlz-search-btn:hover { background: rgba(0,0,0,0.05); color: #1d1d1f; }
+  .tlz-search-btn kbd {
+    border: 1px solid rgba(0,0,0,0.15); border-radius: 4px;
+    padding: 1px 4px; font-size: 10px; font-family: ui-monospace, monospace; color: #86868b;
+  }
+  @media (max-width: 600px) { .tlz-search-btn kbd { display: none; } }
 </style>
 <header class="tlz-site-header">
   <div class="tlz-crumb"><a href="https://tianlizeng.cloud/">tianlizeng.cloud</a> / <a href="https://tianlizeng.cloud/services">Services</a> / <span>CC Docs</span></div>
   <h1><span class="tlz-icon">📚</span>CC Docs</h1>
   <p class="tlz-tagline">Claude Code 命令 & 技能说明书</p>
+  <a href="https://tianlizeng.cloud/search" class="tlz-search-btn" aria-label="搜索 (⌘K)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <kbd>⌘K</kbd>
+  </a>
 </header>
+<script>
+  (function(){
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        window.location.href = "https://tianlizeng.cloud/search";
+      }
+    });
+  })();
+</script>
 
 <div class="tlz-container">
 <header class="tlz-stats-bar">
-  <span><strong>61</strong> 命令</span>
-  <span><strong>15</strong> 技能</span>
+  <span><strong>68</strong> 命令</span>
+  <span><strong>16</strong> 技能</span>
   <span><strong>4</strong> 归档</span>
 </header>
 
@@ -944,7 +972,7 @@ body.tlz-page {
 </a></div>
 </section>
 <section class="tlz-section" data-cat="CC 生态" style="--c:#8b5cf6">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>CC 生态</h2><span class="tlz-count">11</span></div>
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>CC 生态</h2><span class="tlz-count">10</span></div>
   <div class="tlz-grid"><a class="tlz-card" href="auggie-map.html"
    data-name="auggie-map" data-desc="为大型项目生成二进制文件地图（_files.md），推到 GitHub 供 Auggie 索引"
    style="border-left:3px solid #8b5cf6">
@@ -968,14 +996,6 @@ body.tlz-page {
     <div class="tlz-card-name"><code>/cmd-stats</code></div>
     
     <div class="tlz-card-desc">统计 slash command 使用频率，基于会话 transcript 数据</div>
-  </div>
-</a><a class="tlz-card" href="context.html"
-   data-name="context" data-desc="Claude Code 会话监控与上下文工程工具。保障 compact 后不丢失关键细节。"
-   style="border-left:3px solid #8b5cf6">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/context</code></div>
-    
-    <div class="tlz-card-desc">Claude Code 会话监控与上下文工程工具。保障 compact 后不丢失关键细节。</div>
   </div>
 </a><a class="tlz-card" href="dashboard.html"
    data-name="dashboard" data-desc="Dashboard 数据维护 + 部署。按页面刷新数据或全量更新。"
@@ -1104,7 +1124,7 @@ body.tlz-page {
 </a></div>
 </section>
 <section class="tlz-section" data-cat="文档处理" style="--c:#f59e0b">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>文档处理</h2><span class="tlz-count">10</span></div>
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>文档处理</h2><span class="tlz-count">9</span></div>
   <div class="tlz-grid"><a class="tlz-card" href="batch-revise.html"
    data-name="batch-revise" data-desc="批量将改动草稿 MD 转为 track-changes 写入 DOCX（修订标记+批注，用户可在 Word 中逐条接受/拒绝）"
    style="border-left:3px solid #f59e0b">
@@ -1169,14 +1189,6 @@ body.tlz-page {
     
     <div class="tlz-card-desc">读取 DOCX 指定章节内容（按标题定位），或 --list 列出全部标题结构</div>
   </div>
-</a><a class="tlz-card" href="review.html"
-   data-name="review" data-desc="审阅 DOCX 文档（格式检查 + 可选 LLM 深度审阅），输出 Word 批注"
-   style="border-left:3px solid #f59e0b">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/review</code></div>
-    
-    <div class="tlz-card-desc">审阅 DOCX 文档（格式检查 + 可选 LLM 深度审阅），输出 Word 批注</div>
-  </div>
 </a><a class="tlz-card" href="revise.html"
    data-name="revise" data-desc="根据审稿意见修改论文，以修订标记+批注形式插入修改内容到 DOCX"
    style="border-left:3px solid #f59e0b">
@@ -1200,7 +1212,7 @@ body.tlz-page {
 </a></div>
 </section>
 <section class="tlz-section" data-cat="杂项" style="--c:#6b7280">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>杂项</h2><span class="tlz-count">25</span></div>
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>杂项</h2><span class="tlz-count">34</span></div>
   <div class="tlz-grid"><a class="tlz-card" href="api-smoke.html"
    data-name="api-smoke" data-desc="本地 FastAPI 烟雾测试 — 起 uvicorn → curl /api/health+meta[+compute?format=json] → pkill。端口从 services.ts 读，踩坑（zsh noclobber / clashx / CJK）全封装。"
    style="border-left:3px solid #6b7280">
@@ -1208,6 +1220,22 @@ body.tlz-page {
     <div class="tlz-card-name"><code>/api-smoke</code></div>
     
     <div class="tlz-card-desc">本地 FastAPI 烟雾测试 — 起 uvicorn → curl /api/health+meta[+compute?format=json] → pkill。端口从 services.ts 读，踩坑（zsh noclobber / clashx / CJK）全封装。</div>
+  </div>
+</a><a class="tlz-card" href="autonomous-refactor.html"
+   data-name="autonomous-refactor" data-desc="自循环重构 — 定义验收脚本，Claude 在 git worktree 里自动 patch→test→fix 循环，通过或超预算才通知用户"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/autonomous-refactor</code></div>
+    
+    <div class="tlz-card-desc">自循环重构 — 定义验收脚本，Claude 在 git worktree 里自动 patch→test→fix 循环，通过或超预算才通知用户</div>
+  </div>
+</a><a class="tlz-card" href="branches-cleanup.html"
+   data-name="branches-cleanup" data-desc="扫 ~/Dev 全部 git repo，找出已合并到 main 的分支（本地+远端），列表批准后一键删。"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/branches-cleanup</code></div>
+    
+    <div class="tlz-card-desc">扫 ~/Dev 全部 git repo，找出已合并到 main 的分支（本地+远端），列表批准后一键删。</div>
   </div>
 </a><a class="tlz-card" href="cf-audit.html"
    data-name="cf-audit" data-desc="对账 services.ts / CF DNS / VPS nginx / Origin Rules / CF Access，找孤儿与漂移"
@@ -1217,6 +1245,14 @@ body.tlz-page {
     
     <div class="tlz-card-desc">对账 services.ts / CF DNS / VPS nginx / Origin Rules / CF Access，找孤儿与漂移</div>
   </div>
+</a><a class="tlz-card" href="ctx-monitor.html"
+   data-name="ctx-monitor" data-desc="Claude Code 会话监控与上下文工程工具。保障 compact 后不丢失关键细节。"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/ctx-monitor</code></div>
+    
+    <div class="tlz-card-desc">Claude Code 会话监控与上下文工程工具。保障 compact 后不丢失关键细节。</div>
+  </div>
 </a><a class="tlz-card" href="deploy-changed.html"
    data-name="deploy-changed" data-desc="Scan recent git diffs across web-stack + hydro-* + audiobook + devtools/lib, figure out which sites were affected, and batch-deploy only those."
    style="border-left:3px solid #6b7280">
@@ -1224,6 +1260,22 @@ body.tlz-page {
     <div class="tlz-card-name"><code>/deploy-changed</code></div>
     
     <div class="tlz-card-desc">Scan recent git diffs across web-stack + hydro-* + audiobook + devtools/lib, figure out which sites were affected, and batch-deploy only those.</div>
+  </div>
+</a><a class="tlz-card" href="fanout-deploy.html"
+   data-name="fanout-deploy" data-desc="并行多站部署编排 — 给每个目标 repo 起独立 subagent，各自 edit+build+deploy+verify，汇总状态表"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/fanout-deploy</code></div>
+    
+    <div class="tlz-card-desc">并行多站部署编排 — 给每个目标 repo 起独立 subagent，各自 edit+build+deploy+verify，汇总状态表</div>
+  </div>
+</a><a class="tlz-card" href="fanout-refactor.html"
+   data-name="fanout-refactor" data-desc="并行多 repo 重构编排 — 每个 repo 一个 subagent 独立 worktree，audit 绿才 commit，supervisor 汇总后分批 deploy。比 /fanout-deploy 多一层 audit gate 和 worktree 隔离。"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/fanout-refactor</code></div>
+    
+    <div class="tlz-card-desc">并行多 repo 重构编排 — 每个 repo 一个 subagent 独立 worktree，audit 绿才 commit，supervisor 汇总后分批 deploy。比 /fanout-deploy 多一层 audit gate 和 worktree 隔离。</div>
   </div>
 </a><a class="tlz-card" href="fix-printer.html"
    data-name="fix-printer" data-desc="办公室 Canon iR C3322L 打印机诊断修复。"
@@ -1242,12 +1294,12 @@ body.tlz-page {
     <div class="tlz-card-desc">站群前端微调守门 — 只允许改视觉参数（颜色/间距/字号/断点/动画等），禁止动 yaml 数据结构。改完强制 /menus-audit 13/13 全绿证明未破坏结构。</div>
   </div>
 </a><a class="tlz-card" href="menus-audit.html"
-   data-name="menus-audit" data-desc="检测站群菜单/导航 yaml SSOT (~/Dev/tools/configs/menus/) 与各消费者源码的漂移（13 类）"
+   data-name="menus-audit" data-desc="检测站群菜单/导航 yaml SSOT (~/Dev/tools/configs/menus/) 与各消费者源码的漂移（14 类，含路径域）"
    style="border-left:3px solid #6b7280">
   <div class="tlz-card-body">
     <div class="tlz-card-name"><code>/menus-audit</code></div>
     
-    <div class="tlz-card-desc">检测站群菜单/导航 yaml SSOT (~/Dev/tools/configs/menus/) 与各消费者源码的漂移（13 类）</div>
+    <div class="tlz-card-desc">检测站群菜单/导航 yaml SSOT (~/Dev/tools/configs/menus/) 与各消费者源码的漂移（14 类，含路径域）</div>
   </div>
 </a><a class="tlz-card" href="migrate-hydro.html"
    data-name="migrate-hydro" data-desc="将一个 hydro-xxx Streamlit 项目的计算逻辑移植到对应的 Tauri 桌面 app。"
@@ -1281,6 +1333,30 @@ body.tlz-page {
     
     <div class="tlz-card-desc">从 services.ts 重新生成所有动态子域的 nginx vhost 文件（不推送 VPS）</div>
   </div>
+</a><a class="tlz-card" href="preflight.html"
+   data-name="preflight" data-desc="破坏性操作前的全面侦察 — 并行扫描所有相关配置层/产物/依赖，输出「爆炸半径」清单，Claude 逐项确认后才能动手"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/preflight</code></div>
+    
+    <div class="tlz-card-desc">破坏性操作前的全面侦察 — 并行扫描所有相关配置层/产物/依赖，输出「爆炸半径」清单，Claude 逐项确认后才能动手</div>
+  </div>
+</a><a class="tlz-card" href="raycast-sync.html"
+   data-name="raycast-sync" data-desc="同步各 repo 的 Raycast 命令到 hub（symlink） + 重生成 COMMANDS.md。新增/改了 raycast/commands/ 必跑。"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/raycast-sync</code></div>
+    
+    <div class="tlz-card-desc">同步各 repo 的 Raycast 命令到 hub（symlink） + 重生成 COMMANDS.md。新增/改了 raycast/commands/ 必跑。</div>
+  </div>
+</a><a class="tlz-card" href="refactor-dir.html"
+   data-name="refactor-dir" data-desc="搬目录 + 零死链的原子工作流。migration → mv → rewrite-dead → build-const → rewrite-allow-missing → rebuild-symlinks → scan-dead/symlinks 验证（文本 + symlink + allow_missing 三盲区收口）。"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/refactor-dir</code></div>
+    <div class="cmds-card-hint">&lt;old&gt; &lt;new&gt; [--dry] [--no-rewrite] [--reason &quot;&lt;text&gt;&quot;]</div>
+    <div class="tlz-card-desc">搬目录 + 零死链的原子工作流。migration → mv → rewrite-dead → build-const → rewrite-allow-missing → rebuild-symlinks → scan-dead/symlinks 验证（文本 + symlink + allow_missing 三盲区收口）。</div>
+  </div>
 </a><a class="tlz-card" href="reminder.html"
    data-name="reminder" data-desc="Create Apple Reminders from user input."
    style="border-left:3px solid #6b7280">
@@ -1304,6 +1380,14 @@ body.tlz-page {
     <div class="tlz-card-name"><code>/retro</code></div>
     
     <div class="tlz-card-desc">产出 Playbook 式复盘 — 用 slash command / skill 为主角串起&quot;这类任务应该怎么做&quot;的可复用流程。用户下次读完能按步骤指挥 CC。</div>
+  </div>
+</a><a class="tlz-card" href="review-docx.html"
+   data-name="review-docx" data-desc="审阅 DOCX 文档（格式检查 + 可选 LLM 深度审阅），输出 Word 批注"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/review-docx</code></div>
+    
+    <div class="tlz-card-desc">审阅 DOCX 文档（格式检查 + 可选 LLM 深度审阅），输出 Word 批注</div>
   </div>
 </a><a class="tlz-card" href="services-health.html"
    data-name="services-health" data-desc="全景健康扫描 — 合并 menus-audit + services_vs_live 输出 12 服务 × N 维矩阵"
@@ -1404,7 +1488,7 @@ body.tlz-page {
 </a></div>
 </section>
 <section class="tlz-section" data-cat="全局技能" style="--c:#10b981">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>全局技能</h2><span class="tlz-count">5</span></div>
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>全局技能</h2><span class="tlz-count">6</span></div>
   <div class="tlz-grid"><a class="tlz-card" href="bid-diff-and-revise.html"
    data-name="bid-diff-and-revise" data-desc="两份标书 docx 的雷同破除工作流。典型场景：投标前查副标 vs 旧版 / 副标 vs 主标，防止内容雷同导致废标。产出改动草稿 MD → rules JSON → track-changes 写入 docx。"
    style="border-left:3px solid #10b981">
@@ -1413,13 +1497,13 @@ body.tlz-page {
     
     <div class="tlz-card-desc">两份标书 docx 的雷同破除工作流。典型场景：投标前查副标 vs 旧版 / 副标 vs 主标，防止内容雷同导致废标。产出改动草稿 MD → rules JSON → track-changes 写入 docx。</div>
   </div>
-</a><a class="tlz-card" href="context.html"
-   data-name="context" data-desc="ZDWP 水利公司项目上下文与架构。集团架构、涉及县市、数据字段、常用命令、开发部调用、交付规范。当在水利公司项目中工作时触发。"
+</a><a class="tlz-card" href="critique.html"
+   data-name="critique" data-desc="按需深度审计用户最近的工作流 / 决策 / 会话行为，找出不专业、不优化、浪费资源、反模式的地方并激进指正。用户说 /critique 或&quot;帮我审一下 / 指正 / 挑刺&quot;时触发。配合 feedback_proactive_critique memory（always-on）做 on-demand 深扫。"
    style="border-left:3px solid #10b981">
   <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>context</code></div>
+    <div class="tlz-card-name"><code>critique</code></div>
     
-    <div class="tlz-card-desc">ZDWP 水利公司项目上下文与架构。集团架构、涉及县市、数据字段、常用命令、开发部调用、交付规范。当在水利公司项目中工作时触发。</div>
+    <div class="tlz-card-desc">按需深度审计用户最近的工作流 / 决策 / 会话行为，找出不专业、不优化、浪费资源、反模式的地方并激进指正。用户说 /critique 或&quot;帮我审一下 / 指正 / 挑刺&quot;时触发。配合 feedback_proactive_critique memory（always-on）做 on-demand 深扫。</div>
   </div>
 </a><a class="tlz-card" href="engineering-mode.html"
    data-name="engineering-mode" data-desc="精准、高效、工程学式的交流与执行协议。长会话、多步操作、破坏性改动、跨系统协作时必触发。"
@@ -1429,11 +1513,11 @@ body.tlz-page {
     
     <div class="tlz-card-desc">精准、高效、工程学式的交流与执行协议。长会话、多步操作、破坏性改动、跨系统协作时必触发。</div>
   </div>
-</a><a class="tlz-card" href="harness.html"
-   data-name="harness" data-desc="管理 CC skills 跨项目分发与同步。当需要检查/同步/初始化项目 skills 配置时触发。"
+</a><a class="tlz-card" href="harness-sync.html"
+   data-name="harness-sync" data-desc="管理 CC skills 跨项目分发与同步。当需要检查/同步/初始化项目 skills 配置时触发。"
    style="border-left:3px solid #10b981">
   <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>harness</code></div>
+    <div class="tlz-card-name"><code>harness-sync</code></div>
     
     <div class="tlz-card-desc">管理 CC skills 跨项目分发与同步。当需要检查/同步/初始化项目 skills 配置时触发。</div>
   </div>
@@ -1445,17 +1529,25 @@ body.tlz-page {
     
     <div class="tlz-card-desc">先写方案再操作规范。当执行批量操作、文件整理、目录重构等破坏性操作时触发。</div>
   </div>
+</a><a class="tlz-card" href="zdwp-project.html"
+   data-name="zdwp-project" data-desc="ZDWP 水利公司项目上下文与架构。集团架构、涉及县市、数据字段、常用命令、开发部调用、交付规范。当在水利公司项目中工作时触发。"
+   style="border-left:3px solid #10b981">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>zdwp-project</code></div>
+    
+    <div class="tlz-card-desc">ZDWP 水利公司项目上下文与架构。集团架构、涉及县市、数据字段、常用命令、开发部调用、交付规范。当在水利公司项目中工作时触发。</div>
+  </div>
 </a></div>
 </section>
 <section class="tlz-section" data-cat="领域技能" style="--c:#14b8a6">
   <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>领域技能</h2><span class="tlz-count">10</span></div>
   <div class="tlz-grid"><a class="tlz-card" href="bid.html"
-   data-name="bid" data-desc="标书撰写技能。当处理 ~/Work/bids/ 下的标书项目，需要解析招标文件、搭建章节框架、盘点参考资料、走四阶段写作管线时触发。"
+   data-name="bid" data-desc="标书撰写技能。当处理 ~/Dev/Work/bids/ 下的标书项目，需要解析招标文件、搭建章节框架、盘点参考资料、走四阶段写作管线时触发。"
    style="border-left:3px solid #14b8a6">
   <div class="tlz-card-body">
     <div class="tlz-card-name"><code>bid</code></div>
     
-    <div class="tlz-card-desc">标书撰写技能。当处理 ~/Work/bids/ 下的标书项目，需要解析招标文件、搭建章节框架、盘点参考资料、走四阶段写作管线时触发。</div>
+    <div class="tlz-card-desc">标书撰写技能。当处理 ~/Dev/Work/bids/ 下的标书项目，需要解析招标文件、搭建章节框架、盘点参考资料、走四阶段写作管线时触发。</div>
   </div>
 </a><a class="tlz-card" href="capacity.html"
    data-name="capacity" data-desc="水资源承载力评价项目知识。当处理承载力指标计算、AHP-CRITIC组合赋权、TOPSIS评价模型时触发。"
@@ -1569,7 +1661,7 @@ body.tlz-page {
 </section></main>
 
 <footer class="tlz-footer">
-  Generated 2026-04-22 17:27 · <a href="_how-to-create.html">怎么建一个新命令 / 技能 →</a>
+  Generated 2026-04-27 11:21 · <a href="_how-to-create.html">怎么建一个新命令 / 技能 →</a>
 </footer>
 </div>
 

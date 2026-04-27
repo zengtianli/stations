@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { SiteNav, SiteFooter } from "@tlz/ui/shared"
+import { SiteNav, SiteFooter, SearchTrigger } from "@tlz/ui/shared"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" })
@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="zh-CN" data-track="hydro" className={inter.variable}>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <SiteNav currentKey="hydro" />
+        <SiteNav currentKey="hydro" rightSlot={<SearchTrigger />} />
         <div className="pt-16">{children}</div>
         <SiteFooter />
       </body>

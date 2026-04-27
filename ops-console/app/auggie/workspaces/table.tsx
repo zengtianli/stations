@@ -23,6 +23,16 @@ function relevanceColor(rel: number): string {
   return "text-[#86868b]"
 }
 
+function staleColor(iso: string | undefined): string {
+  if (!iso) return "text-[#86868b]"
+  const d = new Date(iso)
+  if (isNaN(d.getTime())) return "text-[#86868b]"
+  const days = Math.floor((Date.now() - d.getTime()) / 86400000)
+  if (days < 7) return "text-emerald-600"
+  if (days < 30) return "text-amber-600"
+  return "text-red-600"
+}
+
 function typeBadgeVariant(type: string): "success" | "default" | "warn" | "muted" {
   if (type === "code") return "success"
   if (type === "docs") return "default"
@@ -173,7 +183,7 @@ export default function WorkspacesTable({
                   <td className={`py-2 px-4 text-right tabular-nums ${h ? relevanceColor(h.avg_relevance) : "text-[#86868b]"}`}>
                     {h ? h.avg_relevance.toFixed(2) : "—"}
                   </td>
-                  <td className="py-2 px-4 text-[#86868b] tabular-nums">
+                  <td className={`py-2 px-4 tabular-nums ${staleColor(h?.warmup_at)}`}>
                     {formatRelative(h?.warmup_at)}
                   </td>
                   <td className="py-2 px-4 text-[#86868b] max-w-md truncate" title={w.notes || ""}>

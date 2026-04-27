@@ -140,7 +140,7 @@ function HomeInner() {
         )}
 
         {cur && <AssetStructureSection cur={cur} summary={summary} />}
-        {cur && <IncomeSection cur={cur} sharpe={ccSharpe} />}
+        {cur && <IncomeSection cur={cur} sharpe={ccSharpe} summary={summary} />}
         {cur && <RiskSection cur={cur} />}
 
         <section className="space-y-4">
@@ -205,6 +205,21 @@ function HomeInner() {
                     )
                   })}
                 </tbody>
+                {positions.length > 1 && (() => {
+                  const totalMV = positions.reduce((a, p) => a + (p.units ?? 0) * (p.price ?? 0), 0)
+                  const totalPnL = positions.reduce((a, p) => a + (p.open_pnl ?? 0), 0)
+                  return (
+                    <tfoot className="border-t-2 border-foreground/15">
+                      <tr className="bg-foreground/5 font-semibold">
+                        <td className="px-4 py-3" colSpan={4}>合计 · {positions.length} 个持仓</td>
+                        <td className="text-right px-4 py-3 tabular-nums">${fmtMoney(totalMV, 0)}</td>
+                        <td className={`text-right px-4 py-3 tabular-nums ${totalPnL >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
+                          {totalPnL >= 0 ? "+" : ""}${fmtMoney(totalPnL, 0)}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  )
+                })()}
               </table>
             </LiquidGlassCard>
           )}

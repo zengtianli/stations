@@ -117,6 +117,7 @@ export type SummaryResp = {
   leverage: number
   prev_nlv: number | null
   prev_leverage: number | null
+  prev_margin_debt: number | null
   prev_date: string | null
 }
 

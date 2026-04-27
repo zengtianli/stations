@@ -19,7 +19,8 @@
 - `/api/activities` · P1 修了排序 bug（按 trade_date desc）
 
 **前端**（`~/Dev/stations/web-stack/apps/cc-options-web/app/`）：
-- 重组为 **9 个章节单页滚动**（不用物理 tabs）：资产结构 → 收支 → 风险 → 绩效（NLV+metrics）→ 收益对比 bar → 情景分析 → 期权（Roll 信号+Table A+Table B+Roll 明细+Summary）→ 持仓 → 历史流水
+- 重组为 **8 个章节单页滚动**（不用物理 tabs）：资产结构 → 收支 → 风险 → 绩效（NLV+metrics）→ 收益对比 bar → 期权（Roll 信号+Table A+Table B+Roll 明细+Summary）→ 持仓 → 历史流水
+- ⏸️ **§6 情景分析（Scenarios）暂未渲染** — `/api/scenarios` 端点已实现（用于取 `current` 字段），但 ScenariosCard 组件未建。延后到用户对实际页面提需求时再补（参考旧 Streamlit `_archive-streamlit/app.py` Tab5）
 - `types.ts` · 共享类型（Current / OptRow / PerfMetric / RollSignal 等）
 - `RefreshButton.tsx` · SiteHeader 右上角，点击弹 modal 显示命令 + 一键复制 + alias 建议
 - `NLVChart` · 重写 4 条归一化曲线 + Range 按钮（1M/3M/6M/1Y/YTD）
@@ -34,43 +35,30 @@
 - `cc.tianlizeng.cloud` 旧备用域已 `/site-archive cc --yes` 清退（CF DNS + Origin Rule 都删了，`scheduled-archives.json` 已清空）
 - cc-chat + rh-dashboard systemd service 继续 inactive+disabled（迁移前就这样）
 
-## 待完成
+## 待完成（2026-04-27 复核现状）
 
-用户说"还有些要微调的地方"——具体微调项未明。下面是**已知可能的微调点**，新会话开始前先确认用户想改什么：
+HANDOFF 写于 P2 上线时（2026-04-21）。**本次 agent 逐项核对代码后发现 7 个候选已 3 ✅ + 1 ⚠️ + 3 ❌**：
 
-- [ ] **Scenarios 情景网格默认值调整**
-  - 当前默认 `"-2,-1,-0.5,0,0.5,1,2"` + 天数默认 30 天
-  - 用户可能想改默认、或加快捷预设（例如 "窄幅""宽幅""黑天鹅"三个按钮）
-  - 改点：`app/components/ScenariosCard.tsx` L32 `pctsInput` initial state
+| # | 微调 | 状态 | 证据 / 备注 |
+|---|---|---|---|
+| 1 | Scenarios 快捷预设 + 默认值 | ❌ **整个 ScenariosCard 组件没建** | `page.tsx` 加载 `/api/scenarios` 但**未渲染** §6；只有 `types.ts` 有类型定义。本质是 §6 章节缺失，不是微调 |
+| 2 | NLVChart TQQQ 右 Y 轴 | ✅ 已做 | `NLVChart.tsx:201-282` 完整双 Y 轴 + TQQQ 独立 domain |
+| 3 | Roll 信号 "目标合约" target | ✅ 已做 | `OptionsSection.tsx:283-287` + `api.py:_compute_target` (L263-286) |
+| 4 | StatCard 趋势箭头 | ⚠️ 部分 | NLV/Leverage 已动态（接 `summary.prev_*`）；Theta/Margin/Sharpe 仍硬编 trend |
+| 5 | ReturnBarChart SPY/TQQQ | ✅ 已做（更好）| `ReturnBarChart.tsx:27-31, 201-206` 4 条 + checkbox 过滤（默认 CC+QQQ） |
+| 6 | 风险区 Sharpe RangeSelector | ❌ 未做 | Sharpe 数据已跟全局 Range，但 `IncomeSection.tsx` 无 UI 控件 |
+| 7 | 持仓表合计行 | ❌ 未做 | `page.tsx:182-206` tbody 后直接闭合，无 total row |
 
-- [ ] **NLVChart TQQQ 归一化视觉**
-  - 2025 累计 +48% vs CC +31% · 视觉上 TQQQ 线会明显跳出
-  - 若嫌跳跃可给 TQQQ 右 Y 轴单独 scale（已在 plan §12 #2 标记为"实测看"）
-  - 改点：`app/components/NLVChart.tsx` 加 `yAxisId="right"` 给 TQQQ Line
+### 本轮（2026-04-27）已完成
 
-- [ ] **OptionsSection · Roll 信号卡"目标合约"缺失**
-  - 旧 Streamlit `render_signal_card` L730-747 会根据 action 给出 `target`（"→ 585C 05/21 ~12%年化"）
-  - 当前新版 SignalCard 没展示 target（只有 action + reasons + TV 进度条）
-  - 改点：`app/components/OptionsSection.tsx` 补 `target` 字段计算 + 展示
-  - 公式：ASSIGN 默认目标 `round(qqq_price)` strike 30 DTE；ROLL 保持当前 strike 30 DTE；其它 "-"
+- [x] **C1 微调 4**：`api.py /api/summary` 加 `prev_margin_debt` 字段；`IncomeSection.tsx` Margin 卡 hint 加"较昨日 ±$x.xx/天"（Theta/Sharpe 没历史快照故保 trend=flat，Sharpe hint 改为"基于 ${rangeKey} TWR"）
+- [x] **C2 微调 7**：持仓表加 `<tfoot>` 合计行（Total MV + Total PnL + 持仓数）
+- [x] **C3 微调 6**：`IncomeSection.tsx` import `useRange()`，Sharpe 卡 hint 显示当前全局 RangeKey（用户改 NLVChart 的 Range 时同步显示）
+- [x] **C4 微调 1（方案 B）**：HANDOFF 描述从「9 章节」→「8 章节」，§6 Scenarios 组件延后到用户对实际页面提需求时再补；page.tsx 的 `/api/scenarios` fetch 保留（取 `current` 字段），scenarios 数组当前未渲染
 
-- [ ] **指标卡的"涨/跌"趋势箭头**
-  - StatCard 有 `trend: "up" | "down" | "flat"` 但当前所有卡硬编码
-  - NLV / Theta / Leverage 应该对比昨日 · 要查 `daily_nlv.csv` 倒数第二行
-  - 可加 `/api/summary` 的 prev_nlv 字段，前端算 trend
+部署：commit + push + `bash deploy.sh` → standalone bundle 0 dev URL · CF Access 302 拦截（已知行为，service 活）· smoke `/api/health` 200。
 
-- [ ] **ReturnBarChart 少了 SPY/TQQQ**
-  - 当前只画 CC vs QQQ 两条
-  - 用户可能想要 4 条全在（但 grouped bar 4 色会拥挤）
-  - 或给 SPY/TQQQ 一个过滤 checkbox
-
-- [ ] **风险区 Sharpe 数据源**
-  - 当前 `IncomeSection` 直接用 `perf-metrics` 的 CC Sharpe
-  - 旧 Streamlit 是按 sidebar 的 "Performance 起点" 动态算，当前硬编 `start=2025-01-01`
-  - 可加 `<RangeSelector>` 跟 NLVChart 联动
-
-- [ ] **持仓表加总行**
-  - 当前 positions table 只显示逐行，没有 Total Market Value / Total PnL 行
+详见 plan：`/Users/tianli/.claude/plans/purrfect-nibbling-patterson.md`
 
 ## 关键文件
 

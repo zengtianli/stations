@@ -191,6 +191,7 @@ def summary() -> dict[str, Any]:
         "account_total_value": (acct.get("total_value") or {}).get("value"),
         "prev_nlv": prev_row.get("nlv"),
         "prev_leverage": prev_row.get("leverage"),
+        "prev_margin_debt": prev_row.get("margin_debt"),
         "prev_date": prev_row.get("date"),
     }
 

@@ -1,17 +1,34 @@
 "use client"
 
 import { StatCard, LiquidGlassCard } from "@tlz/ui"
-import type { Current } from "../types"
-import { fmtMoney } from "../types"
+import type { Current, SummaryResp } from "../types"
+import { fmtMoney, fmtSigned } from "../types"
+import { useRange } from "../providers/RangeProvider"
 
 const MARGIN_COST = 0.0425
 
-export function IncomeSection({ cur, sharpe }: { cur: Current; sharpe: number | null }) {
+export function IncomeSection({
+  cur,
+  sharpe,
+  summary,
+}: {
+  cur: Current
+  sharpe: number | null
+  summary: SummaryResp | null
+}) {
+  const { rangeKey } = useRange()
   const dailyTheta = Math.abs(cur.effective_theta)
   const marginDaily = cur.margin_debt * MARGIN_COST / 365
   const netDaily = dailyTheta - marginDaily
   const nlvImpact1 = Math.abs(cur.net_delta * cur.qqq_price * 0.01)
   const shortCalls = cur.opt_rows.filter((r) => r.qty < 0 && r.dte >= 1).length
+
+  // Margin 同比（prev_margin_debt 来自昨日 daily_nlv 行）
+  const prevMarginDebt = summary?.prev_margin_debt ?? null
+  const prevMarginDaily = prevMarginDebt !== null ? (prevMarginDebt * MARGIN_COST) / 365 : null
+  const marginHint = prevMarginDaily !== null
+    ? `较昨日 ${fmtSigned(marginDaily - prevMarginDaily, 2)}/天`
+    : `${(MARGIN_COST * 100).toFixed(2)}% × ${fmtMoney(cur.margin_debt)} / 365`
 
   return (
     <section className="space-y-4">
@@ -21,13 +38,13 @@ export function IncomeSection({ cur, sharpe }: { cur: Current; sharpe: number | 
         <StatCard label="日 Theta 收租" value={`$${fmtMoney(dailyTheta)}`}
           hint={`${shortCalls} 张有效合约 · ≈ $${fmtMoney(dailyTheta * 30)}/月`} trend="up" />
         <StatCard label="日 Margin 利息" value={`$${fmtMoney(marginDaily)}`}
-          hint={`${(MARGIN_COST * 100).toFixed(2)}% × ${fmtMoney(cur.margin_debt)} / 365`} trend="down" />
+          hint={marginHint} trend="down" />
         <StatCard label="日净收入" value={`$${fmtMoney(netDaily)}`}
           hint={`Theta − 利息 · ≈ $${fmtMoney(netDaily * 30)}/月`}
           trend={netDaily >= 0 ? "up" : "down"} />
         <StatCard label="Sharpe Ratio"
           value={sharpe !== null ? sharpe.toFixed(2) : "—"}
-          hint="基于 TWR 剥现金流" trend="flat" />
+          hint={`基于 ${rangeKey} TWR 剥现金流`} trend="flat" />
       </div>
 
       <LiquidGlassCard className="overflow-hidden">

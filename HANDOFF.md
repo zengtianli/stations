@@ -242,6 +242,33 @@ open https://dashboard.tianlizeng.cloud/services-health # 矩阵页
 ### 若继续（下轮）
 
 - **优先**: 无 Tier 2/3 遗留待办 — 全做了
-- **可选**: hydro-* 前端（Next.js apps）filter/search 抽共享（#6 延伸）
 - **跳过**: monorepo 合并（Plan agent / Explore 都建议不做）
-- **长期**: subdomains.yaml 加 `api_port` + `service_dir` 字段以消除 +100 / DIR_ALIAS 隐式约定
+
+---
+
+## 2026-04-27 收尾 · 全量 HANDOFF 闭环
+
+> Plan: `/Users/tianli/.claude/plans/purrfect-nibbling-patterson.md`
+
+### 本轮做了什么
+
+| Phase | 描述 | 成果 |
+|---|---|---|
+| **A** | dirty 收尾 | crontab 加 PATH 修 cron + 删 docs/health bug stub + .gitignore 防御 + commit `82092ca` (clashx + auggie 文档) |
+| **B1** | hydro-* React filter 抽共享评估 | **决定不做** — 10 app 中只 3 个有 filter UI（annual/efficiency/risk），字段差异大（Set/string/Record），抽象成本 > 收益。重启条件：未来 5+ app 需要同形态 filter |
+| **B2** | subdomains.yaml 加 `api_port` + `service_dir` | ✅ 完成 — yaml +2 可选字段（hydro/audiobook 显式声明）；5 文件 ~12 行改造（services_vs_live.py / services_health.py / services_to_nginx.py / menus.py），全 fallback 兼容；删 `DIR_ALIAS` 重复定义。auto-git-sync 9:58 commits: `tools/configs#f319145` + `devtools#7bec858`. menus audit 14/14 ✅ |
+| **C1-C4** | cc-options 4 个微调（HANDOFF 复核 7 个候选 → 已 3✅+1⚠️+3❌） | ✅ Theta/Margin trend hint · ✅ 持仓总行 · ✅ Sharpe rangeKey hint · §6 Scenarios 选方案 B 延后 |
+| **D** | HANDOFF 终结维护 | cc-options/HANDOFF 反映 7 项现状 + 本轮完成 · 本表 |
+
+### 隐形 cron bug 修复（A1 详情）
+
+`/Users/tianli/Dev/stations/docs/health/site-health-YYYY-MM-DD.md` 每天 8:00 出现 37 字节 `env: node: No such file or directory` 文件。
+- **根因**：`crontab -l` 第 2 行 `0 8 * * * claude -p "/sites-health" >> docs/health/...`，cron 默认 PATH 不含 `/opt/homebrew/bin`，claude shebang `#!/usr/bin/env node` 找不到 node
+- **修法**：crontab 第 1 行后加 `PATH=/opt/homebrew/bin:/Users/tianli/.nvm/versions/node/v22.21.1/bin:/usr/local/bin:/usr/bin:/bin`
+- **验证**：`env -i HOME=$HOME PATH=... claude --version` → `2.1.112` ✅
+- **副产品**：`.gitignore` 加 `docs/health/site-health-*.md`（防 daily 文件污染 git）
+
+### 跳过
+
+- **ticket-reminder**（labs/）— 用户本轮明示跳过
+- **§6 Scenarios 组件**（cc-options） — 选方案 B（HANDOFF 改 8 章节延后），用户对实际页面提需求时再补

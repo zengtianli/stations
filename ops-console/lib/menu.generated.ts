@@ -5,5 +5,6 @@ export const ITEMS = [
   { href: "/", label: "概览" },
   { href: "/services-health", label: "服务健康" },
   { href: "/auggie", label: "Auggie 索引" },
+  { href: "/auggie/workspaces", label: "Workspaces" },
   { href: "/hammerspoon", label: "Hammerspoon" },
 ] as const

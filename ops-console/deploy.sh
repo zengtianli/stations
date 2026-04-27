@@ -25,10 +25,12 @@ rsync -avz --delete public/ "$VPS:$REMOTE_DIR/public/" 2>/dev/null || true
 echo "📂 Create data dir (post-rsync)"
 ssh "$VPS" "mkdir -p $REMOTE_DIR/data"
 
-echo "📊 Sync data files (Auggie scan + hs_config)"
+echo "📊 Sync data files (Auggie scan + workspaces + health + hs_config)"
 # Prefer local dev copies (fresher than whatever's on VPS)
 for spec in \
   "$HOME/Dev/labs/auggie-dashboard/data/scan.json:auggie-scan.json" \
+  "$HOME/Dev/tools/configs/auggie-workspaces.json:auggie-workspaces.json" \
+  "$HOME/Dev/tools/configs/auggie-health.json:auggie-health.json" \
   "$HOME/Dev/stations/ops-console/data/hs_config.json:hs_config.json" \
   "$HOME/Dev/stations/ops-console/data/raycast_index.json:raycast_index.json" \
 ; do

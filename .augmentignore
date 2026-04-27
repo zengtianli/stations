@@ -1,0 +1,19 @@
+# augment 索引排除（gitignore glob 语法 · 超越 .gitignore 的二级过滤）
+# 2026-04-27 立 · ssot-os v0.2-1.2 · 让 augment cold-start 跑得动 5G 仓
+
+# Build / 派生（部分已在各子站 .gitignore，显式声明保险 + 文档化）
+**/.next/
+**/.venv/
+**/__pycache__/
+**/dist/
+**/build/
+**/node_modules/
+
+# 数据 / 资料 / 日志（augment 不应索引这类内容）
+_archive/
+*/data/
+*/logs/
+audiobook/data/audio/
+
+# 死副本（v0.3-2.2 删前显式排，删后保留也无害）
+cc-options/.venv/

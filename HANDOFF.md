@@ -272,3 +272,85 @@ open https://dashboard.tianlizeng.cloud/services-health # 矩阵页
 
 - **ticket-reminder**（labs/）— 用户本轮明示跳过
 - **§6 Scenarios 组件**（cc-options） — 选方案 B（HANDOFF 改 8 章节延后），用户对实际页面提需求时再补
+
+---
+
+## 2026-04-27 下午 · 站群全面升级（IA + 搜索 + 主页）
+
+> Plan: `/Users/tianli/.claude/plans/site-overhaul-ia-search-home.md`  
+> Commit: `5a51248` (124 files × 8 stations)
+
+### 商业网页角度审查发现的 9 大问题（按严重度排）
+
+1. 🔴🔴🔴 13/15 站无搜索入口 → **Phase A 解决**
+2. 🔴🔴 投资工具藏在「内容」section → **Phase B 升独立 mega_category**
+3. 🔴🔴 5 文档站散落 dev/content 两组 → **Phase B 拆出 docs-knowledge group**
+4. 🔴 首页 100% 镜像 navbar → **Phase C 删站群 grid + 加最新更新**
+5. 🔴 Direction Cards vs SERVICE_GROUPS 双逻辑 → **保留 Direction Cards（品牌叙事）+ 删 SERVICE_GROUPS 镜像**
+6. 🟡 基础设施在公开 navbar 暴露 → **Phase D infra hidden:true**
+7. 🟡 「开发与 AI」命名脱节 → **Phase B 改 dev-tools**
+8. 🟡 首页缺最新更新/数据徽章 → **Phase C 加 Stats Bar + Latest Updates**
+9. 🟢 navbar 与 group SSOT 映射脱节 → **Phase B + audit 14/14 验**
+
+### Phase B+D · IA 重组完成
+
+| 改动 | 旧 | 新 |
+|---|---|---|
+| groups 总数 | 6 | 7（+docs-knowledge） |
+| dev-ai → dev-tools | label 「开发与 AI」5 项混搭 | label 「开发工具」3 项（dashboard/cclog/dockit） |
+| docs-knowledge | — | 5 文档站（stack/cmds/docs/playbooks/logs） |
+| invest-tools | navbar 藏「内容」下 | mega_category 独立「💰 投资」 |
+| content-media | 4 项混搭 | 仅 audiobook（label 改「📺 媒体」）|
+| infra | navbar 暴露 status/n8n/panel/webhook | hidden:true 不渲染 |
+| navbar 顶级数 | 5 | 6（home / hydro / dev-tools / docs / invest / 媒体）|
+
+派生产物全 regen + audit 14/14 全绿。
+
+### Phase A · 全局搜索（13 站 + 5 静态站接入 cmd+K）
+
+**索引扩展**（`build-search-index.py`）：35 website + 50 catalog + 50 stack = **135 docs**，FTS5 schema 加 `site` 字段标识来源。
+
+**SearchTrigger 共享组件**（`web-stack/packages/ui/src/shared/search-trigger.tsx`）：
+- cmdk modal（cmd+K 弹）
+- debounce 250ms fetch `/api/search?q=`
+- 结果列表显示 site label + Enter 跳完整搜索
+
+**接入清单**：
+- 12 web-stack apps（layout.tsx 一行 `rightSlot={<SearchTrigger />}`）
+- ops-console（独立 repo，本地 search-trigger 副本）
+- website（替换原 /search Link）
+- 5 静态站（menus.py SSOT + assets 手动）→ 跳 `tianlizeng.cloud/search`
+
+**CORS**：route.ts 加 OPTIONS preflight + Access-Control-Allow-Origin `*.tianlizeng.cloud`
+
+**⚠️ 已知问题**：better-sqlite3 native binding cross-arch（macOS arm64 → Linux x86_64）`invalid ELF header`。Plan 路径：用户 SSH 一次：
+```bash
+ssh root@104.218.100.67 "cd /opt/website && rm -rf node_modules/better-sqlite3/build node_modules/better-sqlite3/prebuilds && npm install --prefer-offline better-sqlite3 && systemctl restart website"
+```
+跑完 search API 立刻 work（数据 + UI 都已 deploy）。
+
+### Phase C · 主页重写（去镜像 + 加策展）
+
+- ❌ 删除「站群」section（grid 列 6 分组卡片，100% 镜像 nav 的过曝来源）
+- ❌ 删除「Featured Work」前的间距占用（保留 Featured Work 本身）
+- ✅ 加 Stats Bar（生产子站 / 精选项目 / 博文笔记 三个数据徽章）
+- ✅ 加 Latest Updates section（getAllBlogPosts 取 3 篇 + 「查看全部博客」）
+- ✅ Hero / Direction Cards / Featured Work 保留（前两者是品牌叙事不重复 nav）
+
+### 部署清单（已 live）
+
+| Site | 状态 | 工具 |
+|---|---|---|
+| website | ✅ 主页改 + search API 部署（API 待 better-sqlite3 fix）| `bash deploy.sh` |
+| 12 web-stack apps | ✅ 批量部署 | `bash infra/deploy/deploy-batch.sh ...` |
+| ops-console | ✅ 部署 | `bash deploy.sh` |
+| 4 静态站（cmds/stack/logs/assets）| ✅ 并行部署 | `python3 generate.py && bash deploy.sh` |
+| playbooks | 暂未动 | — |
+
+### 下个会话启动
+
+1. 跑用户上面那条 SSH 命令 fix better-sqlite3
+2. 验证 `curl 'https://tianlizeng.cloud/api/search?q=hydro'` 返 8+ 条结果
+3. 浏览器测每个站的 cmd+K（弹 modal → 搜索 → 跳转）
+4. 浏览器看 mega-navbar 6 大类正确 + 投资有独立入口 + infra 不显示
+5. 看 https://tianlizeng.cloud 主页 6 sections 渲染（无 dev URL bundle）

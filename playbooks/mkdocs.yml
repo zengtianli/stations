@@ -72,3 +72,8 @@ nav:
     - Web 内容: web-content.md
     - Web 脚手架: web-scaffold.md
     - 批量迁移: mass-migration.md
+  - 工程总结 · SSOT-OS v1.0:
+    - 综述 (~/Dev 模块化+可复用+可观察): ssot-os/index.md
+    - 支柱 A · 模块化: ssot-os/modular.md
+    - 支柱 B · 可复用: ssot-os/reusable.md
+    - 支柱 C · 可观察: ssot-os/observable.md

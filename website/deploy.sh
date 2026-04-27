@@ -23,8 +23,10 @@ rsync -avz --delete .next/static/ "$VPS:$REMOTE_DIR/.next/static/" || true
 rsync -avz --delete public/ "$VPS:$REMOTE_DIR/public/" || true
 rsync -avz data/ "$VPS:$REMOTE_DIR/data/" || true
 
-echo "🔧 Rebuilding native deps on VPS (better-sqlite3 across-arch fix)..."
-ssh "$VPS" "cd $REMOTE_DIR && npm rebuild better-sqlite3 2>&1 | tail -3" || echo "⚠️  npm rebuild failed, search may break"
+echo "🔧 Installing linux prebuilt better-sqlite3 on VPS (cross-arch fix)..."
+# rsync 把 macOS arm64 binary 推过去了，VPS 是 Linux x86_64，重装拉对应 prebuilt
+# --legacy-peer-deps: standalone 没 package.json，npm 会拿项目根的来 resolve，绕过 peer dep 严格检查
+ssh "$VPS" "cd $REMOTE_DIR && rm -rf node_modules/better-sqlite3/build node_modules/better-sqlite3/prebuilds && npm install --legacy-peer-deps --prefer-offline --no-save better-sqlite3 2>&1 | tail -3" || echo "⚠️  better-sqlite3 install failed, search may break"
 
 echo "🔄 Restarting service..."
 ssh "$VPS" "systemctl restart website"

@@ -5,7 +5,7 @@
 - **HS 共 18 hotkey 绑定 + 6 个 orphan Lua 函数**（hotkeys.lua 已下线但 Lua 代码留着，可清）
 - **Raycast 53 命令**（hub `~/Dev/tools/raycast/commands/`，3 repo 来源）
 - **使用统计基本不存在**：现有 `~/.useful_scripts_usage.log` 只有 1/53 Raycast 命令真在打点；HS 0 埋点
-- **历史遗失**：clashx 6 命令在老 log 用了 100+ 次（最高频），现 `~/Dev/tools/clashx/raycast/commands/` 空目录 — 需要查
+- **历史遗失**：clashx 6 命令在老 log 用了 100+ 次（最高频），现 `~/Dev/_archive/clashx-2026-04-27/raycast/commands/` 空目录 — 需要查
 - **行动**：先加埋点 → 用 2-4 周 → 再决定 archive 哪些。本次只能基于"orphan/重复"做硬归档候选
 
 ---
@@ -140,10 +140,10 @@ apps.lua 还有：
 
 老 log 显示 ClashX 类命令是**最高频使用**（前 6 名：`clashx_enhanced.sh` 92 次，`sys_clashx.sh` 21 次，`clashx_mode_rule.sh` 7 次，`folder_paste.sh` 5 次，`clashx_status.sh` 5 次，`clashx_mode_global.sh` 5 次）。
 
-**当前**：`~/Dev/tools/clashx/raycast/commands/` 是**空目录**。这些命令在 2026-04-18 那波"19 条迁 Raycast"里被列入，但实际去向不明。
+**当前**：`~/Dev/_archive/clashx-2026-04-27/raycast/commands/` 是**空目录**。这些命令在 2026-04-18 那波"19 条迁 Raycast"里被列入，但实际去向不明。
 
 **待查**：
-- 这些 .sh 文件是被移到别处（应去 `~/Dev/tools/clashx/scripts/` 之类？）
+- 这些 .sh 文件是被移到别处（应去 `~/Dev/_archive/clashx-2026-04-27/scripts/` 之类？）
 - 还是真的删了？
 - HS 里也没看到对应函数
 
@@ -272,7 +272,7 @@ end
 
 ## 8. 推荐下一步（按优先级）
 
-1. **查 ClashX 遗失** — `cd ~/Dev/tools/clashx && git log --diff-filter=D --name-only | head -20` 看删了什么
+1. **查 ClashX 遗失** — `cd ~/Dev/_archive/clashx-2026-04-27 && git log --diff-filter=D --name-only | head -20` 看删了什么
 2. **加埋点**（按 §6）— 抽 `log_usage.sh` + 改 hotkey_manager.lua
 3. **2-4 周后** 跑 awk 出统计，根据真实数据决定 archive
 4. 期间根据你"多迁 HS"意愿，每周抓 3-5 个 Raycast 高频命令补 HS hotkey

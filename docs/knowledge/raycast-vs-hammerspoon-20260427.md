@@ -125,7 +125,7 @@ HS 留下的 4 类在 Raycast 里都做不好：
 
 ### 4. clashx/raycast/commands 是空目录
 
-`~/Dev/tools/clashx/raycast/commands/` 是空的（之前 6 条 ClashX 代理被迁去 Raycast 但好像没真迁过去？）。要么删空目录，要么把 ClashX 切换的 .sh 真的写进去。建议查一下 2026-04-18 那次迁移的实际去向。
+`~/Dev/_archive/clashx-2026-04-27/raycast/commands/` 是空的（之前 6 条 ClashX 代理被迁去 Raycast 但好像没真迁过去？）。要么删空目录，要么把 ClashX 切换的 .sh 真的写进去。建议查一下 2026-04-18 那次迁移的实际去向。
 
 ## 决策建议
 

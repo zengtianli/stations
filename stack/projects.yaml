@@ -170,7 +170,7 @@ groups:
         status: active
 
       - name: clashx
-        path: ~/Dev/tools/clashx
+        path: ~/Dev/_archive/clashx-2026-04-27
         purpose: ClashX 代理管理工具（6 Raycast commands）
         type: cli
         stack: [Shell, Raycast]

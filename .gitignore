@@ -52,3 +52,6 @@ logs/*.log
 
 # ── Local state ──
 .claude/settings.local.json
+
+# ── Auto-generated daily snapshots ──
+docs/health/site-health-*.md

@@ -1,0 +1,5 @@
+{
+  "accessToken": "TIAN-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+  "tenantURL": "https://www.augmentproxy.com/tenant-proxy/",
+  "scopes": ["email"]
+}

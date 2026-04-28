@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>/branches-cleanup — CC Docs</title>
+<title>/refresh-site — CC Docs</title>
 <style>
   :root {
     --bg: #f6f8fa; --card: #fff; --border: #e5e7eb;
@@ -682,12 +682,12 @@
 <div class="breadcrumb">
   <a href="index.html">CC Docs</a> /
   <a href="index.html">杂项</a> /
-  <span>/branches-cleanup</span>
+  <span>/refresh-site</span>
 </div>
 
 <div class="detail-header" style="--c:#6b7280">
-  <h1><code>/branches-cleanup</code></h1>
-  <div class="desc">扫 ~/Dev 全部 git repo，找出已合并到 main 的分支（本地+远端），列表批准后一键删。</div>
+  <h1><code>/refresh-site</code></h1>
+  <div class="desc">站群 SSOT 改完一键同步所有产物 + 消费者 + audit。接 --kind 参数选范围（all / navbar / header / content）。不含 deploy。</div>
   <div class="meta">
     <span class="chip">杂项</span>
     <span class="chip ghost">命令</span>
@@ -698,87 +698,173 @@
 <article class="body" id="body">
   <noscript>
     <p>JavaScript 关闭时看不到渲染。以下是原始 markdown：</p>
-    <pre>扫 ~/Dev 全部 git repo，找出已合并到 main 的分支（本地+远端），列表批准后一键删。
+    <pre>---
+description: 站群 SSOT 改完一键同步所有产物 + 消费者 + audit。接 --kind 参数选范围（all / navbar / header / content）。不含 deploy。
+---
+
+用户提供了参数: $ARGUMENTS
+
+## 定位
+
+**站群任务编排 skill**。改完任何 SSOT 后跑这条，让所有产物、消费者本地副本、TS 数据、audit 状态一次性到位。
+
+配套 playbook：`~/Dev/tools/configs/playbooks/stations.md` § 编排图
+
+**刻意不含 `/deploy`**：部署是破坏性，必须由用户明确指定要部署哪几个站。本 skill 只负责&quot;本地全对齐 + audit 绿&quot;。
 
 ## 用法
 
+```bash
+/refresh-site                  # 默认全套（等价旧 /site-refresh-all）
+/refresh-site --kind all       # 同上，11 步全跑
+/refresh-site --kind navbar    # 只跑 navbar.html → 6 consumers（等价旧 /navbar-refresh）
+/refresh-site --kind header    # 只跑 site-header.html → 5 stations（等价旧 /site-header-refresh）
+/refresh-site --kind content   # 只跑 site-content.css → 4 stations（等价旧 /site-content-refresh）
 ```
-/branches-cleanup              # 扫 ~/Dev 全部 repo
-/branches-cleanup --repo &lt;path&gt;  # 单 repo
-```
 
-无参默认扫 `~/Dev` 全部。
+&gt; 旧 alias 已废：`/site-refresh-all` `/navbar-refresh` `/site-header-refresh` `/site-content-refresh` —— 全合并到本命令。
 
-## 背景
+---
 
-用户默认在 main 上干活，**不开 feature branch**（要开必须先讲理由）。merge 完的分支是思维负担，必须清。本 skill 把「merge 完顺手清」固化成动作。
+## --kind all（默认）
 
-## 执行
-
-### 1. 收集 repo
-
-- 无 `--repo` → `find ~/Dev -name .git -type d -maxdepth 4 -prune` 列所有 repo
-- 有 `--repo &lt;path&gt;` → 只看这一个
-
-### 2. 每个 repo 扫已合并分支
-
-进 repo 目录，跑：
+11 步全跑，任一步失败立即停：
 
 ```bash
-git fetch --prune origin                              # 同步远端 + 清死引用
-git branch --merged main                              # 已合并的本地分支
-git branch -r --merged main                           # 已合并的远端分支
+# 1. navbar SSOT → devtools/lib/templates/site-navbar.html
+python3 ~/Dev/devtools/lib/tools/menus.py render-navbar -w
+
+# 2. navbar SSOT → website/lib/shared-navbar.generated.ts
+python3 ~/Dev/devtools/lib/tools/menus.py build-website-navbar -w
+
+# 3. catalog 重建（交叉索引）
+python3 ~/Dev/devtools/lib/tools/menus.py build-catalog -w
+
+# 4. site-header 渲染到所有 site
+python3 ~/Dev/devtools/lib/tools/menus.py render-site-header --all -w
+
+# 5. site-content.css 同步到消费者
+python3 ~/Dev/devtools/lib/tools/menus.py build-site-content -w
+
+# 6. navbar.html 同步到 6 消费者（auto commit + push）
+bash ~/Dev/devtools/scripts/tools/navbar_refresh.sh
+
+# 7. React mega-navbar → website + ops-console
+python3 ~/Dev/devtools/lib/tools/menus.py build-react-mega-navbar -w
+
+# 8. shared-navbar.generated.ts → ops-console copy
+cp ~/Dev/stations/website/lib/shared-navbar.generated.ts \
+   ~/Dev/stations/ops-console/lib/shared-navbar.generated.ts
+
+# 9. services.ts AUTO-GEN
+python3 ~/Dev/devtools/lib/tools/menus.py build-services-ts -w
+
+# 10. 静态站重生成 HTML（stack/cmds/logs/assets）
+cd ~/Dev/stations/stack  &amp;&amp; python3 generate.py
+cd ~/Dev/stations/cmds   &amp;&amp; python3 generate.py
+cd ~/Dev/stations/logs   &amp;&amp; python3 generate.py
+cd ~/Dev/stations/assets &amp;&amp; python3 generate.py
+
+# 11. audit 14 类全绿
+python3 ~/Dev/devtools/lib/tools/menus.py audit
 ```
 
-**排除项**（永远不动）：
-- `main` / `master`
-- `HEAD` / `origin/HEAD`
-- 当前 checkout 的分支（带 `*` 的那条）
+---
 
-### 3. 汇总表给用户
-
-```
-repo            本地分支         远端分支              最后提交
-website         feat/navbar-v2   origin/feat/navbar-v2  3 天前
-cmds            -                origin/fix/typo        1 周前
-stack           tmp/wip          -                      2 天前
-```
-
-末尾一行：`共 N repo，待删本地 X 条 / 远端 Y 条`
-
-**等用户确认。** 不自动删。
-
-### 4. 批准后执行
-
-逐 repo 跑：
+## --kind navbar（替代旧 /navbar-refresh）
 
 ```bash
-git branch -d &lt;name&gt;                       # 本地：用 -d 不是 -D，未合并会拒绝
-git push origin --delete &lt;name&gt;            # 远端
+bash ~/Dev/devtools/scripts/tools/navbar_refresh.sh &quot;$@&quot;
 ```
 
-**失败立即停**：任一条 `-d` 拒绝（说明分支没真的合并）→ 停下报告，不切 `-D`。
+支持 `--dry-run`。
 
-### 5. 输出对比
+**消费者清单**（auto-discovery，不硬编码）：扫 `~/Dev/stations/*/site-navbar.html`（maxdepth 3，排除 _archive / devtools / configs / .next / node_modules）。
+
+**当前 6 站**：stack / cmds / audiobook / assets / logs / ops-console（域名映射见 `services.ts`）
+
+**不处理**：Streamlit 三站（运行时从 VPS 上的 devtools 读模板，不 vendor 本地副本）
+
+---
+
+## --kind header（替代旧 /site-header-refresh）
+
+```bash
+python3 ~/Dev/devtools/lib/tools/menus.py render-site-header --all -w
+```
+
+**5 站**：cmds / stack / journal / cc-evolution / ops-console（journal &amp; cc-evolution 已归档）
+
+把 `~/Dev/tools/configs/menus/sites/&lt;name&gt;.yaml` 的 `header` 字段渲染成 site-header.html，写入各 repo。
+
+**渲染产物**：
+1. `&lt;style&gt;` `.tlz-site-header` 完整 CSS
+2. `&lt;header&gt;` 含面包屑 + icon + title + tagline
+
+各站 generate.py 用 `_load_site_header()` 注入。
+
+**漂移检测**：`menus-audit` 的 `site-header-drift` 类。
+
+---
+
+## --kind content（替代旧 /site-content-refresh）
+
+```bash
+python3 ~/Dev/devtools/lib/tools/menus.py build-site-content -w
+```
+
+**4 站**：cmds / stack / logs / ops-console
+
+把 `~/Dev/devtools/lib/templates/site-content.css` 同步到各子站，让卡片/grid/配色与 services 页一致。
+
+**关键 class**：`.tlz-page` / `.tlz-container` / `.tlz-section` / `.tlz-grid` / `.tlz-card` / `.tlz-search` / `.tlz-stats-bar` / `.tlz-dot--{ok,bad,unknown}`
+
+**漂移检测**：`menus-audit` 的 `site-content-drift` 类。
+
+---
+
+## 完成后的提示（all 模式）
+
+audit 全绿后**必须**告诉用户：
+
+&gt; ✅ 本地全对齐，audit 14/14 绿。下一步你来指挥：
+&gt;
+&gt; 要部署哪些站？参考受影响范围：
+&gt; - 改了 `NAVBAR_CSS` / `site-navbar.html` → 全 6 站（website + ops-console + stack + cmds + logs + audiobook）
+&gt; - 改了 `mega-navbar.tsx` → 只 website + ops-console
+&gt; - 改了 `site-content.css` → stack + cmds + logs + ops-console
+&gt; - 改了 `sites/&lt;name&gt;.yaml.header` → 只对应一站
+&gt;
+&gt; 告诉我哪些，我 `/deploy &lt;name&gt;` 跑（或 `/deploy fanout` 多站并行 / `/deploy changed` 按 git diff 自动选）。
+
+**不自动调 /deploy**。等用户明确。
+
+---
+
+## 反模式
+
+- ❌ 自动在流程末尾加 `for d in ...; do deploy.sh; done` → 部署是破坏性，必须用户批准
+- ❌ 跳过 audit 就宣布 &quot;已同步&quot;
+- ❌ 某步失败还继续 → 必须立即停并报错
+
+## 和 /frontend-tweak 的关系
+
+`/frontend-tweak` Step 6 调用本 skill：
 
 ```
-✓ website   删除 feat/navbar-v2 (本地+远端)
-✓ cmds      删除 origin/fix/typo (远端)
-✗ stack     tmp/wip 拒绝（未合并到 main）— 跳过
-清理后：N repo，本地 X 条 / 远端 Y 条
+/frontend-tweak
+  ├─ 定位 + Edit
+  ├─ /menus-audit（改前基线）
+  ├─ /refresh-site --kind all   ← 这里
+  └─ 问用户部署清单
 ```
 
-## 不做
+独立用 `/refresh-site` 的场景：SSOT 手工改完（Plan mode 路径 B），需要批量同步。
 
-- 不删未合并分支（绝不用 `-D`）
-- 不删 `main` / `master`
-- 不切分支（保持用户当前 checkout）
-- 不动远端 `origin/HEAD`
-- 任一步失败立即停，不继续后续 repo
+## 相关
 
-## 集成
-
-`/repo ship` 推完 main 之后自动调用本 skill 一次（待办：单独改 repo.md，本次不动）。
+- playbook: `~/Dev/tools/configs/playbooks/stations.md`
+- 姊妹 skill: `/frontend-tweak`（视觉微调） · `/menus-audit`（单独跑 audit） · `/deploy`（单站部署）
 </pre>
   </noscript>
 </article>
@@ -786,100 +872,190 @@ git push origin --delete &lt;name&gt;            # 远端
 
 <section class="sidebar-block">
   <h3>编排关系 — 调用的其他命令</h3>
-  <div class="chip-list"><a href="branches-cleanup.html">/branches-cleanup</a><a href="repo.html">/repo</a></div>
+  <div class="chip-list"><a href="deploy.html">/deploy</a><a href="frontend-tweak.html">/frontend-tweak</a><a href="menus-audit.html">/menus-audit</a><a href="refresh-site.html">/refresh-site</a></div>
 </section>
 
+<section class="sidebar-block">
+  <h3>引用的后端脚本</h3>
+  <div class="path-list"><div>~/Dev/devtools/lib/tools/menus.py</div><div>~/Dev/devtools/scripts/tools/navbar_refresh.sh</div><div>~/Dev/stations/ops-console/lib/shared-navbar.generated.ts</div><div>~/Dev/stations/website/lib/shared-navbar.generated.ts</div></div>
+</section>
 
 <section class="sidebar-block">
   <h3>源文件</h3>
-  <div class="path-list"><div>~/Dev/tools/cc-configs/commands/branches-cleanup.md</div></div>
+  <div class="path-list"><div>~/Dev/tools/cc-configs/commands/refresh-site.md</div></div>
 </section>
 
 <footer>
   <a href="index.html">← 返回列表</a> · <a href="_how-to-create.html">怎么建一个新命令 / 技能</a>
 </footer>
 
-<script id="src" type="text/plain">扫 ~/Dev 全部 git repo，找出已合并到 main 的分支（本地+远端），列表批准后一键删。
+<script id="src" type="text/plain">---
+description: 站群 SSOT 改完一键同步所有产物 + 消费者 + audit。接 --kind 参数选范围（all / navbar / header / content）。不含 deploy。
+---
+
+用户提供了参数: $ARGUMENTS
+
+## 定位
+
+**站群任务编排 skill**。改完任何 SSOT 后跑这条，让所有产物、消费者本地副本、TS 数据、audit 状态一次性到位。
+
+配套 playbook：`~/Dev/tools/configs/playbooks/stations.md` § 编排图
+
+**刻意不含 `/deploy`**：部署是破坏性，必须由用户明确指定要部署哪几个站。本 skill 只负责&quot;本地全对齐 + audit 绿&quot;。
 
 ## 用法
 
+```bash
+/refresh-site                  # 默认全套（等价旧 /site-refresh-all）
+/refresh-site --kind all       # 同上，11 步全跑
+/refresh-site --kind navbar    # 只跑 navbar.html → 6 consumers（等价旧 /navbar-refresh）
+/refresh-site --kind header    # 只跑 site-header.html → 5 stations（等价旧 /site-header-refresh）
+/refresh-site --kind content   # 只跑 site-content.css → 4 stations（等价旧 /site-content-refresh）
 ```
-/branches-cleanup              # 扫 ~/Dev 全部 repo
-/branches-cleanup --repo &lt;path&gt;  # 单 repo
-```
 
-无参默认扫 `~/Dev` 全部。
+&gt; 旧 alias 已废：`/site-refresh-all` `/navbar-refresh` `/site-header-refresh` `/site-content-refresh` —— 全合并到本命令。
 
-## 背景
+---
 
-用户默认在 main 上干活，**不开 feature branch**（要开必须先讲理由）。merge 完的分支是思维负担，必须清。本 skill 把「merge 完顺手清」固化成动作。
+## --kind all（默认）
 
-## 执行
-
-### 1. 收集 repo
-
-- 无 `--repo` → `find ~/Dev -name .git -type d -maxdepth 4 -prune` 列所有 repo
-- 有 `--repo &lt;path&gt;` → 只看这一个
-
-### 2. 每个 repo 扫已合并分支
-
-进 repo 目录，跑：
+11 步全跑，任一步失败立即停：
 
 ```bash
-git fetch --prune origin                              # 同步远端 + 清死引用
-git branch --merged main                              # 已合并的本地分支
-git branch -r --merged main                           # 已合并的远端分支
+# 1. navbar SSOT → devtools/lib/templates/site-navbar.html
+python3 ~/Dev/devtools/lib/tools/menus.py render-navbar -w
+
+# 2. navbar SSOT → website/lib/shared-navbar.generated.ts
+python3 ~/Dev/devtools/lib/tools/menus.py build-website-navbar -w
+
+# 3. catalog 重建（交叉索引）
+python3 ~/Dev/devtools/lib/tools/menus.py build-catalog -w
+
+# 4. site-header 渲染到所有 site
+python3 ~/Dev/devtools/lib/tools/menus.py render-site-header --all -w
+
+# 5. site-content.css 同步到消费者
+python3 ~/Dev/devtools/lib/tools/menus.py build-site-content -w
+
+# 6. navbar.html 同步到 6 消费者（auto commit + push）
+bash ~/Dev/devtools/scripts/tools/navbar_refresh.sh
+
+# 7. React mega-navbar → website + ops-console
+python3 ~/Dev/devtools/lib/tools/menus.py build-react-mega-navbar -w
+
+# 8. shared-navbar.generated.ts → ops-console copy
+cp ~/Dev/stations/website/lib/shared-navbar.generated.ts \
+   ~/Dev/stations/ops-console/lib/shared-navbar.generated.ts
+
+# 9. services.ts AUTO-GEN
+python3 ~/Dev/devtools/lib/tools/menus.py build-services-ts -w
+
+# 10. 静态站重生成 HTML（stack/cmds/logs/assets）
+cd ~/Dev/stations/stack  &amp;&amp; python3 generate.py
+cd ~/Dev/stations/cmds   &amp;&amp; python3 generate.py
+cd ~/Dev/stations/logs   &amp;&amp; python3 generate.py
+cd ~/Dev/stations/assets &amp;&amp; python3 generate.py
+
+# 11. audit 14 类全绿
+python3 ~/Dev/devtools/lib/tools/menus.py audit
 ```
 
-**排除项**（永远不动）：
-- `main` / `master`
-- `HEAD` / `origin/HEAD`
-- 当前 checkout 的分支（带 `*` 的那条）
+---
 
-### 3. 汇总表给用户
-
-```
-repo            本地分支         远端分支              最后提交
-website         feat/navbar-v2   origin/feat/navbar-v2  3 天前
-cmds            -                origin/fix/typo        1 周前
-stack           tmp/wip          -                      2 天前
-```
-
-末尾一行：`共 N repo，待删本地 X 条 / 远端 Y 条`
-
-**等用户确认。** 不自动删。
-
-### 4. 批准后执行
-
-逐 repo 跑：
+## --kind navbar（替代旧 /navbar-refresh）
 
 ```bash
-git branch -d &lt;name&gt;                       # 本地：用 -d 不是 -D，未合并会拒绝
-git push origin --delete &lt;name&gt;            # 远端
+bash ~/Dev/devtools/scripts/tools/navbar_refresh.sh &quot;$@&quot;
 ```
 
-**失败立即停**：任一条 `-d` 拒绝（说明分支没真的合并）→ 停下报告，不切 `-D`。
+支持 `--dry-run`。
 
-### 5. 输出对比
+**消费者清单**（auto-discovery，不硬编码）：扫 `~/Dev/stations/*/site-navbar.html`（maxdepth 3，排除 _archive / devtools / configs / .next / node_modules）。
+
+**当前 6 站**：stack / cmds / audiobook / assets / logs / ops-console（域名映射见 `services.ts`）
+
+**不处理**：Streamlit 三站（运行时从 VPS 上的 devtools 读模板，不 vendor 本地副本）
+
+---
+
+## --kind header（替代旧 /site-header-refresh）
+
+```bash
+python3 ~/Dev/devtools/lib/tools/menus.py render-site-header --all -w
+```
+
+**5 站**：cmds / stack / journal / cc-evolution / ops-console（journal &amp; cc-evolution 已归档）
+
+把 `~/Dev/tools/configs/menus/sites/&lt;name&gt;.yaml` 的 `header` 字段渲染成 site-header.html，写入各 repo。
+
+**渲染产物**：
+1. `&lt;style&gt;` `.tlz-site-header` 完整 CSS
+2. `&lt;header&gt;` 含面包屑 + icon + title + tagline
+
+各站 generate.py 用 `_load_site_header()` 注入。
+
+**漂移检测**：`menus-audit` 的 `site-header-drift` 类。
+
+---
+
+## --kind content（替代旧 /site-content-refresh）
+
+```bash
+python3 ~/Dev/devtools/lib/tools/menus.py build-site-content -w
+```
+
+**4 站**：cmds / stack / logs / ops-console
+
+把 `~/Dev/devtools/lib/templates/site-content.css` 同步到各子站，让卡片/grid/配色与 services 页一致。
+
+**关键 class**：`.tlz-page` / `.tlz-container` / `.tlz-section` / `.tlz-grid` / `.tlz-card` / `.tlz-search` / `.tlz-stats-bar` / `.tlz-dot--{ok,bad,unknown}`
+
+**漂移检测**：`menus-audit` 的 `site-content-drift` 类。
+
+---
+
+## 完成后的提示（all 模式）
+
+audit 全绿后**必须**告诉用户：
+
+&gt; ✅ 本地全对齐，audit 14/14 绿。下一步你来指挥：
+&gt;
+&gt; 要部署哪些站？参考受影响范围：
+&gt; - 改了 `NAVBAR_CSS` / `site-navbar.html` → 全 6 站（website + ops-console + stack + cmds + logs + audiobook）
+&gt; - 改了 `mega-navbar.tsx` → 只 website + ops-console
+&gt; - 改了 `site-content.css` → stack + cmds + logs + ops-console
+&gt; - 改了 `sites/&lt;name&gt;.yaml.header` → 只对应一站
+&gt;
+&gt; 告诉我哪些，我 `/deploy &lt;name&gt;` 跑（或 `/deploy fanout` 多站并行 / `/deploy changed` 按 git diff 自动选）。
+
+**不自动调 /deploy**。等用户明确。
+
+---
+
+## 反模式
+
+- ❌ 自动在流程末尾加 `for d in ...; do deploy.sh; done` → 部署是破坏性，必须用户批准
+- ❌ 跳过 audit 就宣布 &quot;已同步&quot;
+- ❌ 某步失败还继续 → 必须立即停并报错
+
+## 和 /frontend-tweak 的关系
+
+`/frontend-tweak` Step 6 调用本 skill：
 
 ```
-✓ website   删除 feat/navbar-v2 (本地+远端)
-✓ cmds      删除 origin/fix/typo (远端)
-✗ stack     tmp/wip 拒绝（未合并到 main）— 跳过
-清理后：N repo，本地 X 条 / 远端 Y 条
+/frontend-tweak
+  ├─ 定位 + Edit
+  ├─ /menus-audit（改前基线）
+  ├─ /refresh-site --kind all   ← 这里
+  └─ 问用户部署清单
 ```
 
-## 不做
+独立用 `/refresh-site` 的场景：SSOT 手工改完（Plan mode 路径 B），需要批量同步。
 
-- 不删未合并分支（绝不用 `-D`）
-- 不删 `main` / `master`
-- 不切分支（保持用户当前 checkout）
-- 不动远端 `origin/HEAD`
-- 任一步失败立即停，不继续后续 repo
+## 相关
 
-## 集成
-
-`/repo ship` 推完 main 之后自动调用本 skill 一次（待办：单独改 repo.md，本次不动）。
+- playbook: `~/Dev/tools/configs/playbooks/stations.md`
+- 姊妹 skill: `/frontend-tweak`（视觉微调） · `/menus-audit`（单独跑 audit） · `/deploy`（单站部署）
 </script>
 <script>
 const raw = document.getElementById('src').textContent;

@@ -775,10 +775,10 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 
 **必须 8/8 全绿**。任一 drift 红说明你动了数据结构 → **回滚**。
 
-### Step 6 — /site-refresh-all 同步
+### Step 6 — /refresh-site 同步
 
 ```
-/site-refresh-all
+/refresh-site --kind all
 ```
 
 （或手动：render-navbar -w + build-website-navbar -w + navbar_refresh.sh + cp mega-navbar.tsx &amp; generated.ts → ops-console + menus-audit）
@@ -791,10 +791,10 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 
 按用户明确列表跑 `/deploy &lt;name&gt;` × N。
 
-### Step 8 — /ship 收尾
+### Step 8 — /repo ship 收尾
 
 ```
-/ship configs devtools website ops-console
+/repo ship configs devtools website ops-console
 ```
 
 按实际改了哪些 repo 缩减清单。
@@ -813,9 +813,9 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 ## 拒绝词（这些不走本 skill）
 
 - &quot;加菜单项 / 加分类&quot; → Plan mode
-- &quot;删子域 / 退役站&quot; → Plan mode + `/site-archive`
+- &quot;删子域 / 退役站&quot; → Plan mode + `/site archive`
 - &quot;换 URL / 改分组逻辑&quot; → Plan mode
-- &quot;加新站 / 搭新页&quot; → Plan mode + `/site-add` + `/ship-site`
+- &quot;加新站 / 搭新页&quot; → Plan mode + `/site add` + `/site ship`
 - &quot;改 yaml / 结构&quot; → Plan mode
 
 遇到拒绝词直接说：
@@ -832,7 +832,7 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 ## 相关
 
 - playbook: `~/Dev/tools/configs/playbooks/stations.md`
-- 姊妹 skill: `/site-refresh-all`（同步） · `/menus-audit`（验证） · `/deploy`（部署）
+- 姊妹 skill: `/refresh-site`（同步） · `/menus-audit`（验证） · `/deploy`（部署）
 </pre>
   </noscript>
 </article>
@@ -840,7 +840,7 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 
 <section class="sidebar-block">
   <h3>编排关系 — 调用的其他命令</h3>
-  <div class="chip-list"><a href="deploy.html">/deploy</a><a href="frontend-tweak.html">/frontend-tweak</a><a href="menus-audit.html">/menus-audit</a><a href="ship.html">/ship</a><a href="ship-site.html">/ship-site</a><a href="site-add.html">/site-add</a><a href="site-archive.html">/site-archive</a><a href="site-refresh-all.html">/site-refresh-all</a></div>
+  <div class="chip-list"><a href="deploy.html">/deploy</a><a href="frontend-tweak.html">/frontend-tweak</a><a href="menus-audit.html">/menus-audit</a><a href="refresh-site.html">/refresh-site</a><a href="repo.html">/repo</a><a href="site.html">/site</a></div>
 </section>
 
 <section class="sidebar-block">
@@ -934,10 +934,10 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 
 **必须 8/8 全绿**。任一 drift 红说明你动了数据结构 → **回滚**。
 
-### Step 6 — /site-refresh-all 同步
+### Step 6 — /refresh-site 同步
 
 ```
-/site-refresh-all
+/refresh-site --kind all
 ```
 
 （或手动：render-navbar -w + build-website-navbar -w + navbar_refresh.sh + cp mega-navbar.tsx &amp; generated.ts → ops-console + menus-audit）
@@ -950,10 +950,10 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 
 按用户明确列表跑 `/deploy &lt;name&gt;` × N。
 
-### Step 8 — /ship 收尾
+### Step 8 — /repo ship 收尾
 
 ```
-/ship configs devtools website ops-console
+/repo ship configs devtools website ops-console
 ```
 
 按实际改了哪些 repo 缩减清单。
@@ -972,9 +972,9 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 ## 拒绝词（这些不走本 skill）
 
 - &quot;加菜单项 / 加分类&quot; → Plan mode
-- &quot;删子域 / 退役站&quot; → Plan mode + `/site-archive`
+- &quot;删子域 / 退役站&quot; → Plan mode + `/site archive`
 - &quot;换 URL / 改分组逻辑&quot; → Plan mode
-- &quot;加新站 / 搭新页&quot; → Plan mode + `/site-add` + `/ship-site`
+- &quot;加新站 / 搭新页&quot; → Plan mode + `/site add` + `/site ship`
 - &quot;改 yaml / 结构&quot; → Plan mode
 
 遇到拒绝词直接说：
@@ -991,7 +991,7 @@ python3 ~/Dev/devtools/lib/tools/menus.py audit
 ## 相关
 
 - playbook: `~/Dev/tools/configs/playbooks/stations.md`
-- 姊妹 skill: `/site-refresh-all`（同步） · `/menus-audit`（验证） · `/deploy`（部署）
+- 姊妹 skill: `/refresh-site`（同步） · `/menus-audit`（验证） · `/deploy`（部署）
 </script>
 <script>
 const raw = document.getElementById('src').textContent;

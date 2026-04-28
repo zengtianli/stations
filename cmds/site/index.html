@@ -905,7 +905,7 @@ body.tlz-page {
 
 <div class="tlz-container">
 <header class="tlz-stats-bar">
-  <span><strong>68</strong> 命令</span>
+  <span><strong>28</strong> 命令</span>
   <span><strong>16</strong> 技能</span>
   <span><strong>4</strong> 归档</span>
 </header>
@@ -920,74 +920,34 @@ body.tlz-page {
 
 <main>
 <section class="tlz-section" data-cat="部署" style="--c:#0ea5e9">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>部署</h2><span class="tlz-count">6</span></div>
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>部署</h2><span class="tlz-count">2</span></div>
   <div class="tlz-grid"><a class="tlz-card" href="cf.html"
-   data-name="cf" data-desc="Cloudflare 统一管理 — DNS / Origin Rules / Access Applications。"
+   data-name="cf" data-desc="Cloudflare 统一管理 — DNS / Origin Rules / Access Applications"
    style="border-left:3px solid #0ea5e9">
   <div class="tlz-card-body">
     <div class="tlz-card-name"><code>/cf</code></div>
     
-    <div class="tlz-card-desc">Cloudflare 统一管理 — DNS / Origin Rules / Access Applications。</div>
+    <div class="tlz-card-desc">Cloudflare 统一管理 — DNS / Origin Rules / Access Applications</div>
   </div>
 </a><a class="tlz-card" href="deploy.html"
-   data-name="deploy" data-desc="通用部署，适配任意有 deploy.sh 的项目。"
+   data-name="deploy" data-desc="部署族 — (default) 当前目录 / changed 按 git diff 扇出 / fanout 并行多站编辑+部署"
    style="border-left:3px solid #0ea5e9">
   <div class="tlz-card-body">
     <div class="tlz-card-name"><code>/deploy</code></div>
     
-    <div class="tlz-card-desc">通用部署，适配任意有 deploy.sh 的项目。</div>
-  </div>
-</a><a class="tlz-card" href="launch.html"
-   data-name="launch" data-desc="新项目一条龙上线 — /site-add → /groom → /repo-map → /promote → /ship-site → /deploy"
-   style="border-left:3px solid #0ea5e9">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/launch</code></div>
-    
-    <div class="tlz-card-desc">新项目一条龙上线 — /site-add → /groom → /repo-map → /promote → /ship-site → /deploy</div>
-  </div>
-</a><a class="tlz-card" href="ship-site.html"
-   data-name="ship-site" data-desc="一键部署新静态站点到 `&lt;name&gt;.tianlizeng.cloud`。编排 rsync + Nginx + `/cf dns/origin/access` + 验证。"
-   style="border-left:3px solid #0ea5e9">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/ship-site</code></div>
-    
-    <div class="tlz-card-desc">一键部署新静态站点到 `&lt;name&gt;.tianlizeng.cloud`。编排 rsync + Nginx + `/cf dns/origin/access` + 验证。</div>
-  </div>
-</a><a class="tlz-card" href="site-add.html"
-   data-name="site-add" data-desc="脚手架新建一个 ~/Dev/&lt;name&gt; 静态站点项目（projects.yaml + generate.py + deploy.sh）"
-   style="border-left:3px solid #0ea5e9">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/site-add</code></div>
-    
-    <div class="tlz-card-desc">脚手架新建一个 ~/Dev/&lt;name&gt; 静态站点项目（projects.yaml + generate.py + deploy.sh）</div>
-  </div>
-</a><a class="tlz-card" href="vps-status.html"
-   data-name="vps-status" data-desc="Check VPS service status and health."
-   style="border-left:3px solid #0ea5e9">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/vps-status</code></div>
-    
-    <div class="tlz-card-desc">Check VPS service status and health.</div>
+    <div class="tlz-card-desc">部署族 — (default) 当前目录 / changed 按 git diff 扇出 / fanout 并行多站编辑+部署</div>
   </div>
 </a></div>
 </section>
 <section class="tlz-section" data-cat="CC 生态" style="--c:#8b5cf6">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>CC 生态</h2><span class="tlz-count">10</span></div>
-  <div class="tlz-grid"><a class="tlz-card" href="auggie-map.html"
-   data-name="auggie-map" data-desc="为大型项目生成二进制文件地图（_files.md），推到 GitHub 供 Auggie 索引"
-   style="border-left:3px solid #8b5cf6">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/auggie-map</code></div>
-    
-    <div class="tlz-card-desc">为大型项目生成二进制文件地图（_files.md），推到 GitHub 供 Auggie 索引</div>
-  </div>
-</a><a class="tlz-card" href="auggie.html"
-   data-name="auggie" data-desc="刷新 auggie dashboard — 拉最新 GitHub repo 清单 → scan.json → 同步到 VPS"
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>CC 生态</h2><span class="tlz-count">4</span></div>
+  <div class="tlz-grid"><a class="tlz-card" href="auggie.html"
+   data-name="auggie" data-desc="刷新 auggie dashboard — GitHub repo 列表 / workspace 注册表 / health 健康"
    style="border-left:3px solid #8b5cf6">
   <div class="tlz-card-body">
     <div class="tlz-card-name"><code>/auggie</code></div>
     
-    <div class="tlz-card-desc">刷新 auggie dashboard — 拉最新 GitHub repo 清单 → scan.json → 同步到 VPS</div>
+    <div class="tlz-card-desc">刷新 auggie dashboard — GitHub repo 列表 / workspace 注册表 / health 健康</div>
   </div>
 </a><a class="tlz-card" href="cmd-stats.html"
    data-name="cmd-stats" data-desc="统计 slash command 使用频率，基于会话 transcript 数据"
@@ -997,30 +957,6 @@ body.tlz-page {
     
     <div class="tlz-card-desc">统计 slash command 使用频率，基于会话 transcript 数据</div>
   </div>
-</a><a class="tlz-card" href="dashboard.html"
-   data-name="dashboard" data-desc="Dashboard 数据维护 + 部署。按页面刷新数据或全量更新。"
-   style="border-left:3px solid #8b5cf6">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/dashboard</code></div>
-    
-    <div class="tlz-card-desc">Dashboard 数据维护 + 部署。按页面刷新数据或全量更新。</div>
-  </div>
-</a><a class="tlz-card" href="distill.html"
-   data-name="distill" data-desc="从当前项目提炼可复用知识到全局（commands/踩坑/模板/playbook/slash 生态审计）"
-   style="border-left:3px solid #8b5cf6">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/distill</code></div>
-    
-    <div class="tlz-card-desc">从当前项目提炼可复用知识到全局（commands/踩坑/模板/playbook/slash 生态审计）</div>
-  </div>
-</a><a class="tlz-card" href="handoff.html"
-   data-name="handoff" data-desc="会话收尾与交接。一步完成复盘、配置升级、交接文件生成。"
-   style="border-left:3px solid #8b5cf6">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/handoff</code></div>
-    
-    <div class="tlz-card-desc">会话收尾与交接。一步完成复盘、配置升级、交接文件生成。</div>
-  </div>
 </a><a class="tlz-card" href="harness.html"
    data-name="harness" data-desc="根据项目性质和当前阶段，生成或升级 Claude Code 配置脚手架。"
    style="border-left:3px solid #8b5cf6">
@@ -1028,22 +964,6 @@ body.tlz-page {
     <div class="tlz-card-name"><code>/harness</code></div>
     
     <div class="tlz-card-desc">根据项目性质和当前阶段，生成或升级 Claude Code 配置脚手架。</div>
-  </div>
-</a><a class="tlz-card" href="recap.html"
-   data-name="recap" data-desc="复盘本轮对话，生成结构化回顾，更新记忆，输出文件。"
-   style="border-left:3px solid #8b5cf6">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/recap</code></div>
-    
-    <div class="tlz-card-desc">复盘本轮对话，生成结构化回顾，更新记忆，输出文件。</div>
-  </div>
-</a><a class="tlz-card" href="scan.html"
-   data-name="scan" data-desc="扫描 Claude Code 会话，LLM 分析任务状态，生成 tasks.json。"
-   style="border-left:3px solid #8b5cf6">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/scan</code></div>
-    
-    <div class="tlz-card-desc">扫描 Claude Code 会话，LLM 分析任务状态，生成 tasks.json。</div>
   </div>
 </a><a class="tlz-card" href="update-hooks.html"
    data-name="update-hooks" data-desc="增删改 ~/.claude/settings.json 的 hooks/permissions/env（薄封装 update-config skill）"
@@ -1056,62 +976,14 @@ body.tlz-page {
 </a></div>
 </section>
 <section class="tlz-section" data-cat="Repo 治理" style="--c:#ec4899">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>Repo 治理</h2><span class="tlz-count">8</span></div>
-  <div class="tlz-grid"><a class="tlz-card" href="audit.html"
-   data-name="audit" data-desc="审计 repo 完整性，基于 repo-standards.json 检查文件和 GitHub metadata。"
-   style="border-left:3px solid #ec4899">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/audit</code></div>
-    
-    <div class="tlz-card-desc">审计 repo 完整性，基于 repo-standards.json 检查文件和 GitHub metadata。</div>
-  </div>
-</a><a class="tlz-card" href="groom.html"
-   data-name="groom" data-desc="Repo 维护全流程，编排原子命令：/pull → /audit → fix(/promote) → review → /ship。"
-   style="border-left:3px solid #ec4899">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/groom</code></div>
-    
-    <div class="tlz-card-desc">Repo 维护全流程，编排原子命令：/pull → /audit → fix(/promote) → review → /ship。</div>
-  </div>
-</a><a class="tlz-card" href="health.html"
-   data-name="health" data-desc="文件卫生 + Git 状态检查。发现问题可调用 /tidy 清理。"
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>Repo 治理</h2><span class="tlz-count">2</span></div>
+  <div class="tlz-grid"><a class="tlz-card" href="health.html"
+   data-name="health" data-desc="健康检查族 — sites 边缘 HTTP / services 全景 12 服务矩阵 / nav navbar 链接 / vps systemd / project 单 repo git+文件卫生"
    style="border-left:3px solid #ec4899">
   <div class="tlz-card-body">
     <div class="tlz-card-name"><code>/health</code></div>
     
-    <div class="tlz-card-desc">文件卫生 + Git 状态检查。发现问题可调用 /tidy 清理。</div>
-  </div>
-</a><a class="tlz-card" href="promote.html"
-   data-name="promote" data-desc="Promote GitHub repositories — audit README, update metadata (description/topics/homepage), ensure screenshots exist."
-   style="border-left:3px solid #ec4899">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/promote</code></div>
-    
-    <div class="tlz-card-desc">Promote GitHub repositories — audit README, update metadata (description/topics/homepage), ensure screenshots exist.</div>
-  </div>
-</a><a class="tlz-card" href="pull.html"
-   data-name="pull" data-desc="批量 git pull --ff-only。"
-   style="border-left:3px solid #ec4899">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/pull</code></div>
-    
-    <div class="tlz-card-desc">批量 git pull --ff-only。</div>
-  </div>
-</a><a class="tlz-card" href="repo-map.html"
-   data-name="repo-map" data-desc="Manage the GitHub ↔ local path bidirectional mapping."
-   style="border-left:3px solid #ec4899">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/repo-map</code></div>
-    
-    <div class="tlz-card-desc">Manage the GitHub ↔ local path bidirectional mapping.</div>
-  </div>
-</a><a class="tlz-card" href="ship.html"
-   data-name="ship" data-desc="Commit and push changes in one or more projects under ~/Dev."
-   style="border-left:3px solid #ec4899">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/ship</code></div>
-    
-    <div class="tlz-card-desc">Commit and push changes in one or more projects under ~/Dev.</div>
+    <div class="tlz-card-desc">健康检查族 — sites 边缘 HTTP / services 全景 12 服务矩阵 / nav navbar 链接 / vps systemd / project 单 repo git+文件卫生</div>
   </div>
 </a><a class="tlz-card" href="tidy.html"
    data-name="tidy" data-desc="深度整理当前目录或指定目录。$ARGUMENTS 为目标路径（默认 `.`）。"
@@ -1124,78 +996,14 @@ body.tlz-page {
 </a></div>
 </section>
 <section class="tlz-section" data-cat="文档处理" style="--c:#f59e0b">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>文档处理</h2><span class="tlz-count">9</span></div>
-  <div class="tlz-grid"><a class="tlz-card" href="batch-revise.html"
-   data-name="batch-revise" data-desc="批量将改动草稿 MD 转为 track-changes 写入 DOCX（修订标记+批注，用户可在 Word 中逐条接受/拒绝）"
-   style="border-left:3px solid #f59e0b">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/batch-revise</code></div>
-    
-    <div class="tlz-card-desc">批量将改动草稿 MD 转为 track-changes 写入 DOCX（修订标记+批注，用户可在 Word 中逐条接受/拒绝）</div>
-  </div>
-</a><a class="tlz-card" href="diff-docx.html"
-   data-name="diff-docx" data-desc="对比两个 DOCX 文件，生成变更清单 MD + 可选批注 DOCX（章节级内容对比）"
-   style="border-left:3px solid #f59e0b">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/diff-docx</code></div>
-    
-    <div class="tlz-card-desc">对比两个 DOCX 文件，生成变更清单 MD + 可选批注 DOCX（章节级内容对比）</div>
-  </div>
-</a><a class="tlz-card" href="draft.html"
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>文档处理</h2><span class="tlz-count">1</span></div>
+  <div class="tlz-grid"><a class="tlz-card" href="draft.html"
    data-name="draft" data-desc="单节写作（原文照抄+上角标+4维度自检），输出MD片段"
    style="border-left:3px solid #f59e0b">
   <div class="tlz-card-body">
     <div class="tlz-card-name"><code>/draft</code></div>
     
     <div class="tlz-card-desc">单节写作（原文照抄+上角标+4维度自检），输出MD片段</div>
-  </div>
-</a><a class="tlz-card" href="edit-docx.html"
-   data-name="edit-docx" data-desc="批量修改 docx 标题（改名/插入/删除），直接在 CC 里操作 Word 文件"
-   style="border-left:3px solid #f59e0b">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/edit-docx</code></div>
-    
-    <div class="tlz-card-desc">批量修改 docx 标题（改名/插入/删除），直接在 CC 里操作 Word 文件</div>
-  </div>
-</a><a class="tlz-card" href="fix.html"
-   data-name="fix" data-desc="修复 DOCX 文档问题（refs=引用角标, heading=标题编号, numbering=表图编号, all=全部）"
-   style="border-left:3px solid #f59e0b">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/fix</code></div>
-    
-    <div class="tlz-card-desc">修复 DOCX 文档问题（refs=引用角标, heading=标题编号, numbering=表图编号, all=全部）</div>
-  </div>
-</a><a class="tlz-card" href="md2word.html"
-   data-name="md2word" data-desc="MD/DOCX 转 Word 标准工作流（套模板 → 文本修复 → 图名居中）"
-   style="border-left:3px solid #f59e0b">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/md2word</code></div>
-    
-    <div class="tlz-card-desc">MD/DOCX 转 Word 标准工作流（套模板 → 文本修复 → 图名居中）</div>
-  </div>
-</a><a class="tlz-card" href="merge.html"
-   data-name="merge" data-desc="合并文档内容（md=MD写入DOCX指定章节, revisions=合并多个修改稿）"
-   style="border-left:3px solid #f59e0b">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/merge</code></div>
-    
-    <div class="tlz-card-desc">合并文档内容（md=MD写入DOCX指定章节, revisions=合并多个修改稿）</div>
-  </div>
-</a><a class="tlz-card" href="read-docx.html"
-   data-name="read-docx" data-desc="读取 DOCX 指定章节内容（按标题定位），或 --list 列出全部标题结构"
-   style="border-left:3px solid #f59e0b">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/read-docx</code></div>
-    
-    <div class="tlz-card-desc">读取 DOCX 指定章节内容（按标题定位），或 --list 列出全部标题结构</div>
-  </div>
-</a><a class="tlz-card" href="revise.html"
-   data-name="revise" data-desc="根据审稿意见修改论文，以修订标记+批注形式插入修改内容到 DOCX"
-   style="border-left:3px solid #f59e0b">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/revise</code></div>
-    
-    <div class="tlz-card-desc">根据审稿意见修改论文，以修订标记+批注形式插入修改内容到 DOCX</div>
   </div>
 </a></div>
 </section>
@@ -1212,7 +1020,7 @@ body.tlz-page {
 </a></div>
 </section>
 <section class="tlz-section" data-cat="杂项" style="--c:#6b7280">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>杂项</h2><span class="tlz-count">34</span></div>
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>杂项</h2><span class="tlz-count">18</span></div>
   <div class="tlz-grid"><a class="tlz-card" href="api-smoke.html"
    data-name="api-smoke" data-desc="本地 FastAPI 烟雾测试 — 起 uvicorn → curl /api/health+meta[+compute?format=json] → pkill。端口从 services.ts 读，踩坑（zsh noclobber / clashx / CJK）全封装。"
    style="border-left:3px solid #6b7280">
@@ -1220,14 +1028,6 @@ body.tlz-page {
     <div class="tlz-card-name"><code>/api-smoke</code></div>
     
     <div class="tlz-card-desc">本地 FastAPI 烟雾测试 — 起 uvicorn → curl /api/health+meta[+compute?format=json] → pkill。端口从 services.ts 读，踩坑（zsh noclobber / clashx / CJK）全封装。</div>
-  </div>
-</a><a class="tlz-card" href="autonomous-refactor.html"
-   data-name="autonomous-refactor" data-desc="自循环重构 — 定义验收脚本，Claude 在 git worktree 里自动 patch→test→fix 循环，通过或超预算才通知用户"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/autonomous-refactor</code></div>
-    
-    <div class="tlz-card-desc">自循环重构 — 定义验收脚本，Claude 在 git worktree 里自动 patch→test→fix 循环，通过或超预算才通知用户</div>
   </div>
 </a><a class="tlz-card" href="branches-cleanup.html"
    data-name="branches-cleanup" data-desc="扫 ~/Dev 全部 git repo，找出已合并到 main 的分支（本地+远端），列表批准后一键删。"
@@ -1253,29 +1053,13 @@ body.tlz-page {
     
     <div class="tlz-card-desc">Claude Code 会话监控与上下文工程工具。保障 compact 后不丢失关键细节。</div>
   </div>
-</a><a class="tlz-card" href="deploy-changed.html"
-   data-name="deploy-changed" data-desc="Scan recent git diffs across web-stack + hydro-* + audiobook + devtools/lib, figure out which sites were affected, and batch-deploy only those."
+</a><a class="tlz-card" href="docx.html"
+   data-name="docx" data-desc="DOCX 工作流族 — read 读章节 / edit 改标题 / diff 对比 / review 审阅 / revise 修订 / batch-revise 批量改 / merge 合并 / fix 修编号 / md2word MD 转 Word"
    style="border-left:3px solid #6b7280">
   <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/deploy-changed</code></div>
+    <div class="tlz-card-name"><code>/docx</code></div>
     
-    <div class="tlz-card-desc">Scan recent git diffs across web-stack + hydro-* + audiobook + devtools/lib, figure out which sites were affected, and batch-deploy only those.</div>
-  </div>
-</a><a class="tlz-card" href="fanout-deploy.html"
-   data-name="fanout-deploy" data-desc="并行多站部署编排 — 给每个目标 repo 起独立 subagent，各自 edit+build+deploy+verify，汇总状态表"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/fanout-deploy</code></div>
-    
-    <div class="tlz-card-desc">并行多站部署编排 — 给每个目标 repo 起独立 subagent，各自 edit+build+deploy+verify，汇总状态表</div>
-  </div>
-</a><a class="tlz-card" href="fanout-refactor.html"
-   data-name="fanout-refactor" data-desc="并行多 repo 重构编排 — 每个 repo 一个 subagent 独立 worktree，audit 绿才 commit，supervisor 汇总后分批 deploy。比 /fanout-deploy 多一层 audit gate 和 worktree 隔离。"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/fanout-refactor</code></div>
-    
-    <div class="tlz-card-desc">并行多 repo 重构编排 — 每个 repo 一个 subagent 独立 worktree，audit 绿才 commit，supervisor 汇总后分批 deploy。比 /fanout-deploy 多一层 audit gate 和 worktree 隔离。</div>
+    <div class="tlz-card-desc">DOCX 工作流族 — read 读章节 / edit 改标题 / diff 对比 / review 审阅 / revise 修订 / batch-revise 批量改 / merge 合并 / fix 修编号 / md2word MD 转 Word</div>
   </div>
 </a><a class="tlz-card" href="fix-printer.html"
    data-name="fix-printer" data-desc="办公室 Canon iR C3322L 打印机诊断修复。"
@@ -1301,38 +1085,6 @@ body.tlz-page {
     
     <div class="tlz-card-desc">检测站群菜单/导航 yaml SSOT (~/Dev/tools/configs/menus/) 与各消费者源码的漂移（14 类，含路径域）</div>
   </div>
-</a><a class="tlz-card" href="migrate-hydro.html"
-   data-name="migrate-hydro" data-desc="将一个 hydro-xxx Streamlit 项目的计算逻辑移植到对应的 Tauri 桌面 app。"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/migrate-hydro</code></div>
-    
-    <div class="tlz-card-desc">将一个 hydro-xxx Streamlit 项目的计算逻辑移植到对应的 Tauri 桌面 app。</div>
-  </div>
-</a><a class="tlz-card" href="nav-health.html"
-   data-name="nav-health" data-desc="检查 navbar.yaml 每个链接的存活状态 + 每个子域的 favicon / og:image / apple-touch-icon。输出 markdown 报告 + 非 0 退出码在有死链时触发。"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/nav-health</code></div>
-    
-    <div class="tlz-card-desc">检查 navbar.yaml 每个链接的存活状态 + 每个子域的 favicon / og:image / apple-touch-icon。输出 markdown 报告 + 非 0 退出码在有死链时触发。</div>
-  </div>
-</a><a class="tlz-card" href="navbar-refresh.html"
-   data-name="navbar-refresh" data-desc="把共享 navbar 模板同步到 6 个消费者 repo，有变更就 commit+push"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/navbar-refresh</code></div>
-    
-    <div class="tlz-card-desc">把共享 navbar 模板同步到 6 个消费者 repo，有变更就 commit+push</div>
-  </div>
-</a><a class="tlz-card" href="nginx-regen.html"
-   data-name="nginx-regen" data-desc="从 services.ts 重新生成所有动态子域的 nginx vhost 文件（不推送 VPS）"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/nginx-regen</code></div>
-    
-    <div class="tlz-card-desc">从 services.ts 重新生成所有动态子域的 nginx vhost 文件（不推送 VPS）</div>
-  </div>
 </a><a class="tlz-card" href="preflight.html"
    data-name="preflight" data-desc="破坏性操作前的全面侦察 — 并行扫描所有相关配置层/产物/依赖，输出「爆炸半径」清单，Claude 逐项确认后才能动手"
    style="border-left:3px solid #6b7280">
@@ -1349,13 +1101,21 @@ body.tlz-page {
     
     <div class="tlz-card-desc">同步各 repo 的 Raycast 命令到 hub（symlink） + 重生成 COMMANDS.md。新增/改了 raycast/commands/ 必跑。</div>
   </div>
-</a><a class="tlz-card" href="refactor-dir.html"
-   data-name="refactor-dir" data-desc="搬目录 + 零死链的原子工作流。migration → mv → rewrite-dead → build-const → rewrite-allow-missing → rebuild-symlinks → scan-dead/symlinks 验证（文本 + symlink + allow_missing 三盲区收口）。"
+</a><a class="tlz-card" href="refactor.html"
+   data-name="refactor" data-desc="重构族 — dir 搬目录 + 零死链 / auto 自循环 patch+test+fix / fanout 多 repo 并行 audit gate / classify 项目分类 / migrate hydro 站迁 monorepo"
    style="border-left:3px solid #6b7280">
   <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/refactor-dir</code></div>
-    <div class="cmds-card-hint">&lt;old&gt; &lt;new&gt; [--dry] [--no-rewrite] [--reason &quot;&lt;text&gt;&quot;]</div>
-    <div class="tlz-card-desc">搬目录 + 零死链的原子工作流。migration → mv → rewrite-dead → build-const → rewrite-allow-missing → rebuild-symlinks → scan-dead/symlinks 验证（文本 + symlink + allow_missing 三盲区收口）。</div>
+    <div class="tlz-card-name"><code>/refactor</code></div>
+    
+    <div class="tlz-card-desc">重构族 — dir 搬目录 + 零死链 / auto 自循环 patch+test+fix / fanout 多 repo 并行 audit gate / classify 项目分类 / migrate hydro 站迁 monorepo</div>
+  </div>
+</a><a class="tlz-card" href="refresh-site.html"
+   data-name="refresh-site" data-desc="站群 SSOT 改完一键同步所有产物 + 消费者 + audit。接 --kind 参数选范围（all / navbar / header / content）。不含 deploy。"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/refresh-site</code></div>
+    
+    <div class="tlz-card-desc">站群 SSOT 改完一键同步所有产物 + 消费者 + audit。接 --kind 参数选范围（all / navbar / header / content）。不含 deploy。</div>
   </div>
 </a><a class="tlz-card" href="reminder.html"
    data-name="reminder" data-desc="Create Apple Reminders from user input."
@@ -1365,109 +1125,21 @@ body.tlz-page {
     
     <div class="tlz-card-desc">Create Apple Reminders from user input.</div>
   </div>
-</a><a class="tlz-card" href="repo-map-refresh.html"
-   data-name="repo-map-refresh" data-desc="扫本地 ~/Dev 重新生成 repo-map.json（消除手工维护漂移）"
+</a><a class="tlz-card" href="repo.html"
+   data-name="repo" data-desc="Repo 维护族 — map 注册表 / pull 批量拉 / ship 提交推 / promote GH 元数据 / audit 完整性 / groom 全流程 / launch 新项目一条龙"
    style="border-left:3px solid #6b7280">
   <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/repo-map-refresh</code></div>
+    <div class="tlz-card-name"><code>/repo</code></div>
     
-    <div class="tlz-card-desc">扫本地 ~/Dev 重新生成 repo-map.json（消除手工维护漂移）</div>
+    <div class="tlz-card-desc">Repo 维护族 — map 注册表 / pull 批量拉 / ship 提交推 / promote GH 元数据 / audit 完整性 / groom 全流程 / launch 新项目一条龙</div>
   </div>
-</a><a class="tlz-card" href="retro.html"
-   data-name="retro" data-desc="产出 Playbook 式复盘 — 用 slash command / skill 为主角串起&quot;这类任务应该怎么做&quot;的可复用流程。用户下次读完能按步骤指挥 CC。"
+</a><a class="tlz-card" href="site.html"
+   data-name="site" data-desc="子域生命周期族 — add 新建 / rename 改名 / archive 下线 / activate 复活 / ship 部署上线 / nginx-regen 重生 vhost"
    style="border-left:3px solid #6b7280">
   <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/retro</code></div>
+    <div class="tlz-card-name"><code>/site</code></div>
     
-    <div class="tlz-card-desc">产出 Playbook 式复盘 — 用 slash command / skill 为主角串起&quot;这类任务应该怎么做&quot;的可复用流程。用户下次读完能按步骤指挥 CC。</div>
-  </div>
-</a><a class="tlz-card" href="review-docx.html"
-   data-name="review-docx" data-desc="审阅 DOCX 文档（格式检查 + 可选 LLM 深度审阅），输出 Word 批注"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/review-docx</code></div>
-    
-    <div class="tlz-card-desc">审阅 DOCX 文档（格式检查 + 可选 LLM 深度审阅），输出 Word 批注</div>
-  </div>
-</a><a class="tlz-card" href="services-health.html"
-   data-name="services-health" data-desc="全景健康扫描 — 合并 menus-audit + services_vs_live 输出 12 服务 × N 维矩阵"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/services-health</code></div>
-    
-    <div class="tlz-card-desc">全景健康扫描 — 合并 menus-audit + services_vs_live 输出 12 服务 × N 维矩阵</div>
-  </div>
-</a><a class="tlz-card" href="site-activate.html"
-   data-name="site-activate" data-desc="给闲置站点赋新用途 — 更新 projects.yaml 的 status/notes 并记入 memory"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/site-activate</code></div>
-    
-    <div class="tlz-card-desc">给闲置站点赋新用途 — 更新 projects.yaml 的 status/notes 并记入 memory</div>
-  </div>
-</a><a class="tlz-card" href="site-archive.html"
-   data-name="site-archive" data-desc="下线一个闲置子域 — 停服务/删 nginx/CF DNS+Origin+Access/移 /var/www 到归档"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/site-archive</code></div>
-    
-    <div class="tlz-card-desc">下线一个闲置子域 — 停服务/删 nginx/CF DNS+Origin+Access/移 /var/www 到归档</div>
-  </div>
-</a><a class="tlz-card" href="site-content-refresh.html"
-   data-name="site-content-refresh" data-desc="把站内统一 CSS（site-content.css）从 SSOT 模板同步到 4 个消费者站"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/site-content-refresh</code></div>
-    
-    <div class="tlz-card-desc">把站内统一 CSS（site-content.css）从 SSOT 模板同步到 4 个消费者站</div>
-  </div>
-</a><a class="tlz-card" href="site-header-refresh.html"
-   data-name="site-header-refresh" data-desc="把站内开场样式（site-header.html）从 yaml SSOT 同步到所有消费者"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/site-header-refresh</code></div>
-    
-    <div class="tlz-card-desc">把站内开场样式（site-header.html）从 yaml SSOT 同步到所有消费者</div>
-  </div>
-</a><a class="tlz-card" href="site-refresh-all.html"
-   data-name="site-refresh-all" data-desc="站群 SSOT 改完一键同步所有产物 + 消费者 + audit。不含 deploy（破坏性操作由用户明确指定）。"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/site-refresh-all</code></div>
-    
-    <div class="tlz-card-desc">站群 SSOT 改完一键同步所有产物 + 消费者 + audit。不含 deploy（破坏性操作由用户明确指定）。</div>
-  </div>
-</a><a class="tlz-card" href="site-rename.html"
-   data-name="site-rename" data-desc="原子改名子域 — CF DNS/Origin/Access + nginx + services.ts + 14 天 301"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/site-rename</code></div>
-    
-    <div class="tlz-card-desc">原子改名子域 — CF DNS/Origin/Access + nginx + services.ts + 14 天 301</div>
-  </div>
-</a><a class="tlz-card" href="sites-health.html"
-   data-name="sites-health" data-desc="扫描 services.ts 所有子域 HTTP/Access/Navbar 状态，输出诊断矩阵"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/sites-health</code></div>
-    
-    <div class="tlz-card-desc">扫描 services.ts 所有子域 HTTP/Access/Navbar 状态，输出诊断矩阵</div>
-  </div>
-</a><a class="tlz-card" href="stack-classify.html"
-   data-name="stack-classify" data-desc="扫描 ~/Dev 所有项目，产出技术栈 × 部署 × 活跃度 × 迁移目标的**只读分类清单**。$ARGUMENTS 可选。"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/stack-classify</code></div>
-    
-    <div class="tlz-card-desc">扫描 ~/Dev 所有项目，产出技术栈 × 部署 × 活跃度 × 迁移目标的**只读分类清单**。$ARGUMENTS 可选。</div>
-  </div>
-</a><a class="tlz-card" href="stack-migrate.html"
-   data-name="stack-migrate" data-desc="把一个 hydro-* Streamlit 站迁成 `~/Dev/stations/web-stack/apps/&lt;name&gt;-web/` Next.js 骨架 + `~/Dev/&lt;name&gt;/api.py` FastAPI wrapper。**不碰原 app.py 和 src/**。"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/stack-migrate</code></div>
-    
-    <div class="tlz-card-desc">把一个 hydro-* Streamlit 站迁成 `~/Dev/stations/web-stack/apps/&lt;name&gt;-web/` Next.js 骨架 + `~/Dev/&lt;name&gt;/api.py` FastAPI wrapper。**不碰原 app.py 和 src/**。</div>
+    <div class="tlz-card-desc">子域生命周期族 — add 新建 / rename 改名 / archive 下线 / activate 复活 / ship 部署上线 / nginx-regen 重生 vhost</div>
   </div>
 </a><a class="tlz-card" href="station-promote.html"
    data-name="station-promote" data-desc="把 ~/Dev/&lt;name&gt; 挪进 ~/Dev/stations/&lt;name&gt;，自动扫硬编码路径引用，可选 --auto-fix sed 批量替换；烟测 + 提示接下来 commit 哪些 repo。"
@@ -1484,6 +1156,14 @@ body.tlz-page {
     <div class="tlz-card-name"><code>/warmup</code></div>
     
     <div class="tlz-card-desc">进项目先跑一句 — 告诉你当前加载的 skills、CLAUDE.md、HANDOFF、git 状态和建议动作</div>
+  </div>
+</a><a class="tlz-card" href="wrap.html"
+   data-name="wrap" data-desc="会话收尾族 — recap 复盘 / retro 写 playbook / handoff 全流程交接 / distill 提炼到全局"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/wrap</code></div>
+    
+    <div class="tlz-card-desc">会话收尾族 — recap 复盘 / retro 写 playbook / handoff 全流程交接 / distill 提炼到全局</div>
   </div>
 </a></div>
 </section>
@@ -1661,7 +1341,7 @@ body.tlz-page {
 </section></main>
 
 <footer class="tlz-footer">
-  Generated 2026-04-27 11:21 · <a href="_how-to-create.html">怎么建一个新命令 / 技能 →</a>
+  Generated 2026-04-28 10:48 · <a href="_how-to-create.html">怎么建一个新命令 / 技能 →</a>
 </footer>
 </div>
 

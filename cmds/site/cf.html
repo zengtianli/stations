@@ -687,7 +687,7 @@
 
 <div class="detail-header" style="--c:#0ea5e9">
   <h1><code>/cf</code></h1>
-  <div class="desc">Cloudflare 统一管理 — DNS / Origin Rules / Access Applications。</div>
+  <div class="desc">Cloudflare 统一管理 — DNS / Origin Rules / Access Applications</div>
   <div class="meta">
     <span class="chip">部署</span>
     <span class="chip ghost">命令</span>
@@ -698,7 +698,9 @@
 <article class="body" id="body">
   <noscript>
     <p>JavaScript 关闭时看不到渲染。以下是原始 markdown：</p>
-    <pre>Cloudflare 统一管理 — DNS / Origin Rules / Access Applications。
+    <pre>---
+description: Cloudflare 统一管理 — DNS / Origin Rules / Access Applications
+---
 
 替代已归档的 `/cf-dns`。后端：`~/Dev/devtools/lib/tools/cf_api.py`，凭证自动从 `~/.personal_env` 读取。
 
@@ -741,7 +743,7 @@
 ## 参考
 
 - 已归档版：`commands/archive/cf-dns.md`
-- 治理原则：新建任何 CF 配置前先 `list` 看现有约定（见 memory feedback_check_existing_first.md）
+- 治理原则：新建任何 CF 配置前先 `list` 看现有 zone/origin/access 约定，避免重复创建
 </pre>
   </noscript>
 </article>
@@ -762,7 +764,9 @@
   <a href="index.html">← 返回列表</a> · <a href="_how-to-create.html">怎么建一个新命令 / 技能</a>
 </footer>
 
-<script id="src" type="text/plain">Cloudflare 统一管理 — DNS / Origin Rules / Access Applications。
+<script id="src" type="text/plain">---
+description: Cloudflare 统一管理 — DNS / Origin Rules / Access Applications
+---
 
 替代已归档的 `/cf-dns`。后端：`~/Dev/devtools/lib/tools/cf_api.py`，凭证自动从 `~/.personal_env` 读取。
 
@@ -805,7 +809,7 @@
 ## 参考
 
 - 已归档版：`commands/archive/cf-dns.md`
-- 治理原则：新建任何 CF 配置前先 `list` 看现有约定（见 memory feedback_check_existing_first.md）
+- 治理原则：新建任何 CF 配置前先 `list` 看现有 zone/origin/access 约定，避免重复创建
 </script>
 <script>
 const raw = document.getElementById('src').textContent;

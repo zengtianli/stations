@@ -69,6 +69,11 @@ Vercel环境变量配置检查清单.md
 # SQLite search database
 data/
 
+# Cross-repo content (resume + blog assets + search index)
+content/resume-source
+public/blog-assets/
+public/blog-search-index.json
+
 # Claude Code local settings
 .claude/settings.local.json
 

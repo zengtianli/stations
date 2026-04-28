@@ -1,8 +1,16 @@
 import { MetadataRoute } from 'next'
+import { getAllBlogPosts } from '@/lib/content'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://tianlizeng.cloud'
-  
+  const posts = await getAllBlogPosts()
+  const blogEntries: MetadataRoute.Sitemap = posts.map((p) => ({
+    url: `${baseUrl}/blog/${p.slug}`,
+    lastModified: new Date(p.date),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }))
+
   return [
     {
       url: baseUrl,
@@ -46,6 +54,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.6,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    ...blogEntries,
   ]
 }
 

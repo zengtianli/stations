@@ -8,6 +8,7 @@ import Link from "next/link"
 import { Calendar, Clock } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { BlogPost, ProjectContent, LatestUpdatesContent, LatestUpdate } from "@/lib/content"
+import { CATEGORY_META } from "@/lib/content-meta"
 
 // ============== 博客卡片 ==============
 interface BlogCardProps {
@@ -30,6 +31,13 @@ export function BlogCard({ post }: BlogCardProps) {
           </div>
         )}
         <div className="p-6">
+          {post.category && CATEGORY_META[post.category] && (
+            <div className="mb-2">
+              <span className={`text-xs rounded-full px-2 py-0.5 font-medium ${CATEGORY_META[post.category].color}`}>
+                {CATEGORY_META[post.category].label}
+              </span>
+            </div>
+          )}
           <h3 className="text-base font-semibold text-[#1d1d1f] mb-2 line-clamp-2">{post.title}</h3>
           <p className="text-sm text-[#86868b] mb-4 line-clamp-2">{post.excerpt}</p>
           <div className="flex items-center gap-3 text-xs text-[#86868b] mb-3">

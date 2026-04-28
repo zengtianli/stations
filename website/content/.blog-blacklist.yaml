@@ -1,0 +1,23 @@
+# Blog 跨仓导入黑名单
+# 路径 substring 匹配，命中即不导入 blog
+# Aggregator 默认已跳过：CLAUDE.md / README.md / merged.md 同目录其他文件 / dotfile / underscore-dir
+
+# 论文参考资料（非正文）
+- "essays/art/reference/"
+- "essays/hydraulic/reference/"
+
+# 投资类已经在 assets.tianlizeng.cloud cross-publish — 私有持仓日记不公开
+- "investment/docs/hsbc-positions.md"
+- "investment/docs/hsbc-fceli-nvda-2026.md"
+- "investment/docs/robinhood.md"
+- "investment/docs/pulse-meituan.md"
+- "investment/docs/pulse-supplementary-fix.md"
+- "investment/docs/hsbc-premier.md"
+- "investment/docs/claude-subscription.md"
+- "investment/docs/travel.md"
+- "investment/docs/webhook-fix-explained.md"
+- "investment/docs/webhook-flow.md"
+- "investment/docs/career-paths-hk-shenzhen.md"
+
+# 学习子目录里的元文件 / 模板
+- "learn/writing/_templates/"

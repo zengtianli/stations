@@ -1,44 +1,37 @@
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import PageHeader from "@/components/page-header"
-import { BlogCard } from "@/components/card-components"
-import { getBlogPostsForTrack } from "@/lib/content"
-import { getServerTrack } from "@/lib/track-server"
-import { TRACK_PAGE_BG } from "@/lib/track-theme"
+import { getAllBlogPosts } from "@/lib/content"
+import BlogListClient from "@/components/blog-list-client"
 
 export const metadata = {
   title: "技术博客 | 曾田力",
-  description: "分享水利工程、数据分析、机器学习等领域的技术经验和项目心得。",
+  description: "技术博客 — 水利工程 / AI 工程 / 投资笔记 / 论文与学习笔记，统一阅读入口",
 }
 
-export default async function BlogPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>
-}) {
-  const params = await searchParams
-  const track = await getServerTrack(params)
-  const posts = await getBlogPostsForTrack(track)
+export default async function BlogPage() {
+  const all = await getAllBlogPosts()
+  // 把所有文章数据 ship 到客户端做过滤（category tabs / 实时切换）
+  const data = all.map(p => ({
+    slug: p.slug,
+    title: p.title,
+    date: p.date,
+    excerpt: p.excerpt,
+    tags: p.tags || [],
+    image: p.image,
+    category: p.category,
+    readingTime: p.readingTime,
+  }))
 
   return (
-    <main className={`min-h-screen flex flex-col ${TRACK_PAGE_BG[track]}`}>
+    <main className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex-grow max-w-5xl mx-auto px-6 md:px-8 py-24 md:py-32">
-        <PageHeader 
-          title="技术博客" 
-          description="分享水利工程、数据分析、机器学习等领域的技术经验和项目心得" 
+      <div className="flex-grow max-w-6xl mx-auto px-6 md:px-8 py-24 md:py-32 w-full">
+        <PageHeader
+          title="技术博客"
+          description="水利工程 / AI / 投资 / 学习笔记 — 统一阅读入口"
         />
-        {posts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post) => (
-              <BlogCard key={post.slug} post={post} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">暂无博客文章</p>
-          </div>
-        )}
+        <BlogListClient posts={data} />
       </div>
       <Footer />
     </main>

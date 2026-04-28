@@ -392,6 +392,9 @@ export async function getLatestUpdates(): Promise<LatestUpdatesContent | null> {
 
 // ============ 博客功能 ============
 
+import { loadExternalPosts, getExternalPostBySlug } from './content-aggregator';
+import type { ContentCategory } from './content-meta';
+
 /**
  * 博客文章内容类型
  */
@@ -404,6 +407,7 @@ export interface BlogPost {
   tags: string[];
   image?: string;
   readingTime?: number; // 阅读时间（分钟）
+  category?: ContentCategory; // 内容来源分类
 }
 
 /**
@@ -413,6 +417,8 @@ export interface BlogPostDetail extends BlogPost {
   content: string; // HTML格式的内容
   rawContent: string; // 原始Markdown内容
 }
+
+export type { ContentCategory } from './content-meta';
 
 /**
  * 计算阅读时间（基于字数，中文按300字/分钟，英文按200词/分钟）
@@ -432,91 +438,111 @@ function calculateReadingTime(content: string): number {
 }
 
 /**
- * 获取所有博客文章列表
+ * 加载本地 content/blog/ 下的 MDX 文章（原 9 篇）
  */
-export async function getAllBlogPosts(): Promise<BlogPost[]> {
+async function loadLocalBlogPosts(): Promise<BlogPost[]> {
   try {
     const blogDir = path.join(contentDirectory, 'blog');
-    
-    // 检查目录是否存在
     if (!fs.existsSync(blogDir)) {
       console.warn('博客目录不存在，返回空数组');
       return [];
     }
-    
     const filenames = fs.readdirSync(blogDir);
-    
-    const posts = await Promise.all(
-      filenames
-        .filter(filename => filename.endsWith('.md'))
-        .map(async (filename) => {
-          const slug = filename.replace(/\.md$/, '');
-          const fullPath = path.join(blogDir, filename);
-          const fileContents = fs.readFileSync(fullPath, 'utf8');
-          const { data, content } = matter(fileContents);
-          
-          // 计算阅读时间
-          const readingTime = calculateReadingTime(content);
-          
-          return {
-            slug,
-            title: data.title || slug,
-            date: data.date || new Date().toISOString().split('T')[0],
-            author: data.author,
-            excerpt: data.excerpt || content.slice(0, 150).replace(/\n/g, ' ') + '...',
-            tags: data.tags || [],
-            image: data.image,
-            readingTime,
-          } as BlogPost;
-        })
-    );
-    
-    // 按日期降序排序
-    return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return filenames
+      .filter(filename => filename.endsWith('.md'))
+      .map((filename) => {
+        const slug = filename.replace(/\.md$/, '');
+        const fullPath = path.join(blogDir, filename);
+        const fileContents = fs.readFileSync(fullPath, 'utf8');
+        const { data, content } = matter(fileContents);
+        return {
+          slug,
+          title: data.title || slug,
+          date: data.date || new Date().toISOString().split('T')[0],
+          author: data.author,
+          excerpt: data.excerpt || content.slice(0, 150).replace(/\n/g, ' ') + '...',
+          tags: data.tags || [],
+          image: data.image,
+          readingTime: calculateReadingTime(content),
+          category: 'local' as const,
+        } as BlogPost;
+      });
   } catch (error) {
-    console.error('加载博客文章列表出错:', error);
+    console.error('加载本地博客文章列表出错:', error);
     return [];
   }
 }
 
 /**
- * 根据 slug 获取单篇博客文章
+ * 获取所有博客文章列表（本地 + 跨仓聚合）
+ */
+export async function getAllBlogPosts(): Promise<BlogPost[]> {
+  const local = await loadLocalBlogPosts();
+  const external = loadExternalPosts().map(p => ({
+    slug: p.slug,
+    title: p.title,
+    date: p.date,
+    author: p.author,
+    excerpt: p.excerpt,
+    tags: p.tags,
+    image: p.image,
+    readingTime: p.readingTime,
+    category: p.category,
+  } as BlogPost));
+  return [...local, ...external].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+}
+
+/**
+ * 根据 slug 获取单篇博客文章（先查本地，再查跨仓 cache）
  */
 export async function getBlogPostBySlug(slug: string): Promise<BlogPostDetail | null> {
+  // 1. 本地 content/blog/<slug>.md
   try {
     const fullPath = path.join(contentDirectory, 'blog', `${slug}.md`);
-    
-    if (!fs.existsSync(fullPath)) {
-      console.warn(`博客文章未找到: ${slug}`);
-      return null;
+    if (fs.existsSync(fullPath)) {
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      const { data, content } = matter(fileContents);
+      const processedContent = await remark().use(html).process(content);
+      return {
+        slug,
+        title: data.title || slug,
+        date: data.date || new Date().toISOString().split('T')[0],
+        author: data.author,
+        excerpt: data.excerpt || content.slice(0, 150).replace(/\n/g, ' ') + '...',
+        tags: data.tags || [],
+        image: data.image,
+        readingTime: calculateReadingTime(content),
+        category: 'local',
+        content: processedContent.toString(),
+        rawContent: content,
+      };
     }
-    
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
-    const { data, content } = matter(fileContents);
-    
-    // 将Markdown转换为HTML
-    const processedContent = await remark().use(html).process(content);
-    const htmlContent = processedContent.toString();
-    
-    // 计算阅读时间
-    const readingTime = calculateReadingTime(content);
-    
-    return {
-      slug,
-      title: data.title || slug,
-      date: data.date || new Date().toISOString().split('T')[0],
-      author: data.author,
-      excerpt: data.excerpt || content.slice(0, 150).replace(/\n/g, ' ') + '...',
-      tags: data.tags || [],
-      image: data.image,
-      readingTime,
-      content: htmlContent,
-      rawContent: content,
-    };
   } catch (error) {
-    console.error(`读取博客文章时出错: ${slug}`, error);
-    return null;
+    console.error(`读取本地博客文章出错: ${slug}`, error);
   }
+
+  // 2. 跨仓 cache
+  const external = getExternalPostBySlug(slug);
+  if (external) {
+    return {
+      slug: external.slug,
+      title: external.title,
+      date: external.date,
+      author: external.author,
+      excerpt: external.excerpt,
+      tags: external.tags,
+      image: external.image,
+      readingTime: external.readingTime,
+      category: external.category,
+      content: '',
+      rawContent: external.rawContent,
+    };
+  }
+
+  console.warn(`博客文章未找到: ${slug}`);
+  return null;
 }
 
 /**

@@ -70,6 +70,7 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning>
       <head>
         <meta name="baidu-site-verification" content="codeva-YKWD5513P7" />
+        <link rel="alternate" type="application/rss+xml" title="技术博客 RSS" href="/feed.xml" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

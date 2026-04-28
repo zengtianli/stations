@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>/health — CC Docs</title>
+<title>/start — CC Docs</title>
 <style>
   :root {
     --bg: #f6f8fa; --card: #fff; --border: #e5e7eb;
@@ -681,15 +681,15 @@
 
 <div class="breadcrumb">
   <a href="index.html">CC Docs</a> /
-  <a href="index.html">Repo 治理</a> /
-  <span>/health</span>
+  <a href="index.html">杂项</a> /
+  <span>/start</span>
 </div>
 
-<div class="detail-header" style="--c:#ec4899">
-  <h1><code>/health</code></h1>
-  <div class="desc">健康检查族 — sites 边缘 HTTP / services 全景 12 服务矩阵 / nav navbar 链接 / vps systemd / project 单 repo git+文件卫生</div>
+<div class="detail-header" style="--c:#6b7280">
+  <h1><code>/start</code></h1>
+  <div class="desc">入场 — 一条命令了解项目 + 配脚手架。warmup（读状态）→ gap 分析 → 推荐脚手架 → 用户批准应用。/start 为 /wrap 的对称：start 进、wrap 出。</div>
   <div class="meta">
-    <span class="chip">Repo 治理</span>
+    <span class="chip">杂项</span>
     <span class="chip ghost">命令</span>
   </div>
   
@@ -699,215 +699,286 @@
   <noscript>
     <p>JavaScript 关闭时看不到渲染。以下是原始 markdown：</p>
     <pre>---
-description: 健康检查族 — sites 边缘 HTTP / services 全景 12 服务矩阵 / nav navbar 链接 / vps systemd / project 单 repo git+文件卫生
+description: 入场 — 一条命令了解项目 + 配脚手架。warmup（读状态）→ gap 分析 → 推荐脚手架 → 用户批准应用。/start 为 /wrap 的对称：start 进、wrap 出。
 ---
 
-# /health — 健康检查统一入口
+# /start — 立刻进入工作
 
-`/health &lt;subcommand&gt; [args]`
+进 `~/Dev/*` 或 `~/Dev/Work/*` 任何项目跑这一句，得到：**当前情报 + 缺啥脚手架 + 怎么补**。
 
-| 子命令 | 干啥 | 输出 |
-|---|---|---|
-| `sites` | 扫 services.ts 所有子域 HTTP/Access/Navbar 状态 | 诊断矩阵 |
-| `services` | 合并 menus-audit + services_vs_live → 12 服务 × N 维 | markdown 表 / JSON |
-| `nav` | navbar.yaml 每链接存活 + 每子域 favicon/og:image/apple-touch-icon | markdown 报告 |
-| `vps` | VPS 服务/端口/磁盘/内存/Docker | 文本 |
-| `project` | 当前目录 / 多 repo 的 git 状态 + 文件卫生 | 表格 |
+```
+/start                 # 默认：4 phase 全跑（warmup → gap → 推荐 → 用户批准应用）
+/start --check         # 只跑 Phase 1+2（warmup + gap report，不推荐不应用）
+/start --apply-all     # 批量应用全部推荐（auto-approve，仅推荐熟悉项目用）
+```
 
-未传子命令 → `project`（最常用）。
-
-&gt; 单组件审计：`/menus-audit`（菜单 13 类）/ `/cf-audit`（CF 对账）
+`/start` 和 `/wrap` 是会话两端：
+- **`/start`** 进来：读状态 → 缺啥补啥（脚手架）
+- 中段：playbook 分派（META.md §5）
+- **`/wrap`** 出去：复盘 → 检查 harness 增量 → handoff
 
 ---
 
-## sites — 边缘 HTTP / Access / Navbar
-
-`/health sites [--filter PREFIX1,PREFIX2] [--no-traffic] [--json]`
-
-一键健康探针 — 验证 `~/Dev/stations/website/lib/services.ts` 里所有子域可达性、CF Access 一致性、navbar 部署。
-
-### 参数
-- `--filter` — 逗号分隔子域前缀（如 `dashboard,cc,auggie`）
-- `--no-traffic` — 跳过 7 天流量聚合
-- `--json` — 机器可读（供 `/site rename` 等消费）
+## Phase 1 — Warmup（纯只读）
 
 ### 执行
 
 ```bash
-python3 ~/Dev/devtools/lib/tools/sites_health.py &quot;$@&quot;
+python3 ~/Dev/devtools/lib/tools/warmup.py
+python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 ```
 
-### 输出解读
+第 2 条输出单行 `paths: 25 registered / 20 dead / 0 drift`，作为「输出段」第 3.5 项展示。
 
-| 符号 | 含义 |
+### 输出段
+
+1. **项目** — CWD、git branch、脏/干净、未推 commit、最近一次 commit
+2. **CC 配置** — 是否有 `.claude/`、CLAUDE.md（+ H1）、`harness.yaml` 的全局 + 本项目 skills、合计加载数
+3. **交接状态** — 本项目 HANDOFF.md（若无则看全局 `~/Dev/HANDOFF.md`）年龄 + H1 + 抽取的&quot;下一轮/待办/遗留&quot;条目
+4. **📍 paths** — `paths.py audit --brief` 的单行输出原样展示；dead &gt; 0 在第 5 段追加 hint &quot;路径死链偏多，考虑跑 `paths.py scan-dead --strict` 定位&quot;
+
+---
+
+## Phase 2 — Gap 分析（诊断 + 对比 harness 预期）
+
+### 2a. 项目类型判定
+
+| 类型 | 判定依据 |
 |---|---|
-| ✅ 200 | 站点公开可达 |
-| 🔒 302 | CF Access 守门（正常） |
-| ❌ {code} | 4xx/5xx 或 timeout |
-| 🌐 | edge 看是公开访问 |
-| 🔒 | CF Access 302 → cloudflareaccess.com |
-| ⚠ | services.ts 声明 accessType 与实际不符 |
-| ✓ | edge curl 抓到 `class=&quot;tlz-nav&quot;` |
-| ✓(local) | edge 探测不到（Access 阻挡），SSH→origin 抓到 navbar |
-| ✗ | 抓了 HTML 但无 navbar — 真缺失 |
-| ? | SPA（Streamlit）或无 port 的 Access 站，HTTP 探测不出，需人肉浏览器 |
+| `streamlit` | 有 `app.py` + `streamlit` in requirements |
+| `tauri` | 有 `src-tauri/` |
+| `cli` | 有 `if __name__` 入口 + argparse/click，无 web 框架 |
+| `library` | 有 `setup.py` / `pyproject.toml`，无入口脚本 |
+| `scripts` | 多个独立脚本，无统一入口 |
+| `docs` | 纯 Markdown，无代码 |
+| `monorepo` | 多个子项目（apps/packages 目录） |
+| `webapp` | Flask/FastAPI/Express 等 web 框架 |
+| `nextjs` | 有 `next.config.*` |
 
-### 限制
-1. **Streamlit 全 SPA**：初始 HTML 不含 navbar（JS mount 后注入），永远给 `?`
-2. **7d Hits 暂不可用**：VPS nginx 默认 combined log_format 不含 `$host`；开启需改 `/etc/nginx/nginx.conf` log_format 加 `$host`
-3. `auggie` / `panel` / `sub` 等 API 站返回 405/400 属正常（GET `/` 不支持），不代表服务死
+### 2b. 项目阶段判定
 
-### 规则
-- 凭证无需（curl + ssh）
-- 并发 8 路 curl + 6 路 SSH，27 站约 15-30 秒
-- 支持子集：`/health sites --filter hydro` 只扫 hydro-*
-
----
-
-## services — 全景 12 服务矩阵
-
-`/health services [--json]`
-
-聚合 `menus.py audit()`（13 类 SSOT 漂移）+ `services_vs_live.py`（live /api/metadata）→ 矩阵，定位单服务问题到单一命令。
-
-### 执行
-
-```bash
-python3 ~/Dev/devtools/scripts/tools/services_health.py &quot;$@&quot;
-```
-
-### 输出列
-
-| 列 | 含义 | 来源 |
+| 阶段 | 判定 | 配置预期 |
 |---|---|---|
-| service_id | 子域 id | entities/subdomains.yaml |
-| public_port | 前端/nginx 端口 | subdomains.yaml |
-| api_port | FastAPI 内部端口 (+100 convention) | derived |
-| live_version | 实时 /api/metadata 版本 | services_vs_live |
-| http | /api/metadata HTTP 状态码 | services_vs_live |
-| ms | /api/metadata 响应毫秒 | services_vs_live |
-| menus | 该服务相关的 menus.audit 漂移数 | menus.audit() |
-| live-drift | port/id/version 漂移项 | services_vs_live |
+| **seed** | 无 CLAUDE.md，&lt;5 个源文件 | 最小：CLAUDE.md |
+| **growing** | 有 CLAUDE.md 但不完整，5-50 个源文件 | 补全 CLAUDE.md + README + .gitignore |
+| **established** | 有 CLAUDE.md + README，&gt;50 个源文件或有部署 | 完整配置 + hooks + 项目专用 rules |
+| **mature** | 完整配置，多贡献者或复杂工作流 | 优化：skills 绑定、agent 定义、验证闭环 |
 
-### 相关
-- `/menus-audit` — 单跑 SSOT 13 类漂移（不 probe live）
-- `/health sites` — 边缘 HTTP + CF Access + navbar（公网视角）
-- `/cf-audit` — DNS + nginx + Origin Rules + Access 声明对账
-- services_vs_live.py — 纯 live probe（单跑也行）
+### 2c. 输出诊断
 
-### 规则
-- 只读，无副作用
-- 13 类 + live + http 全绿 → exit 0
-- 任一红 → exit 1（可 CI gate）
-- Live probe 需 127.0.0.1:$api_port 本地可达（VPS 自动满足；本机 dev 需先起 uvicorn）
+```
+📋 Phase 2 · Gap Analysis
+
+项目：hydro-rainfall (streamlit, growing → established)
+路径：~/Dev/stations/web-stack/services/hydro-rainfall
+源文件：37 个 Python, 2 个 YAML
+部署：VPS (hydro-rainfall.tianlizeng.cloud)
+
+现有配置：CLAUDE.md ✓  README.md ✓  README_CN.md ✗  .gitignore ✓  LICENSE ✗  hooks ✗
+harness.yaml 注册：未注册（如需要）
+
+Gaps（按 established 阶段预期）：
+- README_CN.md 缺
+- LICENSE 缺
+- 推荐 hooks（streamlit 项目可加端口冲突检查）
+```
+
+`--check` 到此停。
 
 ---
 
-## nav — navbar 链接 + 每域 assets
+## Phase 3 — 推荐脚手架
 
-`/health nav [--links-only] [--assets-only] [--fail-on-warn]`
+按 stage 给具体补什么 + 内容预览：
 
-每次改了 navbar.yaml / subdomains.yaml 后跑一次；会话收尾前跑一次。只读，无副作用。
+### seed → 最小可用
 
-### 执行
+| 配置 | 内容 |
+|---|---|
+| **CLAUDE.md** | 项目概述、Quick Reference 表、常用命令、项目结构（tree depth 2） |
 
-```bash
-python3 ~/Dev/devtools/lib/tools/nav_health.py $ARGUMENTS
-```
+### growing → 补全基础
 
-### 检查维度
+包含 seed 全部，加：
 
-#### Leaf URLs（navbar.yaml 全部展开）
-- `OK`  HTTP 200 + body &gt; 500B + `&lt;title&gt;` 非 &quot;loading&quot;
-- `AUTH` HTTP 302 + 标 `access: cf-access`（预期）
-- `WARN` 重定向但没标 access / title 是 loading / body 太薄
-- `DEAD` 连不上 / 4xx / 5xx
+| 配置 | 内容 |
+|---|---|
+| **README.md** | 按 `/repo audit` 的 readme_template 规则生成（app/infra/content/minimal） |
+| **README_CN.md** | README.md 的中文翻译 |
+| **.gitignore** | 按语言补全 baseline 条目（复用 `repo-standards.json → common.gitignore_baseline`） |
+| **LICENSE** | MIT（copyright holder = tianli） |
 
-#### Per-host assets（每子域）
-- `og:image` — 从根页面 HTML 抓 `&lt;meta property=&quot;og:image&quot;&gt;`，再 probe 目标
-- `favicon.ico` — 直接 probe
-- `apple-touch-icon.png` — 直接 probe
+### established → 工程化
 
-### 什么时候跑
-- 改 `entities/subdomains.yaml` / `navbar.yaml` / `relations/*.yaml` 后
-- `/site archive` / `/site rename` / `/site add` 之后
-- 会话收尾前（`/wrap handoff` 之前）
-- 定期（cron / launchd）
+包含 growing 全部，加：
 
-### 不做
-- 不修任何文件
-- 不尝试登录 CF Access（302 = auth-gated 健康）
-- 不做深度 UI 检查
-- 修复由你自己决定
+| 配置 | 内容 |
+|---|---|
+| **CLAUDE.md 升级** | 添加开发注意事项、技术栈、数据源说明 |
+| **hooks** | 根据项目类型推荐 PostToolUse hooks |
+| **rules/** | 项目专用规则（如有 Word 文档处理 → 写作规范 rule） |
 
-### 常见问题
+推荐 hooks 策略：
 
-| 症状 | 可能原因 | 修复 |
-|---|---|---|
-| GitHub URL 404 | repo private 或不存在 | catalog.yaml 删 URL 或换 private 标记 |
-| og:image 缺失（Next.js） | layout.tsx 没设 metadata.openGraph.images | 加 `openGraph: { images: [...] }` |
-| favicon.ico 404（Next.js） | `app/icon.png` / `public/favicon.ico` 没放 | 放 512×512 PNG 到 `app/icon.png` |
-| `302 missing` on CF-Access | 资产被 Access 拦 | 允许匿名 `/favicon.ico`、`/_next/static/*` |
+| 项目类型 | 推荐 hooks |
+|---|---|
+| streamlit / webapp | Bash 后自动检查端口冲突 |
+| cli / library | Edit 后检查 import 完整性 |
+| scripts | Bash 后检查退出码 |
+| 有测试的项目 | Edit 后提示运行相关测试 |
 
----
+### mature → 优化闭环
 
-## vps — VPS 服务/端口/磁盘/内存/Docker
+包含 established 全部，加：
 
-`/health vps [&lt;service&gt;]`
-
-```bash
-ssh root@104.218.100.67 &quot;echo &#x27;=== Services ===&#x27; &amp;&amp; systemctl list-units --type=service --state=running --no-pager | grep -E &#x27;nginx|oauth|marzban&#x27; &amp;&amp; echo &amp;&amp; echo &#x27;=== Ports ===&#x27; &amp;&amp; ss -tlnp | grep -E &#x27;8443|9100|8000|7891|443&#x27; &amp;&amp; echo &amp;&amp; echo &#x27;=== Disk ===&#x27; &amp;&amp; df -h / &amp;&amp; echo &amp;&amp; echo &#x27;=== Memory ===&#x27; &amp;&amp; free -h &amp;&amp; echo &amp;&amp; echo &#x27;=== Docker ===&#x27; &amp;&amp; docker ps --format &#x27;table {{.Names}}\t{{.Status}}\t{{.Ports}}&#x27; 2&gt;/dev/null&quot;
-```
-
-`$ARGUMENTS` 指定 service 名（如 `oauth-proxy` `nginx`）→ 额外 `journalctl -u &lt;service&gt; --no-pager -n 20`。
+| 配置 | 内容 |
+|---|---|
+| **skills 绑定** | 检查 `~/Dev/tools/cc-configs/skills/` 是否有适用的 skill，建议绑定 |
+| **agent 定义** | 复杂多步工作流 → 专用 agent |
+| **验证命令** | CLAUDE.md 添加 done-conditions 和验证命令 |
 
 ---
 
-## project — 当前 repo 文件卫生 + Git 状态
+## Phase 4 — 用户批准 + 应用
 
-`/health project [&lt;name&gt;...] [all]`
-
-### 范围
-- 无参数 → 当前目录
-- `&lt;name&gt;` → repo-map.json 查路径
-- `all` → 所有 non-ignored repo
-
-### 检查项
-
-#### 1. Git 状态
-- uncommitted changes（`git status --short`）
-- behind remote（`git fetch --dry-run`）
-- untracked 大文件 &gt;10MB
-- 敏感文件被 track（`.env` / `*.pem` / `*.key` / `credentials*`）
-
-#### 2. 文件卫生
-- 垃圾：`~$*` / `.DS_Store` / `Thumbs.db` / `__pycache__/` / `.~lock.*`
-- docx 解包残留：含 `word/` / `_rels/` / `[Content_Types].xml` 的目录
-- 版本冗余：`deliverables/` / `docs/` 下同一文档多版本
-
-#### 3. ~/Dev/Work/ 额外
-- 在 `~/Dev/Work/zdwp/` 下 → 跑 `python3 ~/Dev/devtools/scripts/tools/zdwp_health.py`
-- 大目录（&gt;1GB）提醒
-
-### 输出
+逐项展示生成结果，等待批准：
 
 ```
-✅ doctools        — clean
-⚠️  hydro-rainfall — 3 uncommitted files, 2 __pycache__/
-⚠️  zdwp           — 5 version chains, 12 garbage files
-✗  oauth-proxy    — .env tracked by git!
+[1/4] CLAUDE.md (新建)
+{preview first 20 lines}
+→ 审批? [Y/n/edit]
+
+[2/4] README.md (新建)
+{preview first 20 lines}
+→ 审批? [Y/n/edit]
+
+[3/4] README_CN.md (新建)
+→ 审批? [Y/n/edit]
+
+[4/4] .gitignore (补全 3 条)
++ __pycache__/
++ .env
++ *.pyc
+→ 审批? [Y/n/edit]
 ```
 
-末尾汇总：`N checked, X clean, Y need attention`
+`--apply-all` 跳过批准，全部应用（仅推荐熟悉项目）。
 
-### 清理
+### 应用规则
 
-输出后有可清理项 → 问用户：`是否调用 /tidy 清理？[Y/n]`
+1. **已存在且达标** → 跳过，标记 ✓
+2. **已存在但不完整** → 显示 diff 预览，等待批准
+3. **不存在** → 生成完整内容，等待批准
 
-`$ARGUMENTS` 含 `--fix` → 自动调 `/tidy`，不二次确认。
+---
 
-### 调用的原子命令
-- `/tidy` — 目录深度整理
+## CLAUDE.md / README 生成规范
+
+### CLAUDE.md（中文）
+
+读项目代码后生成，参考已有项目格式：
+
+```markdown
+# {项目名}
+
+{一句话描述}
+
+## Quick Reference
+
+| 项目 | 路径/值 |
+|---|---|
+| 入口 | `{main entry}` |
+| 部署 | {deploy info if any} |
+| 测试 | `{test command}` |
+
+## 常用命令
+
+\```bash
+{最常用的命令}
+\```
+
+## 项目结构
+
+\```
+{tree output, depth 2}
+\```
+
+## 开发注意事项
+
+- {从代码中提取的关键约束}
+```
+
+### README.md（英文）
+
+复用 `/repo audit` 的 readme_template 体系。金标准参考：`~/Dev/stations/dockit/README.md`。
+
+必须包含：
+- 语言切换：`**English** | [中文](README_CN.md)`
+- for-the-badge 徽章
+- 分隔线 + 截图占位
+- 功能表格
+- 安装 / 快速上手
+
+### README_CN.md（中文）
+
+镜像 README.md 结构，翻译为中文。代码块、URL、技术术语不变。
+
+---
+
+## Phase 5 — 收尾汇总
+
+```
+🏗️ /start 完成
+
+项目：hydro-rainfall (streamlit, established)
+现状：
+  ✅ CLAUDE.md / README / .gitignore — 已达标
+  🆕 README_CN.md / LICENSE — 已新建
+  🔧 .gitignore +3 条 — 已补
+  💤 hooks — 跳过（用户拒）
+
+建议：
+  → engineering-mode 已加载，破坏性操作记得 Plan mode
+  → HANDOFF.md 1 天前，可读取上次进度
+  → 下一步按 META.md §5 trigger words 匹配 playbook
+
+提交? [Y/n]
+```
+
+确认 → 调用 `/repo ship` 提交。
+
+---
+
+## 什么时候跑
+
+- **首选**：进入新/陌生项目目录的第一个命令
+- 久未动的项目重新开工前
+- 不确定当前 CC 配置加载了啥时
+- 想知道 harness.yaml 把哪些 skills 分给这个项目时
+- 新项目刚 mkdir 完想配脚手架
+
+## 不做
+
+- 不修改任何 git 状态（不 commit / push 在 /start 内做，建议提交是 Phase 5 末尾邀约）
+- 不自动跑 `/wrap handoff`；只提示是否该跑
+- 不展示 HANDOFF 全文（太长）；只给年龄、标题、摘要
+- 不覆盖已有内容 — 只补全或升级
+- 不生成用不到的配置（seed 阶段不推 hooks，没部署不推 deploy 相关）
+
+## 规则
+
+- CLAUDE.md 用中文，README.md 用英文，README_CN.md 用中文
+- 每个配置项都要批准，不批量强推（除非 `--apply-all`）
+- 复用已有命令的逻辑：.gitignore baseline 来自 `repo-standards.json`，README 模板来自 `/repo audit` 体系
+- 阶段判定要保守 — 宁可低估，让用户决定是否升级
+- `--check` 模式纯只读，不写任何文件
+- 凭证在 `~/.personal_env`，不问用户要
+
+## 相关
+
+- `/wrap`（对称收尾） — recap + harness check + handoff
+- `/preflight`（干活中） — 破坏性操作前侦察（不属入场）
+- META.md §5 — 入场后按 trigger words 匹配 domain playbook
 </pre>
   </noscript>
 </article>
@@ -915,17 +986,17 @@ ssh root@104.218.100.67 &quot;echo &#x27;=== Services ===&#x27; &amp;&amp; syste
 
 <section class="sidebar-block">
   <h3>编排关系 — 调用的其他命令</h3>
-  <div class="chip-list"><a href="health.html">/health</a><a href="menus-audit.html">/menus-audit</a><a href="site.html">/site</a><a href="tidy.html">/tidy</a><a href="wrap.html">/wrap</a></div>
+  <div class="chip-list"><a href="preflight.html">/preflight</a><a href="repo.html">/repo</a><a href="start.html">/start</a><a href="wrap.html">/wrap</a></div>
 </section>
 
 <section class="sidebar-block">
   <h3>引用的后端脚本</h3>
-  <div class="path-list"><div>~/Dev/devtools/lib/tools/nav_health.py</div><div>~/Dev/devtools/lib/tools/sites_health.py</div><div>~/Dev/devtools/scripts/tools/services_health.py</div><div>~/Dev/devtools/scripts/tools/zdwp_health.py</div><div>~/Dev/stations/website/lib/services.ts</div></div>
+  <div class="path-list"><div>~/Dev/devtools/lib/tools/paths.py</div><div>~/Dev/devtools/lib/tools/warmup.py</div></div>
 </section>
 
 <section class="sidebar-block">
   <h3>源文件</h3>
-  <div class="path-list"><div>~/Dev/tools/cc-configs/commands/health.md</div></div>
+  <div class="path-list"><div>~/Dev/tools/cc-configs/commands/start.md</div></div>
 </section>
 
 <footer>
@@ -933,215 +1004,286 @@ ssh root@104.218.100.67 &quot;echo &#x27;=== Services ===&#x27; &amp;&amp; syste
 </footer>
 
 <script id="src" type="text/plain">---
-description: 健康检查族 — sites 边缘 HTTP / services 全景 12 服务矩阵 / nav navbar 链接 / vps systemd / project 单 repo git+文件卫生
+description: 入场 — 一条命令了解项目 + 配脚手架。warmup（读状态）→ gap 分析 → 推荐脚手架 → 用户批准应用。/start 为 /wrap 的对称：start 进、wrap 出。
 ---
 
-# /health — 健康检查统一入口
+# /start — 立刻进入工作
 
-`/health &lt;subcommand&gt; [args]`
+进 `~/Dev/*` 或 `~/Dev/Work/*` 任何项目跑这一句，得到：**当前情报 + 缺啥脚手架 + 怎么补**。
 
-| 子命令 | 干啥 | 输出 |
-|---|---|---|
-| `sites` | 扫 services.ts 所有子域 HTTP/Access/Navbar 状态 | 诊断矩阵 |
-| `services` | 合并 menus-audit + services_vs_live → 12 服务 × N 维 | markdown 表 / JSON |
-| `nav` | navbar.yaml 每链接存活 + 每子域 favicon/og:image/apple-touch-icon | markdown 报告 |
-| `vps` | VPS 服务/端口/磁盘/内存/Docker | 文本 |
-| `project` | 当前目录 / 多 repo 的 git 状态 + 文件卫生 | 表格 |
+```
+/start                 # 默认：4 phase 全跑（warmup → gap → 推荐 → 用户批准应用）
+/start --check         # 只跑 Phase 1+2（warmup + gap report，不推荐不应用）
+/start --apply-all     # 批量应用全部推荐（auto-approve，仅推荐熟悉项目用）
+```
 
-未传子命令 → `project`（最常用）。
-
-&gt; 单组件审计：`/menus-audit`（菜单 13 类）/ `/cf-audit`（CF 对账）
+`/start` 和 `/wrap` 是会话两端：
+- **`/start`** 进来：读状态 → 缺啥补啥（脚手架）
+- 中段：playbook 分派（META.md §5）
+- **`/wrap`** 出去：复盘 → 检查 harness 增量 → handoff
 
 ---
 
-## sites — 边缘 HTTP / Access / Navbar
-
-`/health sites [--filter PREFIX1,PREFIX2] [--no-traffic] [--json]`
-
-一键健康探针 — 验证 `~/Dev/stations/website/lib/services.ts` 里所有子域可达性、CF Access 一致性、navbar 部署。
-
-### 参数
-- `--filter` — 逗号分隔子域前缀（如 `dashboard,cc,auggie`）
-- `--no-traffic` — 跳过 7 天流量聚合
-- `--json` — 机器可读（供 `/site rename` 等消费）
+## Phase 1 — Warmup（纯只读）
 
 ### 执行
 
 ```bash
-python3 ~/Dev/devtools/lib/tools/sites_health.py &quot;$@&quot;
+python3 ~/Dev/devtools/lib/tools/warmup.py
+python3 ~/Dev/devtools/lib/tools/paths.py audit --brief
 ```
 
-### 输出解读
+第 2 条输出单行 `paths: 25 registered / 20 dead / 0 drift`，作为「输出段」第 3.5 项展示。
 
-| 符号 | 含义 |
+### 输出段
+
+1. **项目** — CWD、git branch、脏/干净、未推 commit、最近一次 commit
+2. **CC 配置** — 是否有 `.claude/`、CLAUDE.md（+ H1）、`harness.yaml` 的全局 + 本项目 skills、合计加载数
+3. **交接状态** — 本项目 HANDOFF.md（若无则看全局 `~/Dev/HANDOFF.md`）年龄 + H1 + 抽取的&quot;下一轮/待办/遗留&quot;条目
+4. **📍 paths** — `paths.py audit --brief` 的单行输出原样展示；dead &gt; 0 在第 5 段追加 hint &quot;路径死链偏多，考虑跑 `paths.py scan-dead --strict` 定位&quot;
+
+---
+
+## Phase 2 — Gap 分析（诊断 + 对比 harness 预期）
+
+### 2a. 项目类型判定
+
+| 类型 | 判定依据 |
 |---|---|
-| ✅ 200 | 站点公开可达 |
-| 🔒 302 | CF Access 守门（正常） |
-| ❌ {code} | 4xx/5xx 或 timeout |
-| 🌐 | edge 看是公开访问 |
-| 🔒 | CF Access 302 → cloudflareaccess.com |
-| ⚠ | services.ts 声明 accessType 与实际不符 |
-| ✓ | edge curl 抓到 `class=&quot;tlz-nav&quot;` |
-| ✓(local) | edge 探测不到（Access 阻挡），SSH→origin 抓到 navbar |
-| ✗ | 抓了 HTML 但无 navbar — 真缺失 |
-| ? | SPA（Streamlit）或无 port 的 Access 站，HTTP 探测不出，需人肉浏览器 |
+| `streamlit` | 有 `app.py` + `streamlit` in requirements |
+| `tauri` | 有 `src-tauri/` |
+| `cli` | 有 `if __name__` 入口 + argparse/click，无 web 框架 |
+| `library` | 有 `setup.py` / `pyproject.toml`，无入口脚本 |
+| `scripts` | 多个独立脚本，无统一入口 |
+| `docs` | 纯 Markdown，无代码 |
+| `monorepo` | 多个子项目（apps/packages 目录） |
+| `webapp` | Flask/FastAPI/Express 等 web 框架 |
+| `nextjs` | 有 `next.config.*` |
 
-### 限制
-1. **Streamlit 全 SPA**：初始 HTML 不含 navbar（JS mount 后注入），永远给 `?`
-2. **7d Hits 暂不可用**：VPS nginx 默认 combined log_format 不含 `$host`；开启需改 `/etc/nginx/nginx.conf` log_format 加 `$host`
-3. `auggie` / `panel` / `sub` 等 API 站返回 405/400 属正常（GET `/` 不支持），不代表服务死
+### 2b. 项目阶段判定
 
-### 规则
-- 凭证无需（curl + ssh）
-- 并发 8 路 curl + 6 路 SSH，27 站约 15-30 秒
-- 支持子集：`/health sites --filter hydro` 只扫 hydro-*
-
----
-
-## services — 全景 12 服务矩阵
-
-`/health services [--json]`
-
-聚合 `menus.py audit()`（13 类 SSOT 漂移）+ `services_vs_live.py`（live /api/metadata）→ 矩阵，定位单服务问题到单一命令。
-
-### 执行
-
-```bash
-python3 ~/Dev/devtools/scripts/tools/services_health.py &quot;$@&quot;
-```
-
-### 输出列
-
-| 列 | 含义 | 来源 |
+| 阶段 | 判定 | 配置预期 |
 |---|---|---|
-| service_id | 子域 id | entities/subdomains.yaml |
-| public_port | 前端/nginx 端口 | subdomains.yaml |
-| api_port | FastAPI 内部端口 (+100 convention) | derived |
-| live_version | 实时 /api/metadata 版本 | services_vs_live |
-| http | /api/metadata HTTP 状态码 | services_vs_live |
-| ms | /api/metadata 响应毫秒 | services_vs_live |
-| menus | 该服务相关的 menus.audit 漂移数 | menus.audit() |
-| live-drift | port/id/version 漂移项 | services_vs_live |
+| **seed** | 无 CLAUDE.md，&lt;5 个源文件 | 最小：CLAUDE.md |
+| **growing** | 有 CLAUDE.md 但不完整，5-50 个源文件 | 补全 CLAUDE.md + README + .gitignore |
+| **established** | 有 CLAUDE.md + README，&gt;50 个源文件或有部署 | 完整配置 + hooks + 项目专用 rules |
+| **mature** | 完整配置，多贡献者或复杂工作流 | 优化：skills 绑定、agent 定义、验证闭环 |
 
-### 相关
-- `/menus-audit` — 单跑 SSOT 13 类漂移（不 probe live）
-- `/health sites` — 边缘 HTTP + CF Access + navbar（公网视角）
-- `/cf-audit` — DNS + nginx + Origin Rules + Access 声明对账
-- services_vs_live.py — 纯 live probe（单跑也行）
+### 2c. 输出诊断
 
-### 规则
-- 只读，无副作用
-- 13 类 + live + http 全绿 → exit 0
-- 任一红 → exit 1（可 CI gate）
-- Live probe 需 127.0.0.1:$api_port 本地可达（VPS 自动满足；本机 dev 需先起 uvicorn）
+```
+📋 Phase 2 · Gap Analysis
+
+项目：hydro-rainfall (streamlit, growing → established)
+路径：~/Dev/stations/web-stack/services/hydro-rainfall
+源文件：37 个 Python, 2 个 YAML
+部署：VPS (hydro-rainfall.tianlizeng.cloud)
+
+现有配置：CLAUDE.md ✓  README.md ✓  README_CN.md ✗  .gitignore ✓  LICENSE ✗  hooks ✗
+harness.yaml 注册：未注册（如需要）
+
+Gaps（按 established 阶段预期）：
+- README_CN.md 缺
+- LICENSE 缺
+- 推荐 hooks（streamlit 项目可加端口冲突检查）
+```
+
+`--check` 到此停。
 
 ---
 
-## nav — navbar 链接 + 每域 assets
+## Phase 3 — 推荐脚手架
 
-`/health nav [--links-only] [--assets-only] [--fail-on-warn]`
+按 stage 给具体补什么 + 内容预览：
 
-每次改了 navbar.yaml / subdomains.yaml 后跑一次；会话收尾前跑一次。只读，无副作用。
+### seed → 最小可用
 
-### 执行
+| 配置 | 内容 |
+|---|---|
+| **CLAUDE.md** | 项目概述、Quick Reference 表、常用命令、项目结构（tree depth 2） |
 
-```bash
-python3 ~/Dev/devtools/lib/tools/nav_health.py $ARGUMENTS
-```
+### growing → 补全基础
 
-### 检查维度
+包含 seed 全部，加：
 
-#### Leaf URLs（navbar.yaml 全部展开）
-- `OK`  HTTP 200 + body &gt; 500B + `&lt;title&gt;` 非 &quot;loading&quot;
-- `AUTH` HTTP 302 + 标 `access: cf-access`（预期）
-- `WARN` 重定向但没标 access / title 是 loading / body 太薄
-- `DEAD` 连不上 / 4xx / 5xx
+| 配置 | 内容 |
+|---|---|
+| **README.md** | 按 `/repo audit` 的 readme_template 规则生成（app/infra/content/minimal） |
+| **README_CN.md** | README.md 的中文翻译 |
+| **.gitignore** | 按语言补全 baseline 条目（复用 `repo-standards.json → common.gitignore_baseline`） |
+| **LICENSE** | MIT（copyright holder = tianli） |
 
-#### Per-host assets（每子域）
-- `og:image` — 从根页面 HTML 抓 `&lt;meta property=&quot;og:image&quot;&gt;`，再 probe 目标
-- `favicon.ico` — 直接 probe
-- `apple-touch-icon.png` — 直接 probe
+### established → 工程化
 
-### 什么时候跑
-- 改 `entities/subdomains.yaml` / `navbar.yaml` / `relations/*.yaml` 后
-- `/site archive` / `/site rename` / `/site add` 之后
-- 会话收尾前（`/wrap handoff` 之前）
-- 定期（cron / launchd）
+包含 growing 全部，加：
 
-### 不做
-- 不修任何文件
-- 不尝试登录 CF Access（302 = auth-gated 健康）
-- 不做深度 UI 检查
-- 修复由你自己决定
+| 配置 | 内容 |
+|---|---|
+| **CLAUDE.md 升级** | 添加开发注意事项、技术栈、数据源说明 |
+| **hooks** | 根据项目类型推荐 PostToolUse hooks |
+| **rules/** | 项目专用规则（如有 Word 文档处理 → 写作规范 rule） |
 
-### 常见问题
+推荐 hooks 策略：
 
-| 症状 | 可能原因 | 修复 |
-|---|---|---|
-| GitHub URL 404 | repo private 或不存在 | catalog.yaml 删 URL 或换 private 标记 |
-| og:image 缺失（Next.js） | layout.tsx 没设 metadata.openGraph.images | 加 `openGraph: { images: [...] }` |
-| favicon.ico 404（Next.js） | `app/icon.png` / `public/favicon.ico` 没放 | 放 512×512 PNG 到 `app/icon.png` |
-| `302 missing` on CF-Access | 资产被 Access 拦 | 允许匿名 `/favicon.ico`、`/_next/static/*` |
+| 项目类型 | 推荐 hooks |
+|---|---|
+| streamlit / webapp | Bash 后自动检查端口冲突 |
+| cli / library | Edit 后检查 import 完整性 |
+| scripts | Bash 后检查退出码 |
+| 有测试的项目 | Edit 后提示运行相关测试 |
 
----
+### mature → 优化闭环
 
-## vps — VPS 服务/端口/磁盘/内存/Docker
+包含 established 全部，加：
 
-`/health vps [&lt;service&gt;]`
-
-```bash
-ssh root@104.218.100.67 &quot;echo &#x27;=== Services ===&#x27; &amp;&amp; systemctl list-units --type=service --state=running --no-pager | grep -E &#x27;nginx|oauth|marzban&#x27; &amp;&amp; echo &amp;&amp; echo &#x27;=== Ports ===&#x27; &amp;&amp; ss -tlnp | grep -E &#x27;8443|9100|8000|7891|443&#x27; &amp;&amp; echo &amp;&amp; echo &#x27;=== Disk ===&#x27; &amp;&amp; df -h / &amp;&amp; echo &amp;&amp; echo &#x27;=== Memory ===&#x27; &amp;&amp; free -h &amp;&amp; echo &amp;&amp; echo &#x27;=== Docker ===&#x27; &amp;&amp; docker ps --format &#x27;table {{.Names}}\t{{.Status}}\t{{.Ports}}&#x27; 2&gt;/dev/null&quot;
-```
-
-`$ARGUMENTS` 指定 service 名（如 `oauth-proxy` `nginx`）→ 额外 `journalctl -u &lt;service&gt; --no-pager -n 20`。
+| 配置 | 内容 |
+|---|---|
+| **skills 绑定** | 检查 `~/Dev/tools/cc-configs/skills/` 是否有适用的 skill，建议绑定 |
+| **agent 定义** | 复杂多步工作流 → 专用 agent |
+| **验证命令** | CLAUDE.md 添加 done-conditions 和验证命令 |
 
 ---
 
-## project — 当前 repo 文件卫生 + Git 状态
+## Phase 4 — 用户批准 + 应用
 
-`/health project [&lt;name&gt;...] [all]`
-
-### 范围
-- 无参数 → 当前目录
-- `&lt;name&gt;` → repo-map.json 查路径
-- `all` → 所有 non-ignored repo
-
-### 检查项
-
-#### 1. Git 状态
-- uncommitted changes（`git status --short`）
-- behind remote（`git fetch --dry-run`）
-- untracked 大文件 &gt;10MB
-- 敏感文件被 track（`.env` / `*.pem` / `*.key` / `credentials*`）
-
-#### 2. 文件卫生
-- 垃圾：`~$*` / `.DS_Store` / `Thumbs.db` / `__pycache__/` / `.~lock.*`
-- docx 解包残留：含 `word/` / `_rels/` / `[Content_Types].xml` 的目录
-- 版本冗余：`deliverables/` / `docs/` 下同一文档多版本
-
-#### 3. ~/Dev/Work/ 额外
-- 在 `~/Dev/Work/zdwp/` 下 → 跑 `python3 ~/Dev/devtools/scripts/tools/zdwp_health.py`
-- 大目录（&gt;1GB）提醒
-
-### 输出
+逐项展示生成结果，等待批准：
 
 ```
-✅ doctools        — clean
-⚠️  hydro-rainfall — 3 uncommitted files, 2 __pycache__/
-⚠️  zdwp           — 5 version chains, 12 garbage files
-✗  oauth-proxy    — .env tracked by git!
+[1/4] CLAUDE.md (新建)
+{preview first 20 lines}
+→ 审批? [Y/n/edit]
+
+[2/4] README.md (新建)
+{preview first 20 lines}
+→ 审批? [Y/n/edit]
+
+[3/4] README_CN.md (新建)
+→ 审批? [Y/n/edit]
+
+[4/4] .gitignore (补全 3 条)
++ __pycache__/
++ .env
++ *.pyc
+→ 审批? [Y/n/edit]
 ```
 
-末尾汇总：`N checked, X clean, Y need attention`
+`--apply-all` 跳过批准，全部应用（仅推荐熟悉项目）。
 
-### 清理
+### 应用规则
 
-输出后有可清理项 → 问用户：`是否调用 /tidy 清理？[Y/n]`
+1. **已存在且达标** → 跳过，标记 ✓
+2. **已存在但不完整** → 显示 diff 预览，等待批准
+3. **不存在** → 生成完整内容，等待批准
 
-`$ARGUMENTS` 含 `--fix` → 自动调 `/tidy`，不二次确认。
+---
 
-### 调用的原子命令
-- `/tidy` — 目录深度整理
+## CLAUDE.md / README 生成规范
+
+### CLAUDE.md（中文）
+
+读项目代码后生成，参考已有项目格式：
+
+```markdown
+# {项目名}
+
+{一句话描述}
+
+## Quick Reference
+
+| 项目 | 路径/值 |
+|---|---|
+| 入口 | `{main entry}` |
+| 部署 | {deploy info if any} |
+| 测试 | `{test command}` |
+
+## 常用命令
+
+\```bash
+{最常用的命令}
+\```
+
+## 项目结构
+
+\```
+{tree output, depth 2}
+\```
+
+## 开发注意事项
+
+- {从代码中提取的关键约束}
+```
+
+### README.md（英文）
+
+复用 `/repo audit` 的 readme_template 体系。金标准参考：`~/Dev/stations/dockit/README.md`。
+
+必须包含：
+- 语言切换：`**English** | [中文](README_CN.md)`
+- for-the-badge 徽章
+- 分隔线 + 截图占位
+- 功能表格
+- 安装 / 快速上手
+
+### README_CN.md（中文）
+
+镜像 README.md 结构，翻译为中文。代码块、URL、技术术语不变。
+
+---
+
+## Phase 5 — 收尾汇总
+
+```
+🏗️ /start 完成
+
+项目：hydro-rainfall (streamlit, established)
+现状：
+  ✅ CLAUDE.md / README / .gitignore — 已达标
+  🆕 README_CN.md / LICENSE — 已新建
+  🔧 .gitignore +3 条 — 已补
+  💤 hooks — 跳过（用户拒）
+
+建议：
+  → engineering-mode 已加载，破坏性操作记得 Plan mode
+  → HANDOFF.md 1 天前，可读取上次进度
+  → 下一步按 META.md §5 trigger words 匹配 playbook
+
+提交? [Y/n]
+```
+
+确认 → 调用 `/repo ship` 提交。
+
+---
+
+## 什么时候跑
+
+- **首选**：进入新/陌生项目目录的第一个命令
+- 久未动的项目重新开工前
+- 不确定当前 CC 配置加载了啥时
+- 想知道 harness.yaml 把哪些 skills 分给这个项目时
+- 新项目刚 mkdir 完想配脚手架
+
+## 不做
+
+- 不修改任何 git 状态（不 commit / push 在 /start 内做，建议提交是 Phase 5 末尾邀约）
+- 不自动跑 `/wrap handoff`；只提示是否该跑
+- 不展示 HANDOFF 全文（太长）；只给年龄、标题、摘要
+- 不覆盖已有内容 — 只补全或升级
+- 不生成用不到的配置（seed 阶段不推 hooks，没部署不推 deploy 相关）
+
+## 规则
+
+- CLAUDE.md 用中文，README.md 用英文，README_CN.md 用中文
+- 每个配置项都要批准，不批量强推（除非 `--apply-all`）
+- 复用已有命令的逻辑：.gitignore baseline 来自 `repo-standards.json`，README 模板来自 `/repo audit` 体系
+- 阶段判定要保守 — 宁可低估，让用户决定是否升级
+- `--check` 模式纯只读，不写任何文件
+- 凭证在 `~/.personal_env`，不问用户要
+
+## 相关
+
+- `/wrap`（对称收尾） — recap + harness check + handoff
+- `/preflight`（干活中） — 破坏性操作前侦察（不属入场）
+- META.md §5 — 入场后按 trigger words 匹配 domain playbook
 </script>
 <script>
 const raw = document.getElementById('src').textContent;

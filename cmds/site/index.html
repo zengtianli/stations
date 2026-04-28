@@ -905,7 +905,7 @@ body.tlz-page {
 
 <div class="tlz-container">
 <header class="tlz-stats-bar">
-  <span><strong>28</strong> 命令</span>
+  <span><strong>26</strong> 命令</span>
   <span><strong>16</strong> 技能</span>
   <span><strong>4</strong> 归档</span>
 </header>
@@ -922,12 +922,12 @@ body.tlz-page {
 <section class="tlz-section" data-cat="部署" style="--c:#0ea5e9">
   <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>部署</h2><span class="tlz-count">2</span></div>
   <div class="tlz-grid"><a class="tlz-card" href="cf.html"
-   data-name="cf" data-desc="Cloudflare 统一管理 — DNS / Origin Rules / Access Applications"
+   data-name="cf" data-desc="Cloudflare 统一管理 — DNS / Origin Rules / Access Applications / Audit 对账"
    style="border-left:3px solid #0ea5e9">
   <div class="tlz-card-body">
     <div class="tlz-card-name"><code>/cf</code></div>
     
-    <div class="tlz-card-desc">Cloudflare 统一管理 — DNS / Origin Rules / Access Applications</div>
+    <div class="tlz-card-desc">Cloudflare 统一管理 — DNS / Origin Rules / Access Applications / Audit 对账</div>
   </div>
 </a><a class="tlz-card" href="deploy.html"
    data-name="deploy" data-desc="部署族 — (default) 当前目录 / changed 按 git diff 扇出 / fanout 并行多站编辑+部署"
@@ -940,7 +940,7 @@ body.tlz-page {
 </a></div>
 </section>
 <section class="tlz-section" data-cat="CC 生态" style="--c:#8b5cf6">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>CC 生态</h2><span class="tlz-count">4</span></div>
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>CC 生态</h2><span class="tlz-count">3</span></div>
   <div class="tlz-grid"><a class="tlz-card" href="auggie.html"
    data-name="auggie" data-desc="刷新 auggie dashboard — GitHub repo 列表 / workspace 注册表 / health 健康"
    style="border-left:3px solid #8b5cf6">
@@ -956,14 +956,6 @@ body.tlz-page {
     <div class="tlz-card-name"><code>/cmd-stats</code></div>
     
     <div class="tlz-card-desc">统计 slash command 使用频率，基于会话 transcript 数据</div>
-  </div>
-</a><a class="tlz-card" href="harness.html"
-   data-name="harness" data-desc="根据项目性质和当前阶段，生成或升级 Claude Code 配置脚手架。"
-   style="border-left:3px solid #8b5cf6">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/harness</code></div>
-    
-    <div class="tlz-card-desc">根据项目性质和当前阶段，生成或升级 Claude Code 配置脚手架。</div>
   </div>
 </a><a class="tlz-card" href="update-hooks.html"
    data-name="update-hooks" data-desc="增删改 ~/.claude/settings.json 的 hooks/permissions/env（薄封装 update-config skill）"
@@ -1020,7 +1012,7 @@ body.tlz-page {
 </a></div>
 </section>
 <section class="tlz-section" data-cat="杂项" style="--c:#6b7280">
-  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>杂项</h2><span class="tlz-count">18</span></div>
+  <div class="tlz-section-title"><span class="tlz-icon">📁</span><h2>杂项</h2><span class="tlz-count">17</span></div>
   <div class="tlz-grid"><a class="tlz-card" href="api-smoke.html"
    data-name="api-smoke" data-desc="本地 FastAPI 烟雾测试 — 起 uvicorn → curl /api/health+meta[+compute?format=json] → pkill。端口从 services.ts 读，踩坑（zsh noclobber / clashx / CJK）全封装。"
    style="border-left:3px solid #6b7280">
@@ -1036,14 +1028,6 @@ body.tlz-page {
     <div class="tlz-card-name"><code>/branches-cleanup</code></div>
     
     <div class="tlz-card-desc">扫 ~/Dev 全部 git repo，找出已合并到 main 的分支（本地+远端），列表批准后一键删。</div>
-  </div>
-</a><a class="tlz-card" href="cf-audit.html"
-   data-name="cf-audit" data-desc="对账 services.ts / CF DNS / VPS nginx / Origin Rules / CF Access，找孤儿与漂移"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/cf-audit</code></div>
-    
-    <div class="tlz-card-desc">对账 services.ts / CF DNS / VPS nginx / Origin Rules / CF Access，找孤儿与漂移</div>
   </div>
 </a><a class="tlz-card" href="ctx-monitor.html"
    data-name="ctx-monitor" data-desc="Claude Code 会话监控与上下文工程工具。保障 compact 后不丢失关键细节。"
@@ -1141,6 +1125,14 @@ body.tlz-page {
     
     <div class="tlz-card-desc">子域生命周期族 — add 新建 / rename 改名 / archive 下线 / activate 复活 / ship 部署上线 / nginx-regen 重生 vhost</div>
   </div>
+</a><a class="tlz-card" href="start.html"
+   data-name="start" data-desc="入场 — 一条命令了解项目 + 配脚手架。warmup（读状态）→ gap 分析 → 推荐脚手架 → 用户批准应用。/start 为 /wrap 的对称：start 进、wrap 出。"
+   style="border-left:3px solid #6b7280">
+  <div class="tlz-card-body">
+    <div class="tlz-card-name"><code>/start</code></div>
+    
+    <div class="tlz-card-desc">入场 — 一条命令了解项目 + 配脚手架。warmup（读状态）→ gap 分析 → 推荐脚手架 → 用户批准应用。/start 为 /wrap 的对称：start 进、wrap 出。</div>
+  </div>
 </a><a class="tlz-card" href="station-promote.html"
    data-name="station-promote" data-desc="把 ~/Dev/&lt;name&gt; 挪进 ~/Dev/stations/&lt;name&gt;，自动扫硬编码路径引用，可选 --auto-fix sed 批量替换；烟测 + 提示接下来 commit 哪些 repo。"
    style="border-left:3px solid #6b7280">
@@ -1148,14 +1140,6 @@ body.tlz-page {
     <div class="tlz-card-name"><code>/station-promote</code></div>
     <div class="cmds-card-hint">&lt;name&gt; [--auto-fix] [--no-smoke] [--dry]</div>
     <div class="tlz-card-desc">把 ~/Dev/&lt;name&gt; 挪进 ~/Dev/stations/&lt;name&gt;，自动扫硬编码路径引用，可选 --auto-fix sed 批量替换；烟测 + 提示接下来 commit 哪些 repo。</div>
-  </div>
-</a><a class="tlz-card" href="warmup.html"
-   data-name="warmup" data-desc="进项目先跑一句 — 告诉你当前加载的 skills、CLAUDE.md、HANDOFF、git 状态和建议动作"
-   style="border-left:3px solid #6b7280">
-  <div class="tlz-card-body">
-    <div class="tlz-card-name"><code>/warmup</code></div>
-    
-    <div class="tlz-card-desc">进项目先跑一句 — 告诉你当前加载的 skills、CLAUDE.md、HANDOFF、git 状态和建议动作</div>
   </div>
 </a><a class="tlz-card" href="wrap.html"
    data-name="wrap" data-desc="会话收尾族 — recap 复盘 / retro 写 playbook / handoff 全流程交接 / distill 提炼到全局"
@@ -1341,7 +1325,7 @@ body.tlz-page {
 </section></main>
 
 <footer class="tlz-footer">
-  Generated 2026-04-28 10:48 · <a href="_how-to-create.html">怎么建一个新命令 / 技能 →</a>
+  Generated 2026-04-28 11:18 · <a href="_how-to-create.html">怎么建一个新命令 / 技能 →</a>
 </footer>
 </div>
 

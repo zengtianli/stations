@@ -19,3 +19,13 @@ export interface SharedBrand {
   url: string
   key: string
 }
+export interface SiteFooterLink {
+  label: string
+  href: string
+  icon?: "github" | "linkedin" | "mail" | "file"
+  external?: boolean
+}
+export interface SiteFooterBrand {
+  /** Template string; `{year}` placeholder will be replaced at render time. */
+  copyright: string
+}

@@ -47,6 +47,7 @@ _TPL = load_site_templates(SCRIPT_DIR)
 NAVBAR_HTML = _TPL["navbar"]
 SITE_HEADER_HTML = _TPL["header"]
 SITE_CONTENT_CSS = _TPL["css"]
+SITE_FOOTER_HTML = _TPL["footer"]
 
 
 def esc(s) -> str:
@@ -247,6 +248,7 @@ def render_index(articles: list[dict]) -> str:
   {body}
   <footer>Generated {now} · <a href="https://github.com/zengtianli/assets">source</a></footer>
 </div>
+{SITE_FOOTER_HTML}
 </body>
 </html>
 """

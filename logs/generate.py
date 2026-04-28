@@ -39,6 +39,7 @@ _TPL = load_site_templates(ROOT)
 NAVBAR = _TPL["navbar"]
 SITE_HEADER = _TPL["header"]
 SITE_CONTENT_CSS = _TPL["css"]
+SITE_FOOTER = _TPL["footer"]
 
 
 @dataclass
@@ -356,6 +357,7 @@ document.querySelectorAll('.tlz-filters .tlz-btn').forEach(btn => {{
   }});
 }});
 </script>
+{SITE_FOOTER}
 </body></html>"""
 
 
@@ -399,6 +401,7 @@ document.querySelectorAll('.md-src').forEach(src => {{
   out.innerHTML = marked.parse(src.textContent);
 }});
 </script>
+{SITE_FOOTER}
 </body></html>"""
 
 

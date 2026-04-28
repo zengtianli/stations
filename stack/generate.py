@@ -48,6 +48,7 @@ _TPL = load_site_templates(Path(__file__).parent)
 NAVBAR_HTML = _TPL["navbar"]
 SITE_HEADER_HTML = _TPL["header"]
 SITE_CONTENT_CSS = _TPL["css"]
+SITE_FOOTER_HTML = _TPL["footer"]
 
 
 STATUS_STYLE = {
@@ -568,6 +569,7 @@ def render_html(data: dict) -> str:
   Generated {now} · <a href="https://github.com/zengtianli/stack">stack</a>
 </footer>
 </div>
+{SITE_FOOTER_HTML}
 
 <script src="site-filter.js"></script>
 <script>

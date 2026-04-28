@@ -33,6 +33,7 @@ _TPL = load_site_templates(Path(__file__).parent)
 NAVBAR_HTML = _TPL["navbar"]
 SITE_HEADER_HTML = _TPL["header"]
 SITE_CONTENT_CSS = _TPL["css"]
+SITE_FOOTER_HTML = _TPL["footer"]
 
 # 分类配置 SSOT：~/Dev/tools/configs/menus/sites/cmds.yaml
 # 旧硬编码字典已迁出。改分类请编辑 yaml，跑 /menus-audit 检查漂移。
@@ -485,6 +486,7 @@ def render_index(items: list[dict]) -> str:
   Generated {now} · <a href="_how-to-create.html">怎么建一个新命令 / 技能 →</a>
 </footer>
 </div>
+{SITE_FOOTER_HTML}
 
 <script src="site-filter.js"></script>
 <script>

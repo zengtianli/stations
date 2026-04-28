@@ -1,13 +1,13 @@
 import type { ReactNode } from "react"
 import { FileDown, Github, Linkedin, Mail } from "lucide-react"
+import {
+  SHARED_FOOTER_BRAND,
+  SHARED_FOOTER_LINKS,
+  type SiteFooterLink,
+} from "@tlz/menu-ssot"
 import { cn } from "../lib/utils"
 
-export interface SiteFooterLink {
-  label: string
-  href: string
-  icon?: "github" | "linkedin" | "mail" | "file"
-  external?: boolean
-}
+export type { SiteFooterLink }
 
 export interface SiteFooterProps {
   copyright?: string
@@ -24,19 +24,15 @@ const ICON_MAP = {
   file: FileDown,
 } as const
 
-const DEFAULT_LINKS: SiteFooterLink[] = [
-  { label: "联系", href: "https://tianlizeng.cloud/contact", icon: "mail", external: true },
-  { label: "GitHub", href: "https://github.com/zengtianli", icon: "github", external: true },
-]
-
 export function SiteFooter({
   copyright,
-  links = DEFAULT_LINKS,
+  links = SHARED_FOOTER_LINKS,
   rightSlot,
   className,
 }: SiteFooterProps) {
   const year = new Date().getFullYear()
-  const copy = copyright ?? `© ${year} 曾田力`
+  const copy =
+    copyright ?? SHARED_FOOTER_BRAND.copyright.replace("{year}", String(year))
 
   return (
     <footer className={cn("border-t border-[#d2d2d7]", className)}>

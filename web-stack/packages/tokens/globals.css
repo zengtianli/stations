@@ -37,6 +37,21 @@ html, body { overflow-x: hidden; }
     --radius: 1rem;
     --track-accent: 0 0% 9%;
     --track-bg: #FFFFFF;
+
+    /* Apple-style tokens（与 site-content.css 静态站对齐，让 React/HTML 共用同一套色值）*/
+    --apple-bg:           #f5f5f7;
+    --apple-text:         #1d1d1f;
+    --apple-text-muted:   #86868b;
+    --apple-text-subtle:  #6b7280;
+    --apple-blue:         #0071E3;
+    --apple-border:       #d2d2d7;
+    --apple-divider:      rgba(0,0,0,0.05);
+    --apple-card-bg:      rgba(255,255,255,0.5);
+    --apple-card-bg-hover:rgba(255,255,255,0.7);
+    --apple-card-border:  rgba(255,255,255,0.6);
+    --apple-status-ok:    #34c759;
+    --apple-status-bad:   #ff3b30;
+    --apple-status-warn:  #ff9500;
   }
 
   [data-track="hydro"] {

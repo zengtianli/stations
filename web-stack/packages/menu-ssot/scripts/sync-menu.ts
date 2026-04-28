@@ -23,8 +23,17 @@ const WEBSITE_GENERATED_CANDIDATES = [
 const WEBSITE_GENERATED =
   WEBSITE_GENERATED_CANDIDATES.find(existsSync) ?? WEBSITE_GENERATED_CANDIDATES[0]
 
+const WEBSITE_FOOTER_GENERATED_CANDIDATES = [
+  resolve(HOME, "Dev/stations/website/lib/shared-footer.generated.ts"),
+  resolve(HOME, "Dev/website/lib/shared-footer.generated.ts"),
+]
+const WEBSITE_FOOTER_GENERATED =
+  WEBSITE_FOOTER_GENERATED_CANDIDATES.find(existsSync) ??
+  WEBSITE_FOOTER_GENERATED_CANDIDATES[0]
+
 const HERE = dirname(fileURLToPath(import.meta.url))
 const OUT = resolve(HERE, "../src/generated.ts")
+const FOOTER_OUT = resolve(HERE, "../src/footer.generated.ts")
 
 function run(cmd: string, args: string[]): { code: number; stdout: string; stderr: string } {
   const res = spawnSync(cmd, args, { encoding: "utf8" })
@@ -53,6 +62,27 @@ function main(): number {
   const header = `// Mirrored from ${WEBSITE_GENERATED.replace(HOME, "~")} via @tlz/menu-ssot sync-menu.\n`
   writeFileSync(OUT, header + contents, "utf8")
   console.log(`[menu-ssot] Wrote ${OUT} (${contents.length} bytes)`)
+
+  // Footer SSOT — same pattern, independent generator step.
+  const footerBuild = run("python3", [MENUS_TOOL, "build-website-footer", "-w"])
+  if (footerBuild.code !== 0) {
+    console.error(
+      `[menu-ssot] build-website-footer failed:\n${footerBuild.stderr || footerBuild.stdout}`,
+    )
+    return 1
+  }
+
+  if (!existsSync(WEBSITE_FOOTER_GENERATED)) {
+    console.error(
+      `[menu-ssot] Expected file missing after build: ${WEBSITE_FOOTER_GENERATED}`,
+    )
+    return 1
+  }
+
+  const footerContents = readFileSync(WEBSITE_FOOTER_GENERATED, "utf8")
+  const footerHeader = `// Mirrored from ${WEBSITE_FOOTER_GENERATED.replace(HOME, "~")} via @tlz/menu-ssot sync-menu.\n`
+  writeFileSync(FOOTER_OUT, footerHeader + footerContents, "utf8")
+  console.log(`[menu-ssot] Wrote ${FOOTER_OUT} (${footerContents.length} bytes)`)
   return 0
 }
 
